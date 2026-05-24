@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#FFFFFF" />
+<title>QUBYX Enterprise Website Preview</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/main.css?v=meganav3" />
+
+<style>
+	.preview-banner { position: fixed; bottom: 12px; right: 12px; z-index: 99; background: rgba(13,15,44,.92); color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 8px 12px; border-radius: 999px; backdrop-filter: blur(8px); }
+	.preview-product-icon { color: var(--color-accent); display: grid; place-items: center; width: 100%; height: 100%; }
+	.preview-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); border-radius: var(--r-2xl); overflow: hidden; }
+	.preview-strip__item { background: var(--color-bg); padding: clamp(1.25rem, 3vw, 2rem); }
+	.preview-strip__item strong { display: block; color: var(--color-ink); font-size: var(--text-xl); margin-bottom: .5rem; }
+	.preview-strip__item span { color: var(--color-ink-muted); font-size: var(--text-sm); line-height: 1.55; }
+	.preview-kicker { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .08em; color: var(--color-ink-subtle); }
+	@media (max-width: 900px) { .preview-strip { grid-template-columns: 1fr 1fr; } }
+	@media (max-width: 560px) { .preview-strip { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body class="is-front">
+
+<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+<header class="site-header" data-site-header>
+	<div class="site-header__container container">
+		<a class="site-header__brand" href="#">
+			<span class="site-header__brand-mark" aria-hidden="true">
+				<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+					<path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+					<path d="M2 7l10 5 10-5M12 12v10" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+				</svg>
+			</span>
+			<span class="site-header__brand-text">QUBYX</span>
+		</a>
+
+		<nav class="site-nav mega-nav" aria-label="Primary">
+			<ul class="mega-nav__list">
+				<li class="mega-nav__item">
+					<a class="mega-nav__trigger" href="page.html?slug=products">Products <span aria-hidden="true">›</span></a>
+					<div class="mega-nav__panel">
+						<a class="mega-nav__feature" href="page.html?slug=products">
+							<span class="mega-nav__feature-label">Product portfolio</span>
+							<span class="mega-nav__feature-desc">Software, remote QA, and sensors for every critical display workflow.</span>
+						</a>
+						<div class="mega-nav__columns">
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Software</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=products/perfectlum"><span>PerfectLum</span><small>Medical display calibration and DICOM QA.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=products/perfectchroma"><span>PerfectChroma</span><small>Professional color calibration workflows.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=products/perfectepd"><span>PerfectEPD</span><small>E-paper display validation and QA.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Remote QA</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=products/qubyx-remoteqa"><span>Qubyx RemoteQA</span><small>Centralized display QA across sites.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/enterprise-display-management"><span>Enterprise display management</span><small>Fleet visibility, scheduling, and evidence.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/remote-monitor-qa"><span>Remote monitor QA</span><small>Import-ready SEO growth page.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Sensors</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=products/qubyx-smartsensor-s1"><span>SmartSensor S1</span><small>Compact luminance QA sensor.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=products/qubyx-smartsensor-s2"><span>SmartSensor S2</span><small>Advanced validation sensor path.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=store"><span>Store</span><small>Licenses, bundles, and quotes.</small></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mega-nav__item">
+					<a class="mega-nav__trigger" href="page.html?slug=solutions">Solutions <span aria-hidden="true">›</span></a>
+					<div class="mega-nav__panel">
+						<a class="mega-nav__feature" href="page.html?slug=solutions">
+							<span class="mega-nav__feature-label">Solutions hub</span>
+							<span class="mega-nav__feature-desc">Healthcare, enterprise, creative, OEM, and e-paper workflows.</span>
+						</a>
+						<div class="mega-nav__columns">
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Medical</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/medical-display-qa"><span>Medical display QA</span><small>Radiology and diagnostic display programs.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/dicom-calibration"><span>DICOM calibration</span><small>Import-ready GSDF SEO page.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/multi-site-hospital-networks"><span>Multi-site hospital networks</span><small>Import-ready healthcare SEO page.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Professional</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/enterprise-display-management"><span>Enterprise display management</span><small>Centralized display QA operations.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/color-critical-workflows"><span>Color-critical workflows</span><small>Photography, video, design, and prepress.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/oem-display-calibration"><span>OEM display calibration</span><small>Manufacturer and integrator validation.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Specialized</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=solutions/epaper-display-qa"><span>E-paper display QA</span><small>EPD contrast and reflectance workflows.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=industries/display-manufacturing"><span>Display manufacturing</span><small>Import-ready industry page.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=industries/broadcast-post-production"><span>Broadcast and post-production</span><small>Import-ready industry page.</small></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mega-nav__item">
+					<a class="mega-nav__trigger" href="page.html?slug=resources">Resources <span aria-hidden="true">›</span></a>
+					<div class="mega-nav__panel">
+						<a class="mega-nav__feature" href="page.html?slug=resources">
+							<span class="mega-nav__feature-label">Resource library</span>
+							<span class="mega-nav__feature-desc">Guides, comparisons, compliance explainers, technical notes, news, and blog content.</span>
+						</a>
+						<div class="mega-nav__columns">
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Learn</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=resources/category/guides"><span>Guides</span><small>Practical calibration guides.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=resources/category/compliance"><span>Compliance</span><small>Standards and audit workflows.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=resources/category/technical-notes"><span>Technical notes</span><small>Sensors, drift, and architecture.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Compare</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=compare/calman-alternative"><span>Calman alternative</span><small>Professional calibration comparison.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=compare/displaycal-alternative"><span>DisplayCAL alternative</span><small>Open-source vs managed QA.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=compare/datacolor-spyder-alternative"><span>Datacolor Spyder alternative</span><small>Consumer tools vs enterprise QA.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Updates</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=blog"><span>Blog</span><small>Ideas and market commentary.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=category/news"><span>News</span><small>Company and product announcements.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=category/product-updates"><span>Product updates</span><small>Release and feature notes.</small></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mega-nav__item">
+					<a class="mega-nav__trigger" href="page.html?slug=store">Store <span aria-hidden="true">›</span></a>
+					<div class="mega-nav__panel">
+						<a class="mega-nav__feature" href="page.html?slug=store">
+							<span class="mega-nav__feature-label">QUBYX store</span>
+							<span class="mega-nav__feature-desc">Plans, pricing, sensors, and bundles for medical, creative, OEM, and enterprise display QA.</span>
+						</a>
+						<div class="mega-nav__columns">
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Software plans</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=store/perfectlum"><span>PerfectLum pricing</span><small>Medical display QA · from €349/yr.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=store/perfectchroma"><span>PerfectChroma pricing</span><small>Color calibration · from €149/yr.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=store/perfectepd"><span>PerfectEPD pricing</span><small>E-paper validation · from €2,490.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Hardware &amp; bundles</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=store/sensors"><span>SmartSensor catalog</span><small>S1 from €590 · S2 from €2,290.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=store/bundles"><span>Bundles</span><small>Save 15-25% · single SKU, single PO.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">For organisations</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=store/enterprise"><span>Enterprise pricing</span><small>50-1000+ displays · volume licensing.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=store/education"><span>Education licensing</span><small>Free students · academic labs.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=request-demo"><span>Request quote</span><small>Multi-site &amp; procurement support.</small></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mega-nav__item">
+					<a class="mega-nav__trigger" href="page.html?slug=support">Support <span aria-hidden="true">›</span></a>
+					<div class="mega-nav__panel">
+						<a class="mega-nav__feature" href="page.html?slug=support">
+							<span class="mega-nav__feature-label">Support center</span>
+							<span class="mega-nav__feature-desc">Downloads, documentation, support contact, warranty, security, and deployment help.</span>
+						</a>
+						<div class="mega-nav__columns">
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Help</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=downloads"><span>Downloads</span><small>Installers, manuals, and release notes.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=support/documentation"><span>Documentation</span><small>Setup, calibration, reports, and sensors.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=support/contact-support"><span>Contact support</span><small>Product assistance and troubleshooting.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Trust</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=security"><span>Security</span><small>Enterprise review and deployment notes.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=support/warranty-rma"><span>Warranty and RMA</span><small>Hardware support and return flow.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=contact"><span>Contact</span><small>Sales, support, partners, and routing.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Buy</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=store"><span>Store</span><small>Software, sensors, and bundles.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=request-demo"><span>Request demo</span><small>Book an enterprise walkthrough.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=partners"><span>Partners</span><small>OEM, reseller, and integrator programs.</small></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="mega-nav__item">
+					<a class="mega-nav__trigger" href="page.html?slug=company">Company <span aria-hidden="true">›</span></a>
+					<div class="mega-nav__panel">
+						<a class="mega-nav__feature" href="page.html?slug=company">
+							<span class="mega-nav__feature-label">QUBYX company</span>
+							<span class="mega-nav__feature-desc">Company, partners, contact, legal, privacy, cookies, and enterprise trust pages.</span>
+						</a>
+						<div class="mega-nav__columns">
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">About</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=company"><span>Company</span><small>Corporate overview.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=company/about"><span>About QUBYX</span><small>Brand and product mission.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=partners"><span>Partners</span><small>Partner and OEM programs.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Contact</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=contact"><span>Contact</span><small>General routing page.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=request-demo"><span>Request demo</span><small>Enterprise conversion page.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=store"><span>Store</span><small>Commerce and quote page.</small></a></li>
+								</ul>
+							</div>
+							<div class="mega-nav__column">
+								<p class="mega-nav__heading">Legal</p>
+								<ul>
+									<li><a class="mega-nav__link" href="page.html?slug=privacy"><span>Privacy</span><small>Website, product, and support privacy information.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=terms"><span>Terms</span><small>Website, software, store, and support terms.</small></a></li>
+									<li><a class="mega-nav__link" href="page.html?slug=cookies"><span>Cookies</span><small>Analytics, preferences, consent, and embedded media.</small></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</nav>
+
+		<div class="site-header__actions">
+			<a class="site-header__login" href="#support">Downloads</a>
+			<a class="btn btn--primary btn--sm" href="#demo">
+				Request demo
+				<span class="btn__icon" aria-hidden="true">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+				</span>
+			</a>
+			<button class="site-header__menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" data-mobile-toggle>
+				<span class="screen-reader-text">Open menu</span>
+				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+			</button>
+		</div>
+	</div>
+
+	<div class="site-mobile-nav" id="mobile-nav" hidden>
+		<ul class="site-mobile-nav__list">
+			<li><a href="page.html?slug=products">Products</a><ul class="sub-menu"><li><a href="page.html?slug=products/perfectlum">PerfectLum</a></li><li><a href="page.html?slug=products/perfectchroma">PerfectChroma</a></li><li><a href="page.html?slug=products/perfectepd">PerfectEPD</a></li><li><a href="page.html?slug=products/qubyx-remoteqa">Qubyx RemoteQA</a></li><li><a href="page.html?slug=products/qubyx-smartsensor-s1">SmartSensor S1</a></li><li><a href="page.html?slug=products/qubyx-smartsensor-s2">SmartSensor S2</a></li></ul></li>
+			<li><a href="page.html?slug=solutions">Solutions</a><ul class="sub-menu"><li><a href="page.html?slug=solutions/medical-display-qa">Medical display QA</a></li><li><a href="page.html?slug=solutions/enterprise-display-management">Enterprise display management</a></li><li><a href="page.html?slug=solutions/color-critical-workflows">Color-critical workflows</a></li><li><a href="page.html?slug=solutions/oem-display-calibration">OEM display calibration</a></li><li><a href="page.html?slug=solutions/epaper-display-qa">E-paper display QA</a></li></ul></li>
+			<li><a href="page.html?slug=store">Store</a><ul class="sub-menu"><li><a href="page.html?slug=store">Software licenses</a></li><li><a href="page.html?slug=request-demo">Request quote</a></li><li><a href="page.html?slug=partners">Partner purchasing</a></li></ul></li>
+			<li><a href="page.html?slug=resources">Resources</a><ul class="sub-menu"><li><a href="page.html?slug=resources/category/guides">Guides</a></li><li><a href="page.html?slug=resources/category/compliance">Compliance</a></li><li><a href="page.html?slug=compare/calman-alternative">Calman alternative</a></li><li><a href="page.html?slug=blog">Blog</a></li></ul></li>
+			<li><a href="page.html?slug=support">Support</a><ul class="sub-menu"><li><a href="page.html?slug=downloads">Downloads</a></li><li><a href="page.html?slug=support/documentation">Documentation</a></li><li><a href="page.html?slug=support/contact-support">Contact support</a></li><li><a href="page.html?slug=security">Security</a></li></ul></li>
+			<li><a href="page.html?slug=company">Company</a><ul class="sub-menu"><li><a href="page.html?slug=company/about">About QUBYX</a></li><li><a href="page.html?slug=partners">Partners</a></li><li><a href="page.html?slug=contact">Contact</a></li><li><a href="page.html?slug=privacy">Privacy</a></li><li><a href="page.html?slug=terms">Terms</a></li></ul></li>
+		</ul>
+		<a class="btn btn--primary btn--block" href="#demo">Request demo</a>
+	</div>
+</header>
+
+<main id="main" class="site-main">
+
+<section class="section section--hero">
+	<div class="hero-bg" aria-hidden="true"></div>
+
+	<div class="container hero__container">
+		<div class="hero__copy">
+			<p class="eyebrow">
+				<span class="eyebrow__dot" aria-hidden="true"></span>
+				Enterprise display calibration and QA
+			</p>
+
+			<h1 class="hero__title">QUBYX display quality infrastructure for <span class="accent">every screen that matters</span></h1>
+
+			<p class="hero__subtitle">
+				QUBYX builds calibration software, remote QA systems, and measurement sensors for medical imaging, color-critical production, OEM display validation, and enterprise display fleets.
+			</p>
+
+			<div class="hero__actions">
+				<a class="btn btn--primary btn--lg" href="#demo">
+					<span>Request enterprise demo</span>
+					<span class="btn__icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</a>
+				<a class="btn btn--ghost btn--lg" href="#products">Explore products</a>
+			</div>
+
+			<p class="hero__trust">
+				<span>Medical QA</span>
+				<span class="hero__trust-divider" aria-hidden="true"></span>
+				<span class="hero__trust-rating">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+					Color-critical production
+				</span>
+			</p>
+		</div>
+
+		<div class="hero__mockup" aria-hidden="true">
+			<div class="hero__mockup-window">
+				<div class="hero__mockup-titlebar">
+					<span></span><span></span><span></span>
+					<code>qubyx.com / remoteqa</code>
+				</div>
+				<div class="hero__mockup-canvas">
+					<div class="hero__mockup-sidebar">
+						<div class="hero__mockup-sidebar-row is-active"><span class="dot"></span> Fleet</div>
+						<div class="hero__mockup-sidebar-row"><span class="dot"></span> PerfectLum</div>
+						<div class="hero__mockup-sidebar-row"><span class="dot"></span> PerfectChroma</div>
+						<div class="hero__mockup-sidebar-row"><span class="dot"></span> RemoteQA</div>
+						<div class="hero__mockup-sidebar-row"><span class="dot"></span> Sensors</div>
+						<div class="hero__mockup-sidebar-row"><span class="dot"></span> Reports</div>
+					</div>
+					<div class="hero__mockup-main">
+						<div class="hero__mockup-cards">
+							<div class="hero__mockup-card"><p class="label">Displays</p><p class="value">1,248</p></div>
+							<div class="hero__mockup-card is-accent"><p class="label">Verified</p><p class="value">98.7%</p></div>
+							<div class="hero__mockup-card"><p class="label">Sites</p><p class="value">42</p></div>
+							<div class="hero__mockup-card"><p class="label">Reports</p><p class="value">8.4k</p></div>
+						</div>
+						<div class="hero__mockup-chart">
+							<div class="hero__mockup-chart-header">
+								<strong>QA completion / last 30 days</strong>
+								<span class="preview-kicker">DICOM / Color / EPD</span>
+							</div>
+							<div class="hero__mockup-chart-bars">
+								<div style="--h: 48%"></div><div style="--h: 62%"></div><div style="--h: 55%"></div>
+								<div style="--h: 70%"></div><div style="--h: 64%"></div><div style="--h: 78%"></div>
+								<div style="--h: 72%"></div><div style="--h: 84%"></div><div style="--h: 80%"></div>
+								<div style="--h: 88%"></div><div style="--h: 95%"></div><div style="--h: 100%"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="hero__marquee" aria-hidden="true">
+		<div class="hero__marquee-track">
+			<span>Software</span><span>/</span>
+			<span>PerfectLum</span><span>/</span>
+			<span>PerfectChroma</span><span>/</span>
+			<span>PerfectEPD</span><span>/</span>
+			<span>Qubyx RemoteQA</span><span>/</span>
+			<span>SmartSensor S1</span><span>/</span>
+			<span>SmartSensor S2</span><span>/</span>
+			<span>Enterprise display QA</span><span>/</span>
+			<span>Medical imaging</span><span>/</span>
+			<span>Color management</span><span>/</span>
+		</div>
+	</div>
+</section>
+
+<section class="section section--features" id="solutions">
+	<div class="container">
+		<header class="section__header">
+			<p class="eyebrow">QUBYX platform</p>
+			<h2 class="section__title">Software, sensors, and <span class="accent">remote QA for critical displays.</span></h2>
+			<p class="section__lede">Build a managed program for calibration, verification, reporting, and display quality evidence across medical and professional environments.</p>
+		</header>
+
+		<div class="bento">
+			<article class="bento__cell bento__cell--wide">
+				<span class="bento__badge">Medical QA</span>
+				<h3 class="bento__title">DICOM calibration for diagnostic confidence</h3>
+				<p class="bento__desc">PerfectLum supports DICOM Part 14 GSDF calibration, scheduled QA, history, and reporting for medical display programs.</p>
+			</article>
+			<article class="bento__cell">
+				<span class="bento__badge">Remote QA</span>
+				<h3 class="bento__title">Fleet visibility across every site</h3>
+				<p class="bento__desc">Qubyx RemoteQA centralizes scheduling, status review, reporting, and export-ready evidence across connected displays.</p>
+			</article>
+			<article class="bento__cell">
+				<span class="bento__badge">Color</span>
+				<h3 class="bento__title">Professional color verification</h3>
+				<p class="bento__desc">PerfectChroma gives creative teams a practical path to repeatable color, presets, validation, and documentation.</p>
+			</article>
+			<article class="bento__cell">
+				<span class="bento__badge">Sensors</span>
+				<h3 class="bento__title">Hardware for repeatable measurements</h3>
+				<p class="bento__desc">SmartSensor S1 and S2 position QUBYX as a software-plus-measurement platform, not just another utility.</p>
+			</article>
+			<article class="bento__cell bento__cell--wide">
+				<span class="bento__badge">Content engine</span>
+				<h3 class="bento__title">SEO pages for buying, comparing, and troubleshooting</h3>
+				<p class="bento__desc">The content model supports product hubs, comparison pages, compliance guides, technical notes, blog posts, news, and store journeys.</p>
+			</article>
+		</div>
+	</div>
+</section>
+
+<section class="section section--products" id="products">
+	<div class="container">
+		<header class="section__header section__header--split">
+			<div>
+				<p class="eyebrow">Products</p>
+				<h2 class="section__title">Calibration software, sensors,<br><span class="accent">and remote QA infrastructure.</span></h2>
+			</div>
+			<a class="link-arrow" href="#store">See store path <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+		</header>
+
+		<div class="product-grid">
+			<a class="product-card" id="perfectlum" href="#">
+				<div class="product-card__visual"><div class="preview-product-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 10h10M7 13h6"/></svg></div></div>
+				<div class="product-card__body">
+					<span class="product-card__tag">Medical display QA</span>
+					<h3 class="product-card__title">PerfectLum</h3>
+					<p class="product-card__excerpt">Medical display calibration and DICOM QA software with scheduling, history, and reporting.</p>
+					<span class="product-card__link">Explore product <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</div>
+			</a>
+
+			<a class="product-card" id="perfectchroma" href="#">
+				<div class="product-card__visual"><div class="preview-product-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16M7 7l10 10"/></svg></div></div>
+				<div class="product-card__body">
+					<span class="product-card__tag">Color accuracy</span>
+					<h3 class="product-card__title">PerfectChroma</h3>
+					<p class="product-card__excerpt">Professional display calibration for photographers, editors, designers, and studios.</p>
+					<span class="product-card__link">Explore product <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</div>
+			</a>
+
+			<a class="product-card" id="perfectepd" href="#">
+				<div class="product-card__visual"><div class="preview-product-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div></div>
+				<div class="product-card__body">
+					<span class="product-card__tag">E-paper QA</span>
+					<h3 class="product-card__title">PerfectEPD</h3>
+					<p class="product-card__excerpt">Calibration and validation workflows for electronic paper display teams and OEMs.</p>
+					<span class="product-card__link">Explore product <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</div>
+			</a>
+
+			<a class="product-card" id="remoteqa" href="#">
+				<div class="product-card__visual"><div class="preview-product-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect x="3" y="3" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><circle cx="7" cy="6" r="1"/><circle cx="7" cy="17" r="1"/></svg></div></div>
+				<div class="product-card__body">
+					<span class="product-card__tag">Remote QA</span>
+					<h3 class="product-card__title">Qubyx RemoteQA</h3>
+					<p class="product-card__excerpt">Centralized QA across every site, workstation, and display fleet.</p>
+					<span class="product-card__link">Explore product <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</div>
+			</a>
+
+			<a class="product-card" id="sensors" href="#">
+				<div class="product-card__visual"><div class="preview-product-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect x="7" y="3" width="10" height="18" rx="5"/><circle cx="12" cy="9" r="2"/><path d="M9 16h6"/></svg></div></div>
+				<div class="product-card__body">
+					<span class="product-card__tag">Sensor</span>
+					<h3 class="product-card__title">SmartSensor S1</h3>
+					<p class="product-card__excerpt">Compact luminance sensor for routine medical display QA and calibration workflows.</p>
+					<span class="product-card__link">Explore product <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</div>
+			</a>
+
+			<a class="product-card" href="#">
+				<div class="product-card__visual"><div class="preview-product-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35"><rect x="6" y="2" width="12" height="20" rx="6"/><circle cx="12" cy="8" r="2.5"/><path d="M8 16h8M10 19h4"/></svg></div></div>
+				<div class="product-card__body">
+					<span class="product-card__tag">Advanced sensor</span>
+					<h3 class="product-card__title">SmartSensor S2</h3>
+					<p class="product-card__excerpt">Advanced sensor positioning for demanding luminance, color, and enterprise validation workflows.</p>
+					<span class="product-card__link">Explore product <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
+				</div>
+			</a>
+		</div>
+	</div>
+</section>
+
+<section class="section section--compare" id="store">
+	<div class="container">
+		<header class="section__header">
+			<p class="eyebrow">Commerce-ready</p>
+			<h2 class="section__title">Built for a store today, <span class="accent">WooCommerce tomorrow.</span></h2>
+			<p class="section__lede">The importer creates a Store page for licenses, bundles, sensors, maintenance plans, quote requests, and future checkout flows.</p>
+		</header>
+		<div class="preview-strip">
+			<div class="preview-strip__item"><strong>Licenses</strong><span>PerfectLum, PerfectChroma, and enterprise product paths.</span></div>
+			<div class="preview-strip__item"><strong>Bundles</strong><span>Software plus SmartSensor hardware and support plans.</span></div>
+			<div class="preview-strip__item"><strong>Quotes</strong><span>Volume pricing, OEM programs, and partner deployment.</span></div>
+			<div class="preview-strip__item"><strong>Maintenance</strong><span>Support, updates, onboarding, and remote QA services.</span></div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--features" id="site-map">
+	<div class="container">
+		<header class="section__header">
+			<p class="eyebrow">Page architecture</p>
+			<h2 class="section__title">Mega menu content is now <span class="accent">SEO-written and import-ready.</span></h2>
+			<p class="section__lede">Every major navigation destination now has seeded English content, SEO intent, FAQ copy, internal links, and a clear role for WordPress import and WPML translation.</p>
+		</header>
+
+		<div class="preview-strip">
+			<div class="preview-strip__item">
+				<strong>12 solution pages</strong>
+				<span>Medical, DICOM, Remote QA, Multi-site, Teleradiology, Mammography, Pathology, Enterprise, Color, OEM, and E-paper pages.</span>
+			</div>
+			<div class="preview-strip__item">
+				<strong>5 industry pages</strong>
+				<span>Industries hub, Healthcare, Medical Imaging, Display Manufacturing, and Broadcast/Post-production.</span>
+			</div>
+			<div class="preview-strip__item">
+				<strong>40+ import seeds</strong>
+				<span>Products, solutions, industry pages, store, support, company, legal, comparison, blog, news, resources, menus, and SEO metadata.</span>
+			</div>
+			<div class="preview-strip__item">
+				<strong>Progress agent</strong>
+				<span>Saved at agents/page-progress-tracker.md with live status in tasks/page-progress-tracker.md.</span>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section section--resources" id="resources">
+	<div class="container">
+		<header class="section__header section__header--split">
+			<div>
+				<p class="eyebrow">Resource library</p>
+				<h2 class="section__title">Guides, comparisons, <span class="accent">technical notes, and news.</span></h2>
+			</div>
+			<a class="link-arrow" href="#">Open resources <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+		</header>
+
+		<div class="resource-grid">
+			<a class="resource-card" href="#">
+				<div class="resource-card__media"><div class="resource-card__media-ghost"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div></div>
+				<div class="resource-card__body">
+					<p class="resource-card__meta">Guides / 7 min read</p>
+					<h3 class="resource-card__title">Complete guide to DICOM display calibration for hospitals</h3>
+					<p class="resource-card__excerpt">DICOM Part 14 GSDF calibration, QA evidence, and audit-ready reporting for medical imaging teams.</p>
+				</div>
+			</a>
+			<a class="resource-card" href="#">
+				<div class="resource-card__media"><div class="resource-card__media-ghost"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div></div>
+				<div class="resource-card__body">
+					<p class="resource-card__meta">Comparisons / 5 min read</p>
+					<h3 class="resource-card__title">Calman alternative: what enterprise display QA teams should compare</h3>
+					<p class="resource-card__excerpt">A search-intent page for buyers comparing workflow fit, reporting, support, and deployment models.</p>
+				</div>
+			</a>
+			<a class="resource-card" href="#">
+				<div class="resource-card__media"><div class="resource-card__media-ghost"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a14 14 0 0 1 0 20M12 2a14 14 0 0 0 0 20"/></svg></div></div>
+				<div class="resource-card__body">
+					<p class="resource-card__meta">Technical notes / 4 min read</p>
+					<h3 class="resource-card__title">E-paper display contrast and reflectance measurement basics</h3>
+					<p class="resource-card__excerpt">A PerfectEPD content path for OEMs, EPD teams, and specialized display measurement workflows.</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</section>
+
+<section class="section section--faq" id="support">
+	<div class="container faq__container">
+		<header class="section__header">
+			<p class="eyebrow">Importer + WPML</p>
+			<h2 class="section__title">Content lives in WordPress, <span class="accent">not hardcoded templates.</span></h2>
+		</header>
+
+		<div class="faq">
+			<details class="faq__item" open>
+				<summary class="faq__q"><span>What does the importer create?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+				<div class="faq__a"><div><p>Pages, product CPT entries, resource CPT entries, blog/news posts, taxonomies, menus, front-page settings, and SEO meta.</p></div></div>
+			</details>
+			<details class="faq__item">
+				<summary class="faq__q"><span>Can it be translated?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+				<div class="faq__a"><div><p>Yes. Use WPML post translation for pages and CPT entries, ACFML for fields, and WPML String Translation for registered seed strings.</p></div></div>
+			</details>
+			<details class="faq__item">
+				<summary class="faq__q"><span>Which agents were saved?</span><span class="faq__icon" aria-hidden="true">+</span></summary>
+				<div class="faq__a"><div><p>content-strategist, seo-architect, wordpress-importer, wpml-localization, theme-maintainer, and page-progress-tracker are saved in the codebase under the agents directory.</p></div></div>
+			</details>
+		</div>
+	</div>
+</section>
+
+<section class="section section--cta" id="demo">
+	<div class="container">
+		<div class="cta">
+			<div class="cta__inner">
+				<p class="eyebrow eyebrow--invert"><span class="eyebrow__dot" aria-hidden="true"></span>Enterprise demo</p>
+				<h2 class="cta__title">Bring every critical display into a managed QA program.</h2>
+				<p class="cta__text">Talk with QUBYX about software, sensors, remote QA, volume licensing, and partner deployment.</p>
+				<div class="cta__actions">
+					<a class="btn btn--invert btn--lg" href="#">Request demo</a>
+					<a class="btn btn--ghost-invert btn--lg" href="#">Contact sales</a>
+				</div>
+				<ul class="cta__assurances">
+					<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Product walkthrough</li>
+					<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Deployment planning</li>
+					<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Volume licensing</li>
+					<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Partner support</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+</main>
+
+<footer class="site-footer" id="company">
+	<div class="container">
+		<div class="site-footer__top">
+			<div class="site-footer__brand">
+				<a class="site-footer__logo" href="#">QUBYX</a>
+				<p class="site-footer__tagline">Enterprise display calibration, verification, sensors, and remote QA for medical and color-critical organizations.</p>
+				<form class="site-footer__newsletter" action="#" method="post" novalidate onsubmit="event.preventDefault()">
+					<label for="footer-email" class="screen-reader-text">Email address</label>
+					<input id="footer-email" type="email" placeholder="you@company.com" required>
+					<button type="submit" class="btn btn--primary btn--sm">Subscribe</button>
+				</form>
+			</div>
+
+			<nav class="site-footer__nav" aria-label="Footer">
+				<div class="site-footer__col">
+					<h4>Products</h4>
+					<ul>
+						<li><a href="page.html?slug=products/perfectlum">PerfectLum</a></li>
+						<li><a href="page.html?slug=products/perfectchroma">PerfectChroma</a></li>
+						<li><a href="page.html?slug=products/perfectepd">PerfectEPD</a></li>
+						<li><a href="page.html?slug=products/qubyx-remoteqa">Qubyx RemoteQA</a></li>
+						<li><a href="page.html?slug=products/qubyx-smartsensor-s1">SmartSensor S1/S2</a></li>
+					</ul>
+				</div>
+				<div class="site-footer__col">
+					<h4>Solutions</h4>
+					<ul>
+						<li><a href="page.html?slug=solutions/medical-display-qa">Medical display QA</a></li>
+						<li><a href="page.html?slug=solutions/enterprise-display-management">Enterprise display management</a></li>
+						<li><a href="page.html?slug=solutions/color-critical-workflows">Color-critical workflows</a></li>
+						<li><a href="page.html?slug=solutions/oem-display-calibration">OEM display calibration</a></li>
+						<li><a href="page.html?slug=solutions/epaper-display-qa">E-paper display QA</a></li>
+					</ul>
+				</div>
+				<div class="site-footer__col">
+					<h4>Resources</h4>
+					<ul>
+						<li><a href="page.html?slug=resources">Resource library</a></li>
+						<li><a href="page.html?slug=resources/category/compliance">Compliance guides</a></li>
+						<li><a href="page.html?slug=resources/category/technical-notes">Technical notes</a></li>
+						<li><a href="page.html?slug=compare">Comparison pages</a></li>
+						<li><a href="page.html?slug=blog">Blog and news</a></li>
+					</ul>
+				</div>
+				<div class="site-footer__col">
+					<h4>Support</h4>
+					<ul>
+						<li><a href="page.html?slug=downloads">Downloads</a></li>
+						<li><a href="page.html?slug=support/documentation">Documentation</a></li>
+						<li><a href="page.html?slug=support/contact-support">Contact support</a></li>
+						<li><a href="page.html?slug=support/warranty-rma">Warranty and RMA</a></li>
+						<li><a href="page.html?slug=store">Store</a></li>
+					</ul>
+				</div>
+				<div class="site-footer__col">
+					<h4>Company</h4>
+					<ul>
+						<li><a href="page.html?slug=company/about">About</a></li>
+						<li><a href="page.html?slug=partners">Partners</a></li>
+						<li><a href="page.html?slug=request-demo">Request demo</a></li>
+						<li><a href="page.html?slug=contact">Contact</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+
+		<div class="site-footer__bottom">
+			<p class="site-footer__copyright">&copy; 2026 QUBYX. All rights reserved.</p>
+			<nav class="site-footer__legal" aria-label="Legal">
+				<ul class="site-footer__legal-list">
+					<li><a href="page.html?slug=privacy">Privacy</a></li>
+					<li><a href="page.html?slug=terms">Terms</a></li>
+					<li><a href="page.html?slug=cookies">Cookies</a></li>
+					<li><a href="page.html?slug=security">Security</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</footer>
+
+<div class="preview-banner">QUBYX SEO CONTENT PREVIEW</div>
+
+<script>
+	(function () {
+		function normalizePreviewSlug(path) {
+			return path.replace(/^\/+|\/+$/g, '') || 'home';
+		}
+
+		document.addEventListener('click', function (event) {
+			var link = event.target.closest('a[href^="/"]');
+			if (!link) {
+				return;
+			}
+
+			event.preventDefault();
+			var target = new URL('page.html', window.location.href);
+			target.searchParams.set('slug', normalizePreviewSlug(link.getAttribute('href')));
+			window.location.href = target.href;
+		});
+	})();
+</script>
+<script src="../assets/js/main.js" defer></script>
+</body>
+</html>

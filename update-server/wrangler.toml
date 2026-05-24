@@ -1,0 +1,12 @@
+name = "qubyx-updates"
+main = "src/index.js"
+compatibility_date = "2026-05-24"
+account_id = "c75d1c874847bf74e930e26b30615d9d"
+
+routes = [
+	{ pattern = "updates.qubyx.com", custom_domain = true }
+]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"

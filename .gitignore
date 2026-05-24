@@ -1,0 +1,5 @@
+dist/
+update-server/public/downloads/*.zip
+update-server/.wrangler/
+update-server/.wrangler-dry-run/
+node_modules/

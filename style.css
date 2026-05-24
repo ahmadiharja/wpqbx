@@ -1,0 +1,198 @@
+/*
+Theme Name: Qubyx Theme
+Theme URI: https://qubyx.com
+Author: Qubyx
+Author URI: https://qubyx.com
+Description: A modern enterprise classic WordPress theme for QUBYX company, product, store, resource, and display calibration websites.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.6
+Requires PHP: 7.4
+License: GPL v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: qubyx
+Update URI: https://updates.qubyx.com/qubyx-theme
+Tags: business, software, classic-theme, custom-logo, custom-menu, featured-images, theme-options, threaded-comments, translation-ready
+*/
+
+/* All visual styles live in assets/css/main.css.
+   This file exists only for theme identification per WordPress requirements. */
+
+/* Section-aware page templates. */
+.qubyx-single-hero {
+	border-bottom: 1px solid var(--color-border);
+	padding-block: clamp(64px, 9vw, 120px);
+}
+
+.qubyx-single-hero--solution,
+.qubyx-single-hero--support {
+	background: #F6F8FB;
+}
+
+.qubyx-single-hero--store,
+.qubyx-single-hero--company {
+	background: var(--color-bg-deep);
+	color: #FFFFFF;
+}
+
+.qubyx-single-hero--store .h-display,
+.qubyx-single-hero--company .h-display {
+	color: #FFFFFF;
+}
+
+.qubyx-single-hero--store .page__lede,
+.qubyx-single-hero--company .page__lede {
+	color: rgba(255, 255, 255, .72);
+}
+
+.qubyx-single-hero__grid {
+	align-items: center;
+	display: grid;
+	gap: clamp(2rem, 5vw, 4rem);
+	grid-template-columns: minmax(0, 1.05fr) minmax(280px, .95fr);
+}
+
+.qubyx-single-visual {
+	background: #FFFFFF;
+	border: 1px solid var(--color-border);
+	border-radius: var(--r-2xl);
+	display: grid;
+	gap: 1px;
+	overflow: hidden;
+}
+
+.qubyx-single-hero--store .qubyx-single-visual,
+.qubyx-single-hero--company .qubyx-single-visual {
+	background: rgba(255, 255, 255, .08);
+	border-color: rgba(255, 255, 255, .16);
+}
+
+.qubyx-single-visual div {
+	background: rgba(255, 255, 255, .82);
+	display: grid;
+	gap: .5rem;
+	min-height: 118px;
+	padding: 1.25rem;
+}
+
+.qubyx-single-hero--store .qubyx-single-visual div,
+.qubyx-single-hero--company .qubyx-single-visual div {
+	background: rgba(255, 255, 255, .06);
+}
+
+.qubyx-single-visual strong {
+	color: var(--color-ink);
+	font-size: var(--text-xl);
+	line-height: 1.1;
+}
+
+.qubyx-single-hero--store .qubyx-single-visual strong,
+.qubyx-single-hero--company .qubyx-single-visual strong {
+	color: #FFFFFF;
+}
+
+.qubyx-single-visual span {
+	color: var(--color-ink-muted);
+	line-height: 1.55;
+}
+
+.qubyx-single-hero--store .qubyx-single-visual span,
+.qubyx-single-hero--company .qubyx-single-visual span {
+	color: rgba(255, 255, 255, .72);
+}
+
+.qubyx-single-body {
+	background: #FFFFFF;
+}
+
+.qubyx-single-body--resource,
+.qubyx-single-body--store {
+	background: #FBFAF7;
+}
+
+.qubyx-single-layout {
+	align-items: start;
+	display: grid;
+	gap: clamp(2rem, 5vw, 4rem);
+	grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+}
+
+.qubyx-single-layout--resource {
+	grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+}
+
+.qubyx-single-layout--resource .qubyx-single-content {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+.qubyx-single-layout--resource .qubyx-single-aside {
+	border-left: 0;
+	border-right: 1px solid var(--color-border);
+	grid-column: 1;
+	grid-row: 1;
+	padding-left: 0;
+	padding-right: 1.25rem;
+}
+
+.qubyx-single-content {
+	max-width: 860px;
+}
+
+.qubyx-single-aside {
+	border-left: 1px solid var(--color-border);
+	padding-left: 1.25rem;
+	position: sticky;
+	top: 100px;
+}
+
+.qubyx-single-aside h2 {
+	color: var(--color-ink);
+	font-size: var(--text-lg);
+	margin: 0 0 1rem;
+}
+
+.qubyx-single-aside ul {
+	display: grid;
+	gap: .65rem;
+}
+
+.qubyx-single-aside a {
+	align-items: center;
+	border: 1px solid var(--color-border);
+	border-radius: var(--r-md);
+	display: flex;
+	font-weight: 700;
+	justify-content: space-between;
+	padding: .85rem .95rem;
+}
+
+.qubyx-single-aside a:hover {
+	border-color: var(--color-accent);
+	color: var(--color-accent);
+}
+
+@media (max-width: 900px) {
+	.qubyx-single-hero__grid,
+	.qubyx-single-layout,
+	.qubyx-single-layout--resource {
+		grid-template-columns: 1fr;
+	}
+
+	.qubyx-single-layout--resource .qubyx-single-content,
+	.qubyx-single-layout--resource .qubyx-single-aside {
+		grid-column: auto;
+		grid-row: auto;
+	}
+
+	.qubyx-single-aside,
+	.qubyx-single-layout--resource .qubyx-single-aside {
+		border-left: 0;
+		border-right: 0;
+		border-top: 1px solid var(--color-border);
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 1.25rem;
+		position: static;
+	}
+}

@@ -1,0 +1,28 @@
+name: Deploy Qubyx Updates
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package WordPress theme and plugin
+        shell: pwsh
+        run: ./tools/package-release.ps1
+
+      - name: Deploy Cloudflare Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: c75d1c874847bf74e930e26b30615d9d
+          workingDirectory: update-server
