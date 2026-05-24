@@ -257,26 +257,72 @@
 							<span aria-hidden="true"><?php echo qubyx_icon( 'arrow-right', 11 ); // phpcs:ignore ?></span>
 						</a>
 						<div class="mega-nav__panel">
-							<a class="mega-nav__feature" href="<?php echo esc_url( $item['featured']['url'] ); ?>">
-								<span class="mega-nav__feature-label"><?php echo esc_html( $item['featured']['label'] ); ?></span>
-								<span class="mega-nav__feature-desc"><?php echo esc_html( $item['featured']['desc'] ); ?></span>
-							</a>
+							<div class="mega-nav__banner">
+								<div class="mega-nav__banner-content">
+									<span class="mega-nav__banner-icon" aria-hidden="true"><?php echo qubyx_icon( 'arrow-right', 18 ); // phpcs:ignore ?></span>
+									<div class="mega-nav__banner-text">
+										<p class="mega-nav__banner-tag"><?php echo esc_html( $item['featured']['label'] ); ?></p>
+										<p class="mega-nav__banner-title"><?php echo esc_html( $item['featured']['desc'] ); ?></p>
+									</div>
+								</div>
+								<a class="mega-nav__banner-cta" href="<?php echo esc_url( $item['featured']['url'] ); ?>">
+									<?php esc_html_e( 'Explore', 'qubyx' ); ?>
+									<?php echo qubyx_icon( 'arrow-right', 13 ); // phpcs:ignore ?>
+								</a>
+							</div>
 							<div class="mega-nav__columns">
 								<?php foreach ( $item['columns'] as $column ) : ?>
 									<div class="mega-nav__column">
 										<p class="mega-nav__heading"><?php echo esc_html( $column['heading'] ); ?></p>
 										<ul>
 											<?php foreach ( $column['links'] as $link ) : ?>
+												<?php
+												$link_title = $link[0];
+												$icon_text  = strtoupper( substr( preg_replace( '/[^a-z0-9]/i', '', $link_title ), 0, 3 ) );
+												$icon_class = 'mn-i--soft';
+
+												if ( false !== stripos( $link_title, 'PerfectLum' ) || false !== stripos( $link_title, 'DICOM' ) || false !== stripos( $link_title, 'Medical' ) ) {
+													$icon_class = 'mn-i--lum';
+												} elseif ( false !== stripos( $link_title, 'PerfectChroma' ) || false !== stripos( $link_title, 'Color' ) ) {
+													$icon_class = 'mn-i--chr';
+												} elseif ( false !== stripos( $link_title, 'PerfectEPD' ) || false !== stripos( $link_title, 'E-paper' ) ) {
+													$icon_class = 'mn-i--epd';
+												} elseif ( false !== stripos( $link_title, 'RemoteQA' ) || false !== stripos( $link_title, 'Remote' ) ) {
+													$icon_class = 'mn-i--rqa';
+												} elseif ( false !== stripos( $link_title, 'Enterprise' ) || false !== stripos( $link_title, 'Security' ) ) {
+													$icon_class = 'mn-i--ent';
+												} elseif ( false !== stripos( $link_title, 'S1' ) ) {
+													$icon_class = 'mn-i--s1';
+												} elseif ( false !== stripos( $link_title, 'S2' ) ) {
+													$icon_class = 'mn-i--s2';
+												}
+												?>
 												<li>
 													<a class="mega-nav__link" href="<?php echo esc_url( $link[1] ); ?>">
-														<span><?php echo esc_html( $link[0] ); ?></span>
-														<small><?php echo esc_html( $link[2] ); ?></small>
+														<span class="mega-nav__link-icon <?php echo esc_attr( $icon_class ); ?>" aria-hidden="true"><?php echo esc_html( $icon_text ?: 'QB' ); ?></span>
+														<span class="mega-nav__link-body">
+															<span><?php echo esc_html( $link_title ); ?></span>
+															<small><?php echo esc_html( $link[2] ); ?></small>
+														</span>
 													</a>
 												</li>
 											<?php endforeach; ?>
 										</ul>
 									</div>
 								<?php endforeach; ?>
+							</div>
+							<div class="mega-nav__footer">
+								<div class="mega-nav__footer-content">
+									<span class="mega-nav__footer-icon" aria-hidden="true"><?php echo qubyx_icon( 'arrow-right', 16 ); // phpcs:ignore ?></span>
+									<p class="mega-nav__footer-text">
+										<strong><?php echo esc_html( $item['featured']['label'] ); ?></strong>
+										<?php echo esc_html( $item['featured']['desc'] ); ?>
+									</p>
+								</div>
+								<a class="mega-nav__footer-cta" href="<?php echo esc_url( $item['featured']['url'] ); ?>">
+									<?php esc_html_e( 'Learn more', 'qubyx' ); ?>
+									<?php echo qubyx_icon( 'arrow-right', 14 ); // phpcs:ignore ?>
+								</a>
 							</div>
 						</div>
 					</li>
