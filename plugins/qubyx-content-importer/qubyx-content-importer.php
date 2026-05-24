@@ -43,9 +43,20 @@ function qubyx_ci_load_textdomain() {
  * Add the importer screen.
  */
 function qubyx_ci_admin_menu() {
-	add_management_page(
+	add_menu_page(
 		__( 'Qubyx Content Importer', 'qubyx-content-importer' ),
-		__( 'Qubyx Importer', 'qubyx-content-importer' ),
+		__( 'QUBYX', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-content-importer',
+		'qubyx_ci_render_admin_page',
+		'dashicons-screenoptions',
+		3
+	);
+
+	add_submenu_page(
+		'qubyx-content-importer',
+		__( 'Qubyx Content Importer', 'qubyx-content-importer' ),
+		__( 'Importer', 'qubyx-content-importer' ),
 		'manage_options',
 		'qubyx-content-importer',
 		'qubyx_ci_render_admin_page'
