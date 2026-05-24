@@ -66,8 +66,11 @@ function qubyx_register_post_types() {
 		'show_admin_column' => true,
 		'show_in_rest'      => true,
 		'hierarchical'      => true,
-		'rewrite'           => array( 'slug' => 'resources/category' ),
+		'rewrite'           => array( 'slug' => 'resources/category', 'with_front' => false ),
 	) );
+
+	add_rewrite_rule( '^resources/category/([^/]+)/page/?([0-9]{1,})/?$', 'index.php?resource_category=$matches[1]&paged=$matches[2]', 'top' );
+	add_rewrite_rule( '^resources/category/([^/]+)/?$', 'index.php?resource_category=$matches[1]', 'top' );
 
 	// === Taxonomy: Product Categories ===
 	register_taxonomy( 'product_category', array( 'product' ), array(

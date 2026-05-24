@@ -23,6 +23,35 @@ function Get-RegexValue {
 	return $match.Groups[1].Value
 }
 
+function New-ZipFromDirectory {
+	param(
+		[string] $SourceDirectory,
+		[string] $DestinationPath
+	)
+
+	Add-Type -AssemblyName System.IO.Compression
+	Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+	$source = [System.IO.Path]::GetFullPath($SourceDirectory)
+	if (-not $source.EndsWith([System.IO.Path]::DirectorySeparatorChar)) {
+		$source += [System.IO.Path]::DirectorySeparatorChar
+	}
+	$baseDirectory = (Get-Item -LiteralPath $SourceDirectory).Name
+
+	Remove-Item -LiteralPath $DestinationPath -Force -ErrorAction SilentlyContinue
+
+	$zip = [System.IO.Compression.ZipFile]::Open($DestinationPath, [System.IO.Compression.ZipArchiveMode]::Create)
+	try {
+		Get-ChildItem -LiteralPath $SourceDirectory -Recurse -File | ForEach-Object {
+			$fullPath = [System.IO.Path]::GetFullPath($_.FullName)
+			$relativePath = ($baseDirectory + "/" + $fullPath.Substring($source.Length)).Replace([System.IO.Path]::DirectorySeparatorChar, "/")
+			[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $fullPath, $relativePath, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+		}
+	} finally {
+		$zip.Dispose()
+	}
+}
+
 if (-not $ThemeVersion) {
 	$ThemeVersion = Get-RegexValue -Path (Join-Path $root "style.css") -Pattern "^\s*Version:\s*([^\r\n]+)"
 }
@@ -63,9 +92,8 @@ Copy-Item -Path (Join-Path $root "plugins\qubyx-content-importer\*") -Destinatio
 $themeZip = Join-Path $dist "qubyx-theme-$ThemeVersion.zip"
 $pluginZip = Join-Path $dist "qubyx-content-importer-$PluginVersion.zip"
 
-Remove-Item -LiteralPath $themeZip, $pluginZip -Force -ErrorAction SilentlyContinue
-Compress-Archive -LiteralPath $themeStage -DestinationPath $themeZip -Force
-Compress-Archive -LiteralPath $pluginStage -DestinationPath $pluginZip -Force
+New-ZipFromDirectory -SourceDirectory $themeStage -DestinationPath $themeZip
+New-ZipFromDirectory -SourceDirectory $pluginStage -DestinationPath $pluginZip
 
 Copy-Item -LiteralPath $themeZip -Destination (Join-Path $downloads (Split-Path $themeZip -Leaf)) -Force
 Copy-Item -LiteralPath $pluginZip -Destination (Join-Path $downloads (Split-Path $pluginZip -Leaf)) -Force
