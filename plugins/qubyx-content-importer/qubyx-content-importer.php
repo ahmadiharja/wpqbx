@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'QUBYX_CI_VERSION', '1.0.0' );
 define( 'QUBYX_CI_DIR', plugin_dir_path( __FILE__ ) );
+define( 'QUBYX_CI_URL', plugin_dir_url( __FILE__ ) );
 define( 'QUBYX_CI_FILE', __FILE__ );
 define( 'QUBYX_CI_WPML_CONTEXT', 'Qubyx Content Importer' );
 define( 'QUBYX_CI_UPDATE_ENDPOINT', 'https://updates.qubyx.com/manifest.json' );
@@ -28,6 +29,7 @@ require_once QUBYX_CI_DIR . 'inc/updater.php';
 
 add_action( 'plugins_loaded', 'qubyx_ci_load_textdomain' );
 add_action( 'admin_menu', 'qubyx_ci_admin_menu' );
+add_action( 'admin_enqueue_scripts', 'qubyx_ci_admin_assets' );
 add_action( 'admin_init', 'qubyx_ci_register_wpml_strings' );
 add_action( 'admin_init', 'qubyx_ci_register_settings' );
 add_action( 'admin_post_qubyx_ci_import', 'qubyx_ci_handle_import' );
@@ -44,85 +46,513 @@ function qubyx_ci_load_textdomain() {
  */
 function qubyx_ci_admin_menu() {
 	add_menu_page(
-		__( 'Qubyx Content Importer', 'qubyx-content-importer' ),
+		__( 'Qubyx Dashboard', 'qubyx-content-importer' ),
 		__( 'QUBYX', 'qubyx-content-importer' ),
 		'manage_options',
-		'qubyx-content-importer',
-		'qubyx_ci_render_admin_page',
+		'qubyx-dashboard',
+		'qubyx_ci_render_dashboard_page',
 		'dashicons-screenoptions',
 		3
 	);
 
 	add_submenu_page(
-		'qubyx-content-importer',
-		__( 'Qubyx Content Importer', 'qubyx-content-importer' ),
+		'qubyx-dashboard',
+		__( 'Qubyx Dashboard', 'qubyx-content-importer' ),
+		__( 'Dashboard', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-dashboard',
+		'qubyx_ci_render_dashboard_page'
+	);
+
+	add_submenu_page(
+		'qubyx-dashboard',
+		__( 'Qubyx Importer', 'qubyx-content-importer' ),
 		__( 'Importer', 'qubyx-content-importer' ),
 		'manage_options',
 		'qubyx-content-importer',
-		'qubyx_ci_render_admin_page'
+		'qubyx_ci_render_importer_page'
+	);
+
+	add_submenu_page(
+		'qubyx-dashboard',
+		__( 'Qubyx Content', 'qubyx-content-importer' ),
+		__( 'Content', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-content',
+		'qubyx_ci_render_content_page'
+	);
+
+	add_submenu_page(
+		'qubyx-dashboard',
+		__( 'Qubyx Updates', 'qubyx-content-importer' ),
+		__( 'Updates', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-updates',
+		'qubyx_ci_render_updates_page'
+	);
+
+	add_submenu_page(
+		'qubyx-dashboard',
+		__( 'Qubyx Settings', 'qubyx-content-importer' ),
+		__( 'Settings', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-settings',
+		'qubyx_ci_render_settings_page'
+	);
+
+	add_submenu_page(
+		'qubyx-dashboard',
+		__( 'Qubyx System', 'qubyx-content-importer' ),
+		__( 'System', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-system',
+		'qubyx_ci_render_system_page'
 	);
 }
 
 /**
- * Render importer UI.
+ * Load Qubyx admin assets.
+ *
+ * @param string $hook Current admin hook.
  */
-function qubyx_ci_render_admin_page() {
+function qubyx_ci_admin_assets( $hook ) {
+	if ( false === strpos( $hook, 'qubyx' ) ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'qubyx-ci-admin',
+		QUBYX_CI_URL . 'assets/admin.css',
+		array(),
+		QUBYX_CI_VERSION
+	);
+}
+
+/**
+ * Render the main dashboard.
+ */
+function qubyx_ci_render_dashboard_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
 
 	$last_import = get_option( 'qubyx_ci_last_import' );
-	$settings    = qubyx_ci_get_settings();
-	?>
-	<div class="wrap">
-		<h1><?php esc_html_e( 'Qubyx Content Importer', 'qubyx-content-importer' ); ?></h1>
-		<p><?php esc_html_e( 'Create or update the enterprise Qubyx website seed content. The importer is idempotent and stores content in WordPress posts, pages, custom post types, terms, menus, and post meta.', 'qubyx-content-importer' ); ?></p>
-		<?php if ( $last_import ) : ?>
-			<div class="notice notice-info inline">
-				<p>
-					<?php
-					printf(
-						/* translators: %s: import date. */
-						esc_html__( 'Last import: %s', 'qubyx-content-importer' ),
-						esc_html( $last_import )
-					);
-					?>
-				</p>
-			</div>
-		<?php endif; ?>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-			<input type="hidden" name="action" value="qubyx_ci_import" />
-			<?php wp_nonce_field( 'qubyx_ci_import', 'qubyx_ci_nonce' ); ?>
-			<?php submit_button( __( 'Import or Update Qubyx Content', 'qubyx-content-importer' ), 'primary large' ); ?>
-		</form>
-		<p class="description"><?php esc_html_e( 'WPML String Translation users: strings are registered under the "Qubyx Content Importer" context before import. For page and ACF translations, use WPML post translation and ACFML.', 'qubyx-content-importer' ); ?></p>
+	$counts      = qubyx_ci_get_content_counts();
+	$theme       = wp_get_theme();
 
-		<hr />
-		<h2><?php esc_html_e( 'Automatic Updates', 'qubyx-content-importer' ); ?></h2>
-		<p><?php esc_html_e( 'The importer can receive private theme/plugin updates from the Qubyx update server, then run the content sync after a successful code update.', 'qubyx-content-importer' ); ?></p>
-		<form method="post" action="options.php">
-			<?php settings_fields( 'qubyx_ci_settings' ); ?>
-			<table class="form-table" role="presentation">
-				<tr>
-					<th scope="row"><label for="qubyx_ci_update_endpoint"><?php esc_html_e( 'Update manifest URL', 'qubyx-content-importer' ); ?></label></th>
-					<td>
-						<input class="regular-text code" type="url" id="qubyx_ci_update_endpoint" name="qubyx_ci_settings[update_endpoint]" value="<?php echo esc_attr( $settings['update_endpoint'] ); ?>" />
-						<p class="description"><?php esc_html_e( 'Cloudflare Worker endpoint that returns the latest Qubyx theme and importer package metadata.', 'qubyx-content-importer' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Post-update content sync', 'qubyx-content-importer' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="qubyx_ci_settings[auto_import_after_update]" value="1" <?php checked( $settings['auto_import_after_update'] ); ?> />
-							<?php esc_html_e( 'Run the importer automatically after Qubyx theme or plugin updates.', 'qubyx-content-importer' ); ?>
-						</label>
-					</td>
-				</tr>
-			</table>
-			<?php submit_button( __( 'Save Update Settings', 'qubyx-content-importer' ) ); ?>
-		</form>
+	qubyx_ci_admin_header(
+		'dashboard',
+		__( 'QUBYX Dashboard', 'qubyx-content-importer' ),
+		__( 'Manage the QUBYX WordPress system from one premium control surface.', 'qubyx-content-importer' )
+	);
+	?>
+	<div class="qubyx-grid qubyx-grid--stats">
+		<?php qubyx_ci_metric_card( __( 'Pages', 'qubyx-content-importer' ), $counts['pages'], __( 'Seeded landing and support pages.', 'qubyx-content-importer' ) ); ?>
+		<?php qubyx_ci_metric_card( __( 'Products', 'qubyx-content-importer' ), $counts['products'], __( 'QUBYX product CPT entries.', 'qubyx-content-importer' ) ); ?>
+		<?php qubyx_ci_metric_card( __( 'Resources', 'qubyx-content-importer' ), $counts['resources'], __( 'Guides, news, updates, and blog articles.', 'qubyx-content-importer' ) ); ?>
+		<?php qubyx_ci_metric_card( __( 'Terms', 'qubyx-content-importer' ), $counts['terms'], __( 'Resource and product taxonomy terms.', 'qubyx-content-importer' ) ); ?>
 	</div>
+
+	<div class="qubyx-grid qubyx-grid--main">
+		<section class="qubyx-panel qubyx-panel--hero">
+			<div>
+				<p class="qubyx-kicker"><?php esc_html_e( 'Site control', 'qubyx-content-importer' ); ?></p>
+				<h2><?php esc_html_e( 'Keep the QUBYX website synced, structured, and ready to update.', 'qubyx-content-importer' ); ?></h2>
+				<p><?php esc_html_e( 'Run the importer, review generated content, and manage private update settings without leaving the QUBYX admin area.', 'qubyx-content-importer' ); ?></p>
+			</div>
+			<div class="qubyx-actions">
+				<a class="qubyx-button qubyx-button--primary" href="<?php echo esc_url( admin_url( 'admin.php?page=qubyx-content-importer' ) ); ?>"><?php esc_html_e( 'Open Importer', 'qubyx-content-importer' ); ?></a>
+				<a class="qubyx-button" href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'View Site', 'qubyx-content-importer' ); ?></a>
+			</div>
+		</section>
+
+		<section class="qubyx-panel">
+			<h2><?php esc_html_e( 'System Status', 'qubyx-content-importer' ); ?></h2>
+			<ul class="qubyx-status-list">
+				<?php qubyx_ci_status_item( __( 'Theme', 'qubyx-content-importer' ), $theme->get( 'Name' ) . ' ' . $theme->get( 'Version' ), 'good' ); ?>
+				<?php qubyx_ci_status_item( __( 'Importer', 'qubyx-content-importer' ), QUBYX_CI_VERSION, 'good' ); ?>
+				<?php qubyx_ci_status_item( __( 'ACF', 'qubyx-content-importer' ), function_exists( 'acf_add_local_field_group' ) ? __( 'Active', 'qubyx-content-importer' ) : __( 'Not active', 'qubyx-content-importer' ), function_exists( 'acf_add_local_field_group' ) ? 'good' : 'warn' ); ?>
+				<?php qubyx_ci_status_item( __( 'Last import', 'qubyx-content-importer' ), $last_import ? $last_import : __( 'Not yet recorded', 'qubyx-content-importer' ), $last_import ? 'good' : 'warn' ); ?>
+			</ul>
+		</section>
+	</div>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render importer UI.
+ */
+function qubyx_ci_render_importer_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$last_import = get_option( 'qubyx_ci_last_import' );
+	qubyx_ci_admin_header(
+		'importer',
+		__( 'Content Importer', 'qubyx-content-importer' ),
+		__( 'Create or update pages, resources, products, taxonomies, menus, and SEO metadata.', 'qubyx-content-importer' )
+	);
+	qubyx_ci_import_notice();
+	?>
+	<div class="qubyx-grid qubyx-grid--main">
+		<section class="qubyx-panel qubyx-panel--hero">
+			<div>
+				<p class="qubyx-kicker"><?php esc_html_e( 'Idempotent import', 'qubyx-content-importer' ); ?></p>
+				<h2><?php esc_html_e( 'Sync the QUBYX content model into WordPress.', 'qubyx-content-importer' ); ?></h2>
+				<p><?php esc_html_e( 'The importer updates seeded content by key, so it can be run repeatedly during development and after private code updates.', 'qubyx-content-importer' ); ?></p>
+				<?php if ( $last_import ) : ?>
+					<p class="qubyx-muted">
+						<?php
+						printf(
+							/* translators: %s: import date. */
+							esc_html__( 'Last import: %s', 'qubyx-content-importer' ),
+							esc_html( $last_import )
+						);
+						?>
+					</p>
+				<?php endif; ?>
+			</div>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="qubyx_ci_import" />
+				<?php wp_nonce_field( 'qubyx_ci_import', 'qubyx_ci_nonce' ); ?>
+				<button class="qubyx-button qubyx-button--primary qubyx-button--large" type="submit"><?php esc_html_e( 'Import or Update Content', 'qubyx-content-importer' ); ?></button>
+			</form>
+		</section>
+
+		<section class="qubyx-panel">
+			<h2><?php esc_html_e( 'What gets synced', 'qubyx-content-importer' ); ?></h2>
+			<ul class="qubyx-check-list">
+				<li><?php esc_html_e( 'Pages and landing-page content.', 'qubyx-content-importer' ); ?></li>
+				<li><?php esc_html_e( 'Product and Resource custom post type entries.', 'qubyx-content-importer' ); ?></li>
+				<li><?php esc_html_e( 'Resource and product categories.', 'qubyx-content-importer' ); ?></li>
+				<li><?php esc_html_e( 'Primary/footer menus and internal links.', 'qubyx-content-importer' ); ?></li>
+				<li><?php esc_html_e( 'Yoast and Rank Math compatible SEO meta.', 'qubyx-content-importer' ); ?></li>
+			</ul>
+		</section>
+	</div>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render content overview.
+ */
+function qubyx_ci_render_content_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$counts = qubyx_ci_get_content_counts();
+	qubyx_ci_admin_header(
+		'content',
+		__( 'Content', 'qubyx-content-importer' ),
+		__( 'Review the WordPress content surface generated for QUBYX.', 'qubyx-content-importer' )
+	);
+	?>
+	<div class="qubyx-grid qubyx-grid--cards">
+		<?php qubyx_ci_link_card( __( 'Pages', 'qubyx-content-importer' ), $counts['pages'], admin_url( 'edit.php?post_type=page' ), __( 'Review imported site pages.', 'qubyx-content-importer' ) ); ?>
+		<?php qubyx_ci_link_card( __( 'Products', 'qubyx-content-importer' ), $counts['products'], admin_url( 'edit.php?post_type=product' ), __( 'Manage QUBYX product entries.', 'qubyx-content-importer' ) ); ?>
+		<?php qubyx_ci_link_card( __( 'Resources', 'qubyx-content-importer' ), $counts['resources'], admin_url( 'edit.php?post_type=resource' ), __( 'Manage guides, news, and blog resources.', 'qubyx-content-importer' ) ); ?>
+		<?php qubyx_ci_link_card( __( 'Menus', 'qubyx-content-importer' ), __( 'Primary', 'qubyx-content-importer' ), admin_url( 'nav-menus.php' ), __( 'Review navigation imported by QUBYX.', 'qubyx-content-importer' ) ); ?>
+	</div>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render updates page.
+ */
+function qubyx_ci_render_updates_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$settings = qubyx_ci_get_settings();
+	$manifest = function_exists( 'qubyx_ci_get_update_manifest' ) ? qubyx_ci_get_update_manifest() : array();
+	qubyx_ci_admin_header(
+		'updates',
+		__( 'Updates', 'qubyx-content-importer' ),
+		__( 'Connect WordPress to the private QUBYX update manifest.', 'qubyx-content-importer' )
+	);
+	?>
+	<div class="qubyx-grid qubyx-grid--main">
+		<section class="qubyx-panel">
+			<h2><?php esc_html_e( 'Update Channel', 'qubyx-content-importer' ); ?></h2>
+			<ul class="qubyx-status-list">
+				<?php qubyx_ci_status_item( __( 'Manifest URL', 'qubyx-content-importer' ), $settings['update_endpoint'], ! empty( $settings['update_endpoint'] ) ? 'good' : 'warn' ); ?>
+				<?php qubyx_ci_status_item( __( 'Manifest status', 'qubyx-content-importer' ), ! empty( $manifest['packages'] ) ? __( 'Available', 'qubyx-content-importer' ) : __( 'Not available yet', 'qubyx-content-importer' ), ! empty( $manifest['packages'] ) ? 'good' : 'warn' ); ?>
+				<?php qubyx_ci_status_item( __( 'Auto import', 'qubyx-content-importer' ), ! empty( $settings['auto_import_after_update'] ) ? __( 'Enabled', 'qubyx-content-importer' ) : __( 'Disabled', 'qubyx-content-importer' ), ! empty( $settings['auto_import_after_update'] ) ? 'good' : 'warn' ); ?>
+			</ul>
+		</section>
+
+		<section class="qubyx-panel">
+			<h2><?php esc_html_e( 'Update Settings', 'qubyx-content-importer' ); ?></h2>
+			<?php qubyx_ci_render_settings_form(); ?>
+		</section>
+	</div>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render settings page.
+ */
+function qubyx_ci_render_settings_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	qubyx_ci_admin_header(
+		'settings',
+		__( 'Settings', 'qubyx-content-importer' ),
+		__( 'Configure importer behavior and private update preferences.', 'qubyx-content-importer' )
+	);
+	?>
+	<section class="qubyx-panel qubyx-panel--wide">
+		<?php qubyx_ci_render_settings_form(); ?>
+	</section>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render system page.
+ */
+function qubyx_ci_render_system_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	qubyx_ci_admin_header(
+		'system',
+		__( 'System', 'qubyx-content-importer' ),
+		__( 'Technical checks for the local QUBYX WordPress installation.', 'qubyx-content-importer' )
+	);
+	?>
+	<section class="qubyx-panel qubyx-panel--wide">
+		<h2><?php esc_html_e( 'Environment', 'qubyx-content-importer' ); ?></h2>
+		<ul class="qubyx-status-list qubyx-status-list--wide">
+			<?php qubyx_ci_status_item( __( 'WordPress', 'qubyx-content-importer' ), get_bloginfo( 'version' ), 'good' ); ?>
+			<?php qubyx_ci_status_item( __( 'PHP', 'qubyx-content-importer' ), PHP_VERSION, version_compare( PHP_VERSION, '7.4', '>=' ) ? 'good' : 'warn' ); ?>
+			<?php qubyx_ci_status_item( __( 'Theme stylesheet', 'qubyx-content-importer' ), wp_get_theme()->get_stylesheet(), 'good' ); ?>
+			<?php qubyx_ci_status_item( __( 'Plugin path', 'qubyx-content-importer' ), plugin_basename( QUBYX_CI_FILE ), 'good' ); ?>
+		</ul>
+	</section>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render the Qubyx admin shell header.
+ *
+ * @param string $active Active tab key.
+ * @param string $title Page title.
+ * @param string $subtitle Page subtitle.
+ */
+function qubyx_ci_admin_header( $active, $title, $subtitle ) {
+	$tabs = qubyx_ci_admin_tabs();
+	?>
+	<div class="wrap qubyx-admin">
+		<div class="qubyx-admin__shell">
+			<header class="qubyx-admin__hero">
+				<div class="qubyx-admin__brand">
+					<span class="qubyx-admin__logo" aria-hidden="true">Q</span>
+					<div>
+						<p class="qubyx-admin__eyebrow"><?php esc_html_e( 'QUBYX WordPress Suite', 'qubyx-content-importer' ); ?></p>
+						<h1><?php echo esc_html( $title ); ?></h1>
+					</div>
+				</div>
+				<p><?php echo esc_html( $subtitle ); ?></p>
+			</header>
+			<nav class="qubyx-admin__tabs" aria-label="<?php esc_attr_e( 'Qubyx admin sections', 'qubyx-content-importer' ); ?>">
+				<?php foreach ( $tabs as $key => $tab ) : ?>
+					<a class="<?php echo esc_attr( $active === $key ? 'is-active' : '' ); ?>" href="<?php echo esc_url( $tab['url'] ); ?>">
+						<span aria-hidden="true"><?php echo esc_html( $tab['icon'] ); ?></span>
+						<?php echo esc_html( $tab['label'] ); ?>
+					</a>
+				<?php endforeach; ?>
+			</nav>
+			<div class="qubyx-admin__body">
+	<?php
+}
+
+/**
+ * Close the Qubyx admin shell.
+ */
+function qubyx_ci_admin_footer() {
+	?>
+			</div>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Admin tabs used by the plugin shell.
+ *
+ * @return array
+ */
+function qubyx_ci_admin_tabs() {
+	return array(
+		'dashboard' => array(
+			'label' => __( 'Dashboard', 'qubyx-content-importer' ),
+			'icon'  => '01',
+			'url'   => admin_url( 'admin.php?page=qubyx-dashboard' ),
+		),
+		'importer'  => array(
+			'label' => __( 'Importer', 'qubyx-content-importer' ),
+			'icon'  => '02',
+			'url'   => admin_url( 'admin.php?page=qubyx-content-importer' ),
+		),
+		'content'   => array(
+			'label' => __( 'Content', 'qubyx-content-importer' ),
+			'icon'  => '03',
+			'url'   => admin_url( 'admin.php?page=qubyx-content' ),
+		),
+		'updates'   => array(
+			'label' => __( 'Updates', 'qubyx-content-importer' ),
+			'icon'  => '04',
+			'url'   => admin_url( 'admin.php?page=qubyx-updates' ),
+		),
+		'settings'  => array(
+			'label' => __( 'Settings', 'qubyx-content-importer' ),
+			'icon'  => '05',
+			'url'   => admin_url( 'admin.php?page=qubyx-settings' ),
+		),
+		'system'    => array(
+			'label' => __( 'System', 'qubyx-content-importer' ),
+			'icon'  => '06',
+			'url'   => admin_url( 'admin.php?page=qubyx-system' ),
+		),
+	);
+}
+
+/**
+ * Show importer result notice.
+ */
+function qubyx_ci_import_notice() {
+	if ( empty( $_GET['imported'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+
+	$posts      = isset( $_GET['posts'] ) ? absint( $_GET['posts'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$terms      = isset( $_GET['terms'] ) ? absint( $_GET['terms'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$menu_items = isset( $_GET['menu_items'] ) ? absint( $_GET['menu_items'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	?>
+	<div class="qubyx-notice">
+		<strong><?php esc_html_e( 'Import complete.', 'qubyx-content-importer' ); ?></strong>
+		<span>
+			<?php
+			printf(
+				/* translators: 1: post count, 2: term count, 3: menu item count. */
+				esc_html__( '%1$d content items, %2$d terms, and %3$d menu items were synced.', 'qubyx-content-importer' ),
+				$posts,
+				$terms,
+				$menu_items
+			);
+			?>
+		</span>
+	</div>
+	<?php
+}
+
+/**
+ * Content counts for dashboard cards.
+ *
+ * @return array
+ */
+function qubyx_ci_get_content_counts() {
+	$page_counts     = wp_count_posts( 'page' );
+	$product_counts  = post_type_exists( 'product' ) ? wp_count_posts( 'product' ) : null;
+	$resource_counts = post_type_exists( 'resource' ) ? wp_count_posts( 'resource' ) : null;
+	$resource_terms  = taxonomy_exists( 'resource_category' ) ? wp_count_terms( 'resource_category', array( 'hide_empty' => false ) ) : 0;
+	$product_terms   = taxonomy_exists( 'product_category' ) ? wp_count_terms( 'product_category', array( 'hide_empty' => false ) ) : 0;
+
+	return array(
+		'pages'     => isset( $page_counts->publish ) ? (int) $page_counts->publish : 0,
+		'products'  => $product_counts && isset( $product_counts->publish ) ? (int) $product_counts->publish : 0,
+		'resources' => $resource_counts && isset( $resource_counts->publish ) ? (int) $resource_counts->publish : 0,
+		'terms'     => (int) $resource_terms + (int) $product_terms,
+	);
+}
+
+/**
+ * Render a metric card.
+ *
+ * @param string     $label Label.
+ * @param int|string $value Value.
+ * @param string     $detail Detail.
+ */
+function qubyx_ci_metric_card( $label, $value, $detail ) {
+	?>
+	<section class="qubyx-metric">
+		<span><?php echo esc_html( $label ); ?></span>
+		<strong><?php echo esc_html( $value ); ?></strong>
+		<p><?php echo esc_html( $detail ); ?></p>
+	</section>
+	<?php
+}
+
+/**
+ * Render a status row.
+ *
+ * @param string $label Label.
+ * @param string $value Value.
+ * @param string $state State, good or warn.
+ */
+function qubyx_ci_status_item( $label, $value, $state = 'good' ) {
+	?>
+	<li>
+		<span class="qubyx-status-dot qubyx-status-dot--<?php echo esc_attr( $state ); ?>" aria-hidden="true"></span>
+		<div>
+			<strong><?php echo esc_html( $label ); ?></strong>
+			<p><?php echo esc_html( $value ); ?></p>
+		</div>
+	</li>
+	<?php
+}
+
+/**
+ * Render a linked content card.
+ *
+ * @param string     $label Label.
+ * @param int|string $value Value.
+ * @param string     $url URL.
+ * @param string     $detail Detail.
+ */
+function qubyx_ci_link_card( $label, $value, $url, $detail ) {
+	?>
+	<a class="qubyx-link-card" href="<?php echo esc_url( $url ); ?>">
+		<span><?php echo esc_html( $label ); ?></span>
+		<strong><?php echo esc_html( $value ); ?></strong>
+		<p><?php echo esc_html( $detail ); ?></p>
+	</a>
+	<?php
+}
+
+/**
+ * Render the Qubyx settings form.
+ */
+function qubyx_ci_render_settings_form() {
+	$settings = qubyx_ci_get_settings();
+	?>
+	<form class="qubyx-form" method="post" action="options.php">
+		<?php settings_fields( 'qubyx_ci_settings' ); ?>
+		<div class="qubyx-field">
+			<label for="qubyx_ci_update_endpoint"><?php esc_html_e( 'Update manifest URL', 'qubyx-content-importer' ); ?></label>
+			<input class="regular-text code" type="url" id="qubyx_ci_update_endpoint" name="qubyx_ci_settings[update_endpoint]" value="<?php echo esc_attr( $settings['update_endpoint'] ); ?>" />
+			<p><?php esc_html_e( 'Cloudflare Worker endpoint that returns QUBYX theme and importer package metadata.', 'qubyx-content-importer' ); ?></p>
+		</div>
+		<div class="qubyx-field qubyx-field--toggle">
+			<label>
+				<input type="checkbox" name="qubyx_ci_settings[auto_import_after_update]" value="1" <?php checked( $settings['auto_import_after_update'] ); ?> />
+				<span><?php esc_html_e( 'Run the importer automatically after QUBYX theme or plugin updates.', 'qubyx-content-importer' ); ?></span>
+			</label>
+		</div>
+		<button class="qubyx-button qubyx-button--primary" type="submit"><?php esc_html_e( 'Save Settings', 'qubyx-content-importer' ); ?></button>
+	</form>
 	<?php
 }
 
@@ -197,7 +627,7 @@ function qubyx_ci_handle_import() {
 			'terms'      => (int) $result['terms'],
 			'menu_items' => (int) $result['menu_items'],
 		),
-		admin_url( 'tools.php' )
+		admin_url( 'admin.php' )
 	);
 
 	wp_safe_redirect( $url );
