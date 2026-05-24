@@ -37,5 +37,5 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: c75d1c874847bf74e930e26b30615d9d
         run: |
-          npm install
+          npm ci
           npm run deploy
