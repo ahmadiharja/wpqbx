@@ -21,6 +21,7 @@ $sku = qubyx_field( 'oem_sku', 'S1 OEM module' );
 $lead = qubyx_field( 'oem_lead_time', 'Project-based' );
 $moq = qubyx_field( 'oem_moq', 'By OEM program' );
 $sample = qubyx_field( 'oem_sample_policy', 'Engineering sample on request' );
+$display_title = preg_replace( '/^QUBYX\s+/i', '', $title );
 
 if ( empty( $gallery ) ) {
 	$hero = qubyx_field( 'hero_image_url', '' );
@@ -52,8 +53,20 @@ if ( empty( $gallery ) ) {
 
 				<div class="oem-summary">
 					<p class="oem-summary__eyebrow"><?php esc_html_e( 'OEM / ODM Display Calibration Module', 'qubyx' ); ?></p>
-					<h1><?php echo esc_html( $title ); ?></h1>
+					<span class="oem-summary__brand"><?php esc_html_e( 'QUBYX', 'qubyx' ); ?></span>
+					<h1><?php echo esc_html( $display_title ?: $title ); ?></h1>
 					<p class="oem-summary__desc"><?php echo esc_html( $description ); ?></p>
+
+					<?php if ( ! empty( $quick_facts ) ) : ?>
+						<div class="oem-summary__spec-strip">
+							<?php foreach ( $quick_facts as $fact ) : ?>
+								<div>
+									<span><?php echo esc_html( $fact['label'] ?? '' ); ?></span>
+									<strong><?php echo esc_html( $fact['value'] ?? '' ); ?></strong>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
 
 					<div class="oem-summary__meta" aria-label="<?php esc_attr_e( 'Procurement summary', 'qubyx' ); ?>">
 						<div><span><?php esc_html_e( 'Model', 'qubyx' ); ?></span><strong><?php echo esc_html( $sku ); ?></strong></div>
@@ -67,10 +80,6 @@ if ( empty( $gallery ) ) {
 						<?php qubyx_render_link( $secondary_cta, 'btn--ghost btn--lg', __( 'Ask for datasheet', 'qubyx' ) ); ?>
 					</div>
 
-					<div class="oem-summary__supplier">
-						<strong><?php esc_html_e( 'QUBYX supplier profile', 'qubyx' ); ?></strong>
-						<span><?php esc_html_e( 'Precision display calibration, hardware, and fleet management solutions for OEM and regulated display workflows.', 'qubyx' ); ?></span>
-					</div>
 				</div>
 
 				<aside class="oem-inquiry" aria-label="<?php esc_attr_e( 'Inquiry panel', 'qubyx' ); ?>">
@@ -78,23 +87,14 @@ if ( empty( $gallery ) ) {
 					<a class="oem-inquiry__primary" href="<?php echo esc_url( home_url( '/request-demo/' ) ); ?>"><?php esc_html_e( 'Contact supplier', 'qubyx' ); ?></a>
 					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Send technical question', 'qubyx' ); ?></a>
 					<a href="<?php echo esc_url( home_url( '/store/sensors/' ) ); ?>"><?php esc_html_e( 'View sensor catalog', 'qubyx' ); ?></a>
+					<div class="oem-inquiry__profile">
+						<strong><?php esc_html_e( 'QUBYX supplier profile', 'qubyx' ); ?></strong>
+						<span><?php esc_html_e( 'Precision display calibration, hardware, and fleet management solutions for OEM and regulated display workflows.', 'qubyx' ); ?></span>
+					</div>
 				</aside>
 			</div>
 		</div>
 	</section>
-
-	<?php if ( ! empty( $quick_facts ) ) : ?>
-		<section class="oem-band">
-			<div class="container oem-facts">
-				<?php foreach ( $quick_facts as $fact ) : ?>
-					<div>
-						<span><?php echo esc_html( $fact['label'] ?? '' ); ?></span>
-						<strong><?php echo esc_html( $fact['value'] ?? '' ); ?></strong>
-					</div>
-				<?php endforeach; ?>
-			</div>
-		</section>
-	<?php endif; ?>
 
 	<section class="section oem-section">
 		<div class="container oem-two-col">
@@ -205,11 +205,4 @@ if ( empty( $gallery ) ) {
 		</div>
 	</section>
 
-	<div class="oem-sticky-inquiry" aria-label="<?php esc_attr_e( 'Sticky inquiry bar', 'qubyx' ); ?>">
-		<div class="container">
-			<span><?php esc_html_e( 'QUBYX SmartSensor S1', 'qubyx' ); ?></span>
-			<strong><?php esc_html_e( 'Embedded OEM calibration module', 'qubyx' ); ?></strong>
-			<a href="<?php echo esc_url( home_url( '/request-demo/' ) ); ?>"><?php esc_html_e( 'Contact supplier', 'qubyx' ); ?></a>
-		</div>
-	</div>
 </main>
