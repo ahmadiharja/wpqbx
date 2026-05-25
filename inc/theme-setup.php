@@ -38,6 +38,7 @@ if ( ! function_exists( 'qubyx_theme_setup' ) ) :
 		add_theme_support( 'align-wide' );
 		add_theme_support( 'custom-spacing' );
 		add_theme_support( 'custom-units' );
+		add_theme_support( 'woocommerce' );
 
 		add_editor_style( 'assets/css/editor.css' );
 

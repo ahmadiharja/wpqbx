@@ -3,7 +3,7 @@
  * Plugin Name: Qubyx Content Importer
  * Plugin URI: https://qubyx.com
  * Description: Seeds the Qubyx enterprise website content, menus, products, resources, posts, and WPML-ready strings.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Qubyx
  * Author URI: https://qubyx.com
  * Text Domain: qubyx-content-importer
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUBYX_CI_VERSION', '1.0.2' );
+define( 'QUBYX_CI_VERSION', '1.0.3' );
 define( 'QUBYX_CI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'QUBYX_CI_URL', plugin_dir_url( __FILE__ ) );
 define( 'QUBYX_CI_FILE', __FILE__ );
@@ -1436,6 +1436,7 @@ foreach ( $data['store_products'] ?? array() as $key => $product ) {
 	qubyx_ci_prepare_store_product( $post_ids[ $key ] );
 	$result['posts']++;
 }
+qubyx_ci_cleanup_store_products( array_keys( $data['store_products'] ?? array() ) );
 
 foreach ( $data['resources'] ?? array() as $key => $resource ) {
 	$post_ids[ $key ] = qubyx_ci_upsert_post( 'resource', $key, $resource, $post_ids );
@@ -1522,6 +1523,33 @@ function qubyx_ci_prepare_store_product( $post_id ) {
 
 	if ( function_exists( 'wc_delete_product_transients' ) ) {
 		wc_delete_product_transients( $post_id );
+	}
+}
+
+/**
+ * Remove obsolete Store products that were seeded by older importer versions.
+ */
+function qubyx_ci_cleanup_store_products( $valid_keys ) {
+	$valid_keys = array_map( 'strval', $valid_keys );
+	$query = new WP_Query(
+		array(
+			'post_type'              => 'product',
+			'post_status'            => 'any',
+			'fields'                 => 'ids',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'meta_key'               => '_qubyx_store_product',
+			'meta_value'             => '1',
+		)
+	);
+
+	foreach ( $query->posts as $post_id ) {
+		$seed_key = get_post_meta( $post_id, '_qubyx_seed_key', true );
+		if ( $seed_key && ! in_array( $seed_key, $valid_keys, true ) ) {
+			wp_delete_post( $post_id, true );
+		}
 	}
 }
 
@@ -1662,6 +1690,22 @@ function qubyx_ci_set_site_pages( $post_ids ) {
 
 	if ( ! empty( $post_ids['blog'] ) ) {
 		update_option( 'page_for_posts', (int) $post_ids['blog'] );
+	}
+
+	if ( ! empty( $post_ids['cart'] ) ) {
+		update_option( 'woocommerce_cart_page_id', (int) $post_ids['cart'] );
+	}
+
+	if ( ! empty( $post_ids['checkout'] ) ) {
+		update_option( 'woocommerce_checkout_page_id', (int) $post_ids['checkout'] );
+	}
+
+	if ( ! empty( $post_ids['my-account'] ) ) {
+		update_option( 'woocommerce_myaccount_page_id', (int) $post_ids['my-account'] );
+	}
+
+	if ( class_exists( 'WooCommerce' ) ) {
+		update_option( 'woocommerce_currency', 'USD' );
 	}
 }
 

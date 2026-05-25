@@ -194,6 +194,24 @@ function qubyx_ci_pages() {
 			'post_excerpt' => 'Education licensing for universities, labs, students, teaching programs, and academic display quality workflows.',
 			'post_content' => '<!-- wp:heading --><h2>Education licensing for labs and students</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Use this page for academic licensing, teaching labs, research groups, student access, and discounted hardware or software bundle paths.</p><!-- /wp:paragraph --><!-- wp:list --><ul><li>Academic lab licensing</li><li>Student access paths</li><li>Research and teaching workflows</li><li>Sensor bundle discounts</li></ul><!-- /wp:list -->',
 		),
+		'cart' => array(
+			'post_title'   => 'Cart',
+			'post_name'    => 'cart',
+			'post_excerpt' => 'Review selected QUBYX products before checkout.',
+			'post_content' => '<!-- wp:shortcode -->[woocommerce_cart]<!-- /wp:shortcode -->',
+		),
+		'checkout' => array(
+			'post_title'   => 'Checkout',
+			'post_name'    => 'checkout',
+			'post_excerpt' => 'Complete your QUBYX order.',
+			'post_content' => '<!-- wp:shortcode -->[woocommerce_checkout]<!-- /wp:shortcode -->',
+		),
+		'my-account' => array(
+			'post_title'   => 'My Account',
+			'post_name'    => 'my-account',
+			'post_excerpt' => 'Manage QUBYX orders, downloads, and account details.',
+			'post_content' => '<!-- wp:shortcode -->[woocommerce_my_account]<!-- /wp:shortcode -->',
+		),
 		'blog'         => array(
 			'post_title'   => 'Blog',
 			'post_name'    => 'blog',
@@ -1459,26 +1477,29 @@ function qubyx_ci_public_copy( $text ) {
  */
 function qubyx_ci_store_products() {
 	return array(
-		'store-perfectlum-1-year' => qubyx_ci_store_product( 'PerfectLum 4', 'perfectlum-1-year-maintenance', 'Medical / DICOM', 'LUM', 'lum', '1 Year Maintenance Plan', 'Annual maintenance subscription', 'DICOM calibration and QA software for one workstation, including reporting, scheduling, and remote management readiness.', '480', '', 'medical', 'hospitals,education', '', '', 'Per-workstation licensing|Calibrates up to 6 displays|Windows and Mac compatible|DICOM, TG18, TG270, DIN, ACR workflows', '/store/perfectlum/' ),
-		'store-perfectlum-3-years' => qubyx_ci_store_product( 'PerfectLum 3 Years', 'perfectlum-3-years-maintenance', 'Medical / DICOM', 'LUM', 'lum', '3 Years Maintenance Plan', 'Multi-year maintenance subscription', 'Extended maintenance for PerfectLum with updates, priority email support, remote desktop support, and license resets.', '288', '', 'medical', 'hospitals,education', 'Maintenance', '', 'Priority email-based support|Remote desktop TC connection|Access to all updates|License resets during 3 years', '/store/perfectlum/' ),
-		'store-perfectlum-5-years' => qubyx_ci_store_product( 'PerfectLum 5 Years', 'perfectlum-5-years-maintenance', 'Medical / DICOM', 'LUM', 'lum', '5 Years Maintenance Plan', 'Best-value maintenance subscription', 'Longer maintenance coverage for PerfectLum teams that want updates, new releases, priority support, and license reset coverage.', '360', '', 'medical', 'hospitals,education', 'Most popular', 'pop', 'Unlimited priority email-based support|Remote desktop TC connection|Access to all updates|Unlock new releases of PerfectLum|License resets during 5 years', '/store/perfectlum/', true ),
-		'store-perfectchroma-pro-license' => qubyx_ci_store_product( 'PerfectChroma Pro License', 'perfectchroma-pro-license', 'Color / Creative', 'CHR', 'chr', 'One Time Purchase', 'Lifetime license', 'Hardware calibration engine for essential color accuracy and seamless workflow integration.', '399', '199', 'color', 'color,consumer,education', '', '', 'Full PerfectChroma software|Support for major colorimeters|Delta-E below 1.0 accuracy|Smart calibration presets|1-year free updates', '/store/perfectchroma/' ),
-		'store-perfectchroma-pro-bundle' => qubyx_ci_store_product( 'PerfectChroma Pro Bundle', 'perfectchroma-pro-bundle', 'Color / Creative', 'CHR', 'chr', 'One Time Purchase', 'Lifetime license bundle', 'Supercharged calibration bundle with X-Rite i1Display Pro, advanced 3D LUTs, and priority updates.', '699', '499', 'color', 'color,consumer,education', 'Most popular', 'pop', 'Full PerfectChroma software license|1x X-Rite i1Display Pro OEM Sensor|Delta-E below 1.0 professional accuracy|Photo, Video, and Web presets|Advanced LUT export', '/store/perfectchroma/', true ),
-		'store-perfectchroma-studio-bundle' => qubyx_ci_store_product( 'PerfectChroma Studio Bundle', 'perfectchroma-studio-bundle', 'Color / Creative', 'CHR', 'chr', 'One Time Purchase', 'Lifetime studio bundle', 'Fleet-ready color calibration bundle with multiple licenses, remote management, and central reporting.', '999', '799', 'color', 'color,consumer', '', '', '3 PerfectChroma licenses|1 X-Rite i1Display Pro Sensor|Remote management dashboard|Profile distribution across network|Priority team support', '/store/perfectchroma/' ),
-		'store-perfectepd-annual' => qubyx_ci_store_product( 'PerfectEPD Annual', 'perfectepd-annual', 'E-paper / OEM', 'EPD', 'epd', 'Annual Subscription', 'Annual validation subscription', 'E-paper display validation, reflectance, contrast, and uniformity QA for OEM teams and lab workflows.', '', '', 'epd', 'oem,education', '', '', 'Annual software access|Reflectance and contrast validation|OEM lab workflow support|Reporting for QA teams', '/store/perfectepd/', false, 'Request quote' ),
-		'store-qubyx-web-remote-qa' => qubyx_ci_store_product( 'Qubyx Web Remote QA', 'qubyx-web-remote-qa-free', 'Remote QA', 'RQA', 'rqa', 'Free Hosted Access', 'Hosted web RemoteQA entry point', 'Free web access path for remote QA visibility, task review, and centralized display quality onboarding.', '0', '', 'remote,free', 'hospitals,oem,education', 'Free', 'new', 'Hosted web access|Remote QA onboarding path|Central display status story|Upgrade path for enterprise deployments', '/products/qubyx-remoteqa/', false, 'Try remote' ),
-		'store-smartsensor-s1-oem' => qubyx_ci_store_product( 'Qubyx SmartSensor S1', 'qubyx-smartsensor-s1-oem', 'OEM hardware', 'S1', 's1', 'Manufacturing / OEM', 'OEM procurement path', 'Sensor option for manufacturers and OEM validation programs that need repeatable measurement in production or lab workflows.', '', '', 'sensors,oem', 'oem', '', '', 'OEM validation positioning|Production and lab workflow fit|Pairs with PerfectLum and PerfectEPD|Quote-led procurement', '/store/sensors/', false, 'Request quote' ),
-		'store-smartsensor-s2-consumer' => qubyx_ci_store_product( 'Qubyx SmartSensor S2', 'qubyx-smartsensor-s2-consumer', 'Consumer hardware', 'S2', 's2', 'Consumer / Creative', 'General purchasing path', 'General-purpose sensor path for consumers and creative teams that need dependable color measurement.', '', '', 'sensors,consumer', 'consumer,color', '', '', 'Consumer and creative positioning|Color measurement workflow|Pairs with PerfectChroma|Simple purchase or quote path', '/store/sensors/', false, 'View sensor' ),
-		'store-qubyx-os-tools' => qubyx_ci_store_product( 'Qubyx OS Tools', 'qubyx-os-tools-free', 'Open source tools', 'OST', 'rqa', 'Free / Open Source', 'Open-source color management tools', 'Open-source tools for advanced ICC Device Link profiles, 3D LUT generation, and vendor-independent color workflows.', '0', '', 'free,color,medical', 'hospitals,color,consumer,education', 'Free', 'new', 'Device Link ICC profile generation|3D LUT workflow support|Vendor-independent calibration path|Pairs with PerfectLum for enterprise QA', '/get-display-color-accuracy-solely-qubyx-os-tools/', false, 'Learn more' ),
-		'store-perfectlum-s1-sensor' => qubyx_ci_store_product( 'PerfectLum and S1 Sensor', 'perfectlum-and-s1-sensor', 'PerfectLum bundle', 'BUN', 'bun', 'Software + sensor bundle', 'Bundle purchase', 'PerfectLum 4 bundled with the PerfectLum S1 luminance and colorimeter for DICOM calibration and display verification.', '680', '', 'bundles,medical,sensors', 'hospitals,oem', 'Back in stock', '', 'PerfectLum 4 software|PerfectLum S1 luminance and colorimeter|Easy setup and maintenance|Windows and Mac compatible', '/store/bundles/', false, 'Configure bundle' ),
+		'store-perfectlum-1-year' => qubyx_ci_store_product( 'PerfectLum 4', 'perfectlum-1-year-maintenance', 'Medical / DICOM', 'LUM', 'lum', 'PerfectLum 4', 'Annual software access', 'DICOM calibration and QA software for one workstation, including reporting, scheduling, and remote management readiness.', '480', '', 'medical', 'hospitals,education', '', '', 'Per-workstation licensing|Calibrates up to 6 displays|Windows and Mac compatible|DICOM, TG18, TG270, DIN, ACR workflows', '/store/perfectlum/', false, 'Choose plan', 10 ),
+		'store-perfectlum-3-years' => qubyx_ci_store_product( 'PerfectLum 3 Years', 'perfectlum-3-years-maintenance', 'Medical / DICOM', 'LUM', 'lum', 'Maintenance 3 Years', 'Maintenance plan', 'Extended maintenance for PerfectLum with updates, priority email support, remote desktop support, and license resets.', '288', '', 'medical', 'hospitals,education', 'Maintenance', '', 'Priority email-based support|Remote desktop TC connection|Access to all updates|License resets during 3 years', '/store/perfectlum/', false, 'Choose plan', 20 ),
+		'store-perfectlum-5-years' => qubyx_ci_store_product( 'PerfectLum 5 Years', 'perfectlum-5-years-maintenance', 'Medical / DICOM', 'LUM', 'lum', 'Maintenance 5 Years', 'Best value maintenance', 'Longer maintenance coverage for PerfectLum teams that want updates, new releases, priority support, and license reset coverage.', '360', '', 'medical', 'hospitals,education', 'Most popular', 'pop', 'Unlimited priority email-based support|Remote desktop TC connection|Access to all updates|Unlock new releases of PerfectLum|License resets during 5 years', '/store/perfectlum/', true, 'Choose plan', 30 ),
+		'store-perfectlum-s1-sensor' => qubyx_ci_store_product( 'PerfectLum and S1 Sensor', 'perfectlum-and-s1-sensor', 'PerfectLum bundle', 'BUN', 'bun', 'PerfectLum 4 + S1', 'Software and sensor bundle', 'PerfectLum 4 bundled with the PerfectLum S1 luminance and colorimeter for DICOM calibration and display verification.', '680', '', 'bundles,medical,sensors', 'hospitals,oem', 'Back in stock', '', 'PerfectLum 4 software|PerfectLum S1 luminance and colorimeter|Easy setup and maintenance|Windows and Mac compatible', '/store/bundles/', false, 'Configure bundle', 40 ),
+		'store-perfectchroma-pro-license' => qubyx_ci_store_product( 'PerfectChroma Pro License', 'perfectchroma-pro-license', 'Color / Creative', 'CHR', 'chr', 'Pro License', 'One time purchase', 'Hardware calibration engine for essential color accuracy and seamless workflow integration.', '399', '199', 'color', 'color,consumer,education', '', '', 'Full PerfectChroma software|Support for major colorimeters|Delta-E below 1.0 accuracy|Smart calibration presets|1-year free updates', '/store/perfectchroma/', false, 'Choose plan', 110 ),
+		'store-perfectchroma-pro-bundle' => qubyx_ci_store_product( 'PerfectChroma Pro Bundle', 'perfectchroma-pro-bundle', 'Color / Creative', 'CHR', 'chr', 'Pro Bundle', 'One time purchase', 'Supercharged calibration bundle with X-Rite i1Display Pro, advanced 3D LUTs, and priority updates.', '699', '499', 'color', 'color,consumer,education', 'Most popular', 'pop', 'Full PerfectChroma software license|1x X-Rite i1Display Pro OEM Sensor|Delta-E below 1.0 professional accuracy|Photo, Video, and Web presets|Advanced LUT export', '/store/perfectchroma/', true, 'Choose plan', 120 ),
+		'store-perfectchroma-studio-bundle' => qubyx_ci_store_product( 'PerfectChroma Studio Bundle', 'perfectchroma-studio-bundle', 'Color / Creative', 'CHR', 'chr', 'Studio Bundle', 'One time purchase', 'Fleet-ready color calibration bundle with multiple licenses, remote management, and central reporting.', '999', '799', 'color', 'color,consumer', '', '', '3 PerfectChroma licenses|1 X-Rite i1Display Pro Sensor|Remote management dashboard|Profile distribution across network|Priority team support', '/store/perfectchroma/', false, 'Choose plan', 130 ),
+		'store-perfectepd-imagery' => qubyx_ci_store_product( 'PerfectEPD Imagery', 'perfectepd-imagery-annual', 'Geospatial / Defense', 'EPD', 'epd', 'Imagery', 'Annual subscription concept', 'Specialized calibration and verification software for satellite, drone, mapping, and high-resolution imagery workflows.', '', '', 'epd', 'oem,education', '', '', 'Satellite and drone imagery clarity|Topographical map consistency|Measurable display accuracy|Verification reports for spatial data teams', '/store/perfectepd/', false, 'Request quote', 210 ),
+		'store-perfectepd-defense' => qubyx_ci_store_product( 'PerfectEPD Defense', 'perfectepd-defense-annual', 'Geospatial / Defense', 'EPD', 'epd', 'Defense', 'Annual subscription concept', 'Advanced PerfectEPD plan concept for defense, mapping, and high-resolution operational imagery environments.', '', '', 'epd', 'oem', 'Example plan', '', 'Defense imagery workflows|High-resolution map review|Spatial data verification|Priority implementation support', '/store/perfectepd/', false, 'Request quote', 220 ),
+		'store-perfectepd-enterprise' => qubyx_ci_store_product( 'PerfectEPD Enterprise', 'perfectepd-enterprise-annual', 'Geospatial / Defense', 'EPD', 'epd', 'Enterprise', 'Annual subscription concept', 'Enterprise PerfectEPD concept for teams managing complex spatial data across multiple calibrated review stations.', '', '', 'epd', 'oem', 'Enterprise', '', 'Multi-station geospatial review|Centralized reporting path|Audit-ready calibration evidence|Custom procurement and onboarding', '/store/perfectepd/', false, 'Request quote', 230 ),
+		'store-qubyx-web-remote-qa' => qubyx_ci_store_product( 'Qubyx Web Remote QA', 'qubyx-web-remote-qa-free', 'Remote QA', 'RQA', 'rqa', 'Free hosted access', 'RemoteQA entry point', 'Free web access path for remote QA visibility, task review, and centralized display quality onboarding.', '0', '', 'remote,free', 'hospitals,oem,education', 'Free', 'new', 'Hosted web access|Remote QA onboarding path|Central display status story|Upgrade path for enterprise deployments', '/products/qubyx-remoteqa/', false, 'Try remote', 310 ),
+		'store-smartsensor-s1-oem' => qubyx_ci_store_product( 'Qubyx SmartSensor S1', 'qubyx-smartsensor-s1-oem', 'OEM hardware', 'S1', 's1', 'Manufacturing OEM', 'OEM procurement path', 'Sensor option for manufacturers and OEM validation programs that need repeatable measurement in production or lab workflows.', '', '', 'sensors,oem', 'oem', '', '', 'OEM validation positioning|Production and lab workflow fit|Pairs with PerfectLum and PerfectEPD|Quote-led procurement', '/store/sensors/', false, 'Request quote', 410 ),
+		'store-smartsensor-s2-consumer' => qubyx_ci_store_product( 'Qubyx SmartSensor S2', 'qubyx-smartsensor-s2-consumer', 'Consumer hardware', 'S2', 's2', 'Consumer sensor', 'General purchasing path', 'General-purpose sensor path for consumers and creative teams that need dependable color measurement.', '', '', 'sensors,consumer', 'consumer,color', '', '', 'Consumer and creative positioning|Color measurement workflow|Pairs with PerfectChroma|Simple purchase or quote path', '/store/sensors/', false, 'View sensor', 420 ),
+		'store-qubyx-os-tools' => qubyx_ci_store_product( 'Qubyx OS Tools', 'qubyx-os-tools-free', 'Open source tools', 'OST', 'rqa', 'Free tools', 'Open-source color management tools', 'Open-source tools for advanced ICC Device Link profiles, 3D LUT generation, and vendor-independent color workflows.', '0', '', 'free,color,medical', 'hospitals,color,consumer,education', 'Free', 'new', 'Device Link ICC profile generation|3D LUT workflow support|Vendor-independent calibration path|Pairs with PerfectLum for enterprise QA', '/get-display-color-accuracy-solely-qubyx-os-tools/', false, 'Learn more', 510 ),
 	);
 }
 
 /**
  * Build a WooCommerce-ready Store product.
  */
-function qubyx_ci_store_product( $title, $slug, $tag, $code, $icon, $plan, $period, $description, $regular_price, $sale_price, $categories, $audiences, $badge, $badge_class, $features, $link, $featured = false, $cta = 'Choose plan' ) {
+function qubyx_ci_store_product( $title, $slug, $tag, $code, $icon, $plan, $period, $description, $regular_price, $sale_price, $categories, $audiences, $badge, $badge_class, $features, $link, $featured = false, $cta = 'Choose plan', $menu_order = 0 ) {
 	$price = '' !== $sale_price ? $sale_price : $regular_price;
+	$group = qubyx_ci_store_group_for_slug( $slug );
 
 	return array(
 		'post_title'   => $title,
@@ -1486,6 +1507,7 @@ function qubyx_ci_store_product( $title, $slug, $tag, $code, $icon, $plan, $peri
 		'post_excerpt' => $description,
 		'post_content' => '<!-- wp:paragraph --><p>' . esc_html( $description ) . '</p><!-- /wp:paragraph -->',
 		'post_status'  => 'publish',
+		'menu_order'   => $menu_order,
 		'meta'         => array(
 			'_qubyx_store_product'     => '1',
 			'_qubyx_store_tag'         => $tag,
@@ -1501,6 +1523,9 @@ function qubyx_ci_store_product( $title, $slug, $tag, $code, $icon, $plan, $peri
 			'_qubyx_store_features'    => $features,
 			'_qubyx_store_cta'         => $cta,
 			'_qubyx_store_link'        => $link,
+			'_qubyx_store_group'       => $group['key'],
+			'_qubyx_store_group_title' => $group['title'],
+			'_qubyx_store_group_desc'  => $group['desc'],
 			'_regular_price'           => $regular_price,
 			'_sale_price'              => $sale_price,
 			'_price'                   => $price,
@@ -1510,6 +1535,73 @@ function qubyx_ci_store_product( $title, $slug, $tag, $code, $icon, $plan, $peri
 			'_manage_stock'            => 'no',
 			'_sold_individually'       => 'no',
 		),
+	);
+}
+
+/**
+ * Group individual WooCommerce Store products into one product card.
+ */
+function qubyx_ci_store_group_for_slug( $slug ) {
+	if ( 0 === strpos( $slug, 'perfectlum' ) ) {
+		return array(
+			'key'   => 'perfectlum',
+			'title' => 'PerfectLum 4',
+			'desc'  => 'Medical display calibration and DICOM QA software with plan choices for software-only maintenance or the PerfectLum + S1 Sensor bundle.',
+		);
+	}
+
+	if ( 0 === strpos( $slug, 'perfectchroma' ) ) {
+		return array(
+			'key'   => 'perfectchroma',
+			'title' => 'PerfectChroma',
+			'desc'  => 'One-time purchase monitor calibration software with Pro License, Pro Bundle, and Studio Bundle options.',
+		);
+	}
+
+	if ( 0 === strpos( $slug, 'perfectepd' ) ) {
+		return array(
+			'key'   => 'perfectepd',
+			'title' => 'PerfectEPD',
+			'desc'  => 'Specialized annual calibration and verification software for geospatial intelligence, defense, mapping, drone imagery, satellite imagery, and high-resolution spatial data workflows.',
+		);
+	}
+
+	if ( false !== strpos( $slug, 'remote-qa' ) ) {
+		return array(
+			'key'   => 'remoteqa',
+			'title' => 'Qubyx Web Remote QA',
+			'desc'  => 'Free hosted entry point for remote QA visibility, task review, and centralized display quality onboarding.',
+		);
+	}
+
+	if ( false !== strpos( $slug, 'smartsensor-s1' ) ) {
+		return array(
+			'key'   => 'smartsensor-s1',
+			'title' => 'Qubyx SmartSensor S1',
+			'desc'  => 'OEM and manufacturing sensor path for repeatable measurement in production, lab, and validation workflows.',
+		);
+	}
+
+	if ( false !== strpos( $slug, 'smartsensor-s2' ) ) {
+		return array(
+			'key'   => 'smartsensor-s2',
+			'title' => 'Qubyx SmartSensor S2',
+			'desc'  => 'Consumer and creative sensor path for dependable color measurement and PerfectChroma workflows.',
+		);
+	}
+
+	if ( false !== strpos( $slug, 'os-tools' ) ) {
+		return array(
+			'key'   => 'os-tools',
+			'title' => 'Qubyx OS Tools',
+			'desc'  => 'Free open-source color management tools for ICC Device Link profiles, 3D LUT generation, and vendor-independent workflows.',
+		);
+	}
+
+	return array(
+		'key'   => $slug,
+		'title' => $slug,
+		'desc'  => '',
 	);
 }
 

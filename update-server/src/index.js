@@ -2,8 +2,8 @@ const PACKAGES = {
 	"qubyx-content-importer": {
 		id: "qubyx-content-importer",
 		name: "Qubyx Content Importer",
-		version: "1.0.2",
-		file: "downloads/qubyx-content-importer-1.0.2.zip",
+		version: "1.0.3",
+		file: "downloads/qubyx-content-importer-1.0.3.zip",
 		homepage: "https://qubyx.com",
 		requires: "6.0",
 		tested: "6.6",
@@ -11,14 +11,14 @@ const PACKAGES = {
 		last_updated: "2026-05-25",
 		sections: {
 			description: "Imports and updates Qubyx pages, products, resources, posts, taxonomies, menus, ACF/meta fields, and SEO metadata.",
-			changelog: "Seeds WooCommerce-managed Store products for QUBYX software, hardware, free tools, and bundles."
+			changelog: "Groups WooCommerce Store products into interactive plan cards and configures cart, checkout, account, and USD currency settings."
 		}
 	},
 	"qubyx-theme": {
 		id: "qubyx-theme",
 		name: "Qubyx Theme",
-		version: "1.0.3",
-		file: "downloads/qubyx-theme-1.0.3.zip",
+		version: "1.0.4",
+		file: "downloads/qubyx-theme-1.0.4.zip",
 		homepage: "https://qubyx.com",
 		requires: "6.0",
 		tested: "6.6",
@@ -26,7 +26,7 @@ const PACKAGES = {
 		last_updated: "2026-05-25",
 		sections: {
 			description: "Classic WordPress theme for Qubyx pages, products, resources, articles, and store-ready layouts.",
-			changelog: "Updates the Store catalog to read cards from WooCommerce products with corrected QUBYX plan types."
+			changelog: "Removes Store fallback cards and renders WooCommerce products as grouped interactive plan cards."
 		}
 	}
 };

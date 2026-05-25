@@ -210,4 +210,20 @@
 
 		applyStoreFilters();
 	}
+
+	document.querySelectorAll('[data-store-card]').forEach(function (card) {
+		var tabs = card.querySelectorAll('[data-plan-tab]');
+		var panels = card.querySelectorAll('[data-plan-panel]');
+		tabs.forEach(function (tab) {
+			tab.addEventListener('click', function () {
+				var plan = tab.getAttribute('data-plan-tab');
+				tabs.forEach(function (item) { item.classList.toggle('is-active', item === tab); });
+				panels.forEach(function (panel) {
+					var active = panel.getAttribute('data-plan-panel') === plan;
+					panel.hidden = !active;
+					panel.classList.toggle('is-active', active);
+				});
+			});
+		});
+	});
 })();
