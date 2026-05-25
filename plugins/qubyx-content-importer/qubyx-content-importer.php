@@ -302,6 +302,8 @@ function qubyx_ci_render_ai_writer_page() {
 
 	$settings = qubyx_ci_get_settings();
 	$has_key  = (bool) qubyx_ci_get_openai_api_key();
+	$resource_categories = qubyx_ci_get_ai_terms_for_select( 'resource_category' );
+	$post_categories     = qubyx_ci_get_ai_terms_for_select( 'category' );
 	qubyx_ci_admin_header(
 		'ai',
 		__( 'AI Writer', 'qubyx-content-importer' ),
@@ -351,6 +353,33 @@ function qubyx_ci_render_ai_writer_page() {
 							<option value="guide"><?php esc_html_e( 'Guide', 'qubyx-content-importer' ); ?></option>
 							<option value="news"><?php esc_html_e( 'News / update', 'qubyx-content-importer' ); ?></option>
 							<option value="blog"><?php esc_html_e( 'Blog / opinion', 'qubyx-content-importer' ); ?></option>
+						</select>
+					</div>
+				</div>
+				<div class="qubyx-form-grid">
+					<div class="qubyx-field" data-qubyx-resource-category>
+						<label for="qubyx_ai_resource_category"><?php esc_html_e( 'Resource category', 'qubyx-content-importer' ); ?></label>
+						<select id="qubyx_ai_resource_category" name="resource_category">
+							<?php foreach ( $resource_categories as $slug => $label ) : ?>
+								<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<div class="qubyx-field" data-qubyx-post-category hidden>
+						<label for="qubyx_ai_post_category"><?php esc_html_e( 'Post category', 'qubyx-content-importer' ); ?></label>
+						<select id="qubyx_ai_post_category" name="post_category">
+							<?php foreach ( $post_categories as $slug => $label ) : ?>
+								<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<div class="qubyx-field">
+						<label for="qubyx_ai_seo_intent"><?php esc_html_e( 'SEO intent', 'qubyx-content-importer' ); ?></label>
+						<select id="qubyx_ai_seo_intent" name="seo_intent">
+							<option value="informational"><?php esc_html_e( 'Informational', 'qubyx-content-importer' ); ?></option>
+							<option value="commercial"><?php esc_html_e( 'Commercial evaluation', 'qubyx-content-importer' ); ?></option>
+							<option value="technical"><?php esc_html_e( 'Technical / compliance', 'qubyx-content-importer' ); ?></option>
+							<option value="announcement"><?php esc_html_e( 'Announcement', 'qubyx-content-importer' ); ?></option>
 						</select>
 					</div>
 				</div>
@@ -802,15 +831,21 @@ function qubyx_ci_ajax_ai_generate() {
 	}
 
 	$args = array(
-		'topic'           => $topic,
-		'keywords'        => isset( $_POST['keywords'] ) ? sanitize_text_field( wp_unslash( $_POST['keywords'] ) ) : '',
-		'audience'        => isset( $_POST['audience'] ) ? sanitize_text_field( wp_unslash( $_POST['audience'] ) ) : '',
-		'post_type'       => isset( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : 'resource',
-		'resource_layout' => isset( $_POST['resource_layout'] ) ? sanitize_key( wp_unslash( $_POST['resource_layout'] ) ) : 'guide',
-		'language'        => isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : 'English',
-		'model'           => isset( $_POST['model'] ) ? sanitize_text_field( wp_unslash( $_POST['model'] ) ) : '',
-		'use_web_search'  => ! empty( $_POST['use_web_search'] ),
+		'topic'             => $topic,
+		'keywords'          => isset( $_POST['keywords'] ) ? sanitize_text_field( wp_unslash( $_POST['keywords'] ) ) : '',
+		'audience'          => isset( $_POST['audience'] ) ? sanitize_text_field( wp_unslash( $_POST['audience'] ) ) : '',
+		'post_type'         => isset( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : 'resource',
+		'resource_layout'   => isset( $_POST['resource_layout'] ) ? sanitize_key( wp_unslash( $_POST['resource_layout'] ) ) : 'guide',
+		'resource_category' => isset( $_POST['resource_category'] ) ? sanitize_key( wp_unslash( $_POST['resource_category'] ) ) : '',
+		'post_category'     => isset( $_POST['post_category'] ) ? sanitize_key( wp_unslash( $_POST['post_category'] ) ) : '',
+		'seo_intent'        => isset( $_POST['seo_intent'] ) ? sanitize_key( wp_unslash( $_POST['seo_intent'] ) ) : 'informational',
+		'language'          => isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : 'English',
+		'model'             => isset( $_POST['model'] ) ? sanitize_text_field( wp_unslash( $_POST['model'] ) ) : '',
+		'use_web_search'    => ! empty( $_POST['use_web_search'] ),
 	);
+
+	$args['resource_category'] = qubyx_ci_normalize_ai_resource_category( $args['resource_category'], $args['resource_layout'] );
+	$args['post_category']     = qubyx_ci_normalize_ai_post_category( $args['post_category'], $args['resource_layout'] );
 
 	$article = qubyx_ci_generate_ai_article( $args );
 	if ( is_wp_error( $article ) ) {
@@ -928,14 +963,17 @@ function qubyx_ci_generate_ai_article( $args ) {
  */
 function qubyx_ci_build_ai_prompt( $args ) {
 	return sprintf(
-		"Create a %1\$s QUBYX article draft in %2\$s.\n\nTopic or brief:\n%3\$s\n\nAudience: %4\$s\nSEO keywords: %5\$s\nDraft type: %6\$s\nResource layout: %7\$s\n\nReturn only valid JSON matching the supplied schema. content_html must be clean WordPress-friendly HTML with headings, paragraphs, lists, and no markdown fences. Include a practical introduction, scannable sections, and a final CTA that routes readers toward QUBYX products, resources, or demo requests. If web research is used, include citations with title and URL.",
+		"Create a %1\$s QUBYX article draft in %2\$s.\n\nTopic or brief:\n%3\$s\n\nAudience: %4\$s\nSEO keywords: %5\$s\nDraft type: %6\$s\nResource layout: %7\$s\nSelected resource category: %8\$s\nSelected post category: %9\$s\nSEO intent: %10\$s\n\nReturn only valid JSON matching the supplied schema. content_html must be clean WordPress-friendly HTML with headings, paragraphs, lists, and no markdown fences. Include a practical introduction, scannable sections, and a final CTA that routes readers toward QUBYX products, resources, or demo requests. Generate Rank Math-ready SEO metadata: a focused keyphrase, 3-8 secondary keyphrases, a concise SEO title, a meta description under 160 characters, and a slug aligned with the selected category and user keywords. The article layout must match the selected category: guides/compliance/technical-notes/case-studies should be practical long-form; news/product-updates should read like announcements or release notes; blog should read like editorial insight. If web research is used, include citations with title and URL.",
 		$args['resource_layout'] ?? 'guide',
 		$args['language'] ?? 'English',
 		$args['topic'] ?? '',
 		$args['audience'] ?? '',
 		$args['keywords'] ?? '',
 		$args['post_type'] ?? 'resource',
-		$args['resource_layout'] ?? 'guide'
+		$args['resource_layout'] ?? 'guide',
+		$args['resource_category'] ?? '',
+		$args['post_category'] ?? '',
+		$args['seo_intent'] ?? 'informational'
 	);
 }
 
@@ -954,6 +992,9 @@ function qubyx_ci_ai_article_schema() {
 			'excerpt'         => array( 'type' => 'string' ),
 			'seo_title'       => array( 'type' => 'string' ),
 			'seo_description' => array( 'type' => 'string' ),
+			'focus_keyphrase' => array( 'type' => 'string' ),
+			'secondary_keyphrases' => array( 'type' => 'array', 'items' => array( 'type' => 'string' ) ),
+			'rank_math_pillar_content' => array( 'type' => 'boolean' ),
 			'content_html'    => array( 'type' => 'string' ),
 			'reading_time'    => array( 'type' => 'integer' ),
 			'summary'         => array( 'type' => 'string' ),
@@ -971,7 +1012,7 @@ function qubyx_ci_ai_article_schema() {
 				),
 			),
 		),
-		'required'             => array( 'title', 'slug', 'excerpt', 'seo_title', 'seo_description', 'content_html', 'reading_time', 'summary', 'tags', 'citations' ),
+		'required'             => array( 'title', 'slug', 'excerpt', 'seo_title', 'seo_description', 'focus_keyphrase', 'secondary_keyphrases', 'rank_math_pillar_content', 'content_html', 'reading_time', 'summary', 'tags', 'citations' ),
 	);
 }
 
@@ -1023,6 +1064,9 @@ function qubyx_ci_parse_ai_article_json( $text ) {
 		'excerpt'         => sanitize_textarea_field( $data['excerpt'] ?? '' ),
 		'seo_title'       => sanitize_text_field( $data['seo_title'] ?? ( $data['title'] ?? '' ) ),
 		'seo_description' => sanitize_textarea_field( $data['seo_description'] ?? ( $data['excerpt'] ?? '' ) ),
+		'focus_keyphrase' => sanitize_text_field( $data['focus_keyphrase'] ?? '' ),
+		'secondary_keyphrases' => array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $data['secondary_keyphrases'] ?? array() ) ) ) ),
+		'rank_math_pillar_content' => ! empty( $data['rank_math_pillar_content'] ),
 		'content_html'    => wp_kses_post( $data['content_html'] ?? '' ),
 		'reading_time'    => max( 1, absint( $data['reading_time'] ?? 6 ) ),
 		'summary'         => sanitize_textarea_field( $data['summary'] ?? ( $data['excerpt'] ?? '' ) ),
@@ -1070,6 +1114,121 @@ function qubyx_ci_normalize_ai_citations( $citations, $response_data ) {
 }
 
 /**
+ * Get terms for AI Writer select fields.
+ *
+ * @param string $taxonomy Taxonomy name.
+ * @return array
+ */
+function qubyx_ci_get_ai_terms_for_select( $taxonomy ) {
+	$fallbacks = array(
+		'resource_category' => array(
+			'guides'          => __( 'Guides', 'qubyx-content-importer' ),
+			'compliance'      => __( 'Compliance', 'qubyx-content-importer' ),
+			'technical-notes' => __( 'Technical Notes', 'qubyx-content-importer' ),
+			'case-studies'    => __( 'Case Studies', 'qubyx-content-importer' ),
+			'news'            => __( 'News', 'qubyx-content-importer' ),
+			'product-updates' => __( 'Product Updates', 'qubyx-content-importer' ),
+			'blog'            => __( 'Blog', 'qubyx-content-importer' ),
+		),
+		'category'          => array(
+			'blog'            => __( 'Blog', 'qubyx-content-importer' ),
+			'news'            => __( 'News', 'qubyx-content-importer' ),
+			'product-updates' => __( 'Product Updates', 'qubyx-content-importer' ),
+		),
+	);
+
+	if ( ! taxonomy_exists( $taxonomy ) ) {
+		return $fallbacks[ $taxonomy ] ?? array();
+	}
+
+	$terms = get_terms(
+		array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => false,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+		)
+	);
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		return $fallbacks[ $taxonomy ] ?? array();
+	}
+
+	$options = array();
+	foreach ( $terms as $term ) {
+		if ( 'uncategorized' === $term->slug ) {
+			continue;
+		}
+		$options[ $term->slug ] = $term->name;
+	}
+
+	return $options ?: ( $fallbacks[ $taxonomy ] ?? array() );
+}
+
+/**
+ * Normalize AI resource category.
+ *
+ * @param string $category Category slug.
+ * @param string $layout Resource layout.
+ * @return string
+ */
+function qubyx_ci_normalize_ai_resource_category( $category, $layout ) {
+	$allowed = array_keys( qubyx_ci_get_ai_terms_for_select( 'resource_category' ) );
+	if ( in_array( $category, $allowed, true ) ) {
+		return $category;
+	}
+
+	if ( 'news' === $layout ) {
+		return in_array( 'news', $allowed, true ) ? 'news' : reset( $allowed );
+	}
+
+	if ( 'blog' === $layout ) {
+		return in_array( 'blog', $allowed, true ) ? 'blog' : reset( $allowed );
+	}
+
+	return in_array( 'guides', $allowed, true ) ? 'guides' : reset( $allowed );
+}
+
+/**
+ * Normalize AI post category.
+ *
+ * @param string $category Category slug.
+ * @param string $layout Resource layout.
+ * @return string
+ */
+function qubyx_ci_normalize_ai_post_category( $category, $layout ) {
+	$allowed = array_keys( qubyx_ci_get_ai_terms_for_select( 'category' ) );
+	if ( in_array( $category, $allowed, true ) ) {
+		return $category;
+	}
+
+	if ( 'news' === $layout ) {
+		return in_array( 'news', $allowed, true ) ? 'news' : reset( $allowed );
+	}
+
+	return in_array( 'blog', $allowed, true ) ? 'blog' : reset( $allowed );
+}
+
+/**
+ * Normalize layout to match selected category.
+ *
+ * @param string $layout Layout.
+ * @param string $category Category slug.
+ * @return string
+ */
+function qubyx_ci_normalize_ai_resource_layout( $layout, $category ) {
+	if ( in_array( $category, array( 'news', 'product-updates' ), true ) ) {
+		return 'news';
+	}
+
+	if ( 'blog' === $category ) {
+		return 'blog';
+	}
+
+	return in_array( $layout, array( 'guide', 'news', 'blog' ), true ) ? $layout : 'guide';
+}
+
+/**
  * Create a WordPress draft from an AI article.
  *
  * @param array $article Article data.
@@ -1078,6 +1237,7 @@ function qubyx_ci_normalize_ai_citations( $citations, $response_data ) {
  */
 function qubyx_ci_create_ai_draft( $article, $args ) {
 	$post_type = in_array( $args['post_type'] ?? 'resource', array( 'post', 'page', 'resource' ), true ) ? $args['post_type'] : 'resource';
+	$layout    = qubyx_ci_normalize_ai_resource_layout( $args['resource_layout'] ?? 'guide', $args['resource_category'] ?? '' );
 	$post_id   = wp_insert_post(
 		array(
 			'post_type'    => $post_type,
@@ -1090,6 +1250,7 @@ function qubyx_ci_create_ai_draft( $article, $args ) {
 				'_qubyx_ai_generated' => current_time( 'mysql' ),
 				'summary'             => $article['summary'],
 				'reading_time'        => $article['reading_time'],
+				'resource_layout'     => $layout,
 			),
 		),
 		true
@@ -1106,14 +1267,20 @@ function qubyx_ci_create_ai_draft( $article, $args ) {
 			'post_excerpt'    => $article['excerpt'],
 			'seo_title'       => $article['seo_title'],
 			'seo_description' => $article['seo_description'],
+			'focus_keyphrase' => $article['focus_keyphrase'],
+			'secondary_keyphrases' => $article['secondary_keyphrases'],
+			'rank_math_pillar_content' => $article['rank_math_pillar_content'],
 		)
 	);
 
 	if ( 'resource' === $post_type && taxonomy_exists( 'resource_category' ) ) {
-		$layout = in_array( $args['resource_layout'] ?? 'guide', array( 'guide', 'news', 'blog' ), true ) ? $args['resource_layout'] : 'guide';
-		update_post_meta( $post_id, 'resource_layout', $layout );
-		$term = 'blog' === $layout ? 'blog' : ( 'news' === $layout ? 'news' : 'guides' );
+		$term = qubyx_ci_normalize_ai_resource_category( $args['resource_category'] ?? '', $layout );
 		wp_set_object_terms( $post_id, array( $term ), 'resource_category', false );
+	}
+
+	if ( 'post' === $post_type && taxonomy_exists( 'category' ) ) {
+		$term = qubyx_ci_normalize_ai_post_category( $args['post_category'] ?? '', $layout );
+		wp_set_object_terms( $post_id, array( $term ), 'category', false );
 	}
 
 	if ( ! empty( $article['tags'] ) && taxonomy_exists( 'post_tag' ) && 'page' !== $post_type ) {
@@ -1372,6 +1539,8 @@ function qubyx_ci_update_meta( $post_id, $key, $value ) {
 function qubyx_ci_update_seo_meta( $post_id, $item ) {
 	$title       = $item['seo_title'] ?? ( ( $item['post_title'] ?? '' ) . ' | QUBYX' );
 	$description = $item['seo_description'] ?? ( $item['post_excerpt'] ?? '' );
+	$focus_keyphrase = $item['focus_keyphrase'] ?? '';
+	$secondary_keyphrases = $item['secondary_keyphrases'] ?? array();
 
 	if ( $title ) {
 		update_post_meta( $post_id, '_qubyx_meta_title', $title );
@@ -1383,6 +1552,19 @@ function qubyx_ci_update_seo_meta( $post_id, $item ) {
 		update_post_meta( $post_id, '_qubyx_meta_description', $description );
 		update_post_meta( $post_id, '_yoast_wpseo_metadesc', $description );
 		update_post_meta( $post_id, 'rank_math_description', $description );
+	}
+
+	if ( $focus_keyphrase ) {
+		update_post_meta( $post_id, 'rank_math_focus_keyword', $focus_keyphrase );
+		update_post_meta( $post_id, '_yoast_wpseo_focuskw', $focus_keyphrase );
+	}
+
+	if ( ! empty( $secondary_keyphrases ) && is_array( $secondary_keyphrases ) ) {
+		update_post_meta( $post_id, '_qubyx_secondary_keyphrases', array_values( array_map( 'sanitize_text_field', $secondary_keyphrases ) ) );
+	}
+
+	if ( ! empty( $item['rank_math_pillar_content'] ) ) {
+		update_post_meta( $post_id, 'rank_math_pillar_content', 'on' );
 	}
 }
 

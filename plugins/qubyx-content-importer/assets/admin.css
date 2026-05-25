@@ -523,6 +523,39 @@
 	letter-spacing: 0;
 }
 
+.qubyx-ai-seo {
+	max-width: 840px;
+	margin: 16px 0 20px;
+	padding: 16px;
+	border: 1px solid #dfe4ef;
+	border-radius: 8px;
+	background: #fbfcff;
+}
+
+.qubyx-ai-seo h3 {
+	margin: 0 0 12px;
+	color: #111827;
+}
+
+.qubyx-ai-seo dl {
+	display: grid;
+	grid-template-columns: 150px minmax(0, 1fr);
+	gap: 10px 14px;
+	margin: 0;
+}
+
+.qubyx-ai-seo dt {
+	color: #647084;
+	font-size: 12px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.qubyx-ai-seo dd {
+	margin: 0;
+	color: #283245;
+}
+
 .qubyx-notice--error {
 	border-color: #fecaca;
 	background: #fef2f2;

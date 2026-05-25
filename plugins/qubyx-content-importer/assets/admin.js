@@ -10,6 +10,35 @@
 	const output = document.querySelector('[data-qubyx-ai-output]');
 	const actions = document.querySelector('[data-qubyx-ai-actions]');
 	const submit = form.querySelector('button[type="submit"]');
+	const postType = form.querySelector('[name="post_type"]');
+	const resourceLayout = form.querySelector('[name="resource_layout"]');
+	const resourceCategory = form.querySelector('[name="resource_category"]');
+	const postCategory = form.querySelector('[name="post_category"]');
+	const resourceCategoryField = form.querySelector('[data-qubyx-resource-category]');
+	const postCategoryField = form.querySelector('[data-qubyx-post-category]');
+
+	function syncCategoryFields() {
+		const type = postType ? postType.value : 'resource';
+		if (resourceCategoryField) {
+			resourceCategoryField.hidden = type !== 'resource';
+		}
+		if (postCategoryField) {
+			postCategoryField.hidden = type !== 'post';
+		}
+	}
+
+	function syncLayoutFromCategory() {
+		if (!resourceLayout || !resourceCategory) {
+			return;
+		}
+		if (resourceCategory.value === 'news' || resourceCategory.value === 'product-updates') {
+			resourceLayout.value = 'news';
+		} else if (resourceCategory.value === 'blog') {
+			resourceLayout.value = 'blog';
+		} else {
+			resourceLayout.value = 'guide';
+		}
+	}
 
 	function escapeHtml(value) {
 		return String(value || '').replace(/[&<>"']/g, function (char) {
@@ -35,11 +64,23 @@
 		const article = payload.article || {};
 		const draft = payload.draft || null;
 		const citations = Array.isArray(article.citations) ? article.citations : [];
+		const secondary = Array.isArray(article.secondary_keyphrases) ? article.secondary_keyphrases : [];
 		const citationHtml = citations.length
 			? '<h3>Sources</h3><ul>' + citations.map(function (item) {
 				return '<li><a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener">' + escapeHtml(item.title || item.url) + '</a></li>';
 			}).join('') + '</ul>'
 			: '';
+		const seoHtml = [
+			'<div class="qubyx-ai-seo">',
+			'<h3>SEO metadata</h3>',
+			'<dl>',
+			'<dt>Focus keyphrase</dt><dd>' + escapeHtml(article.focus_keyphrase || '') + '</dd>',
+			'<dt>SEO title</dt><dd>' + escapeHtml(article.seo_title || '') + '</dd>',
+			'<dt>Meta description</dt><dd>' + escapeHtml(article.seo_description || '') + '</dd>',
+			'<dt>Secondary keyphrases</dt><dd>' + escapeHtml(secondary.join(', ')) + '</dd>',
+			'</dl>',
+			'</div>'
+		].join('');
 
 		output.innerHTML = [
 			'<article class="qubyx-ai-preview">',
@@ -47,6 +88,7 @@
 			'<h2>' + escapeHtml(article.title) + '</h2>',
 			'<p class="qubyx-ai-excerpt">' + escapeHtml(article.excerpt) + '</p>',
 			'<div class="qubyx-ai-meta"><span>' + escapeHtml(article.reading_time || 6) + ' min read</span><span>' + escapeHtml(article.seo_title || '') + '</span></div>',
+			seoHtml,
 			'<div class="qubyx-ai-content">' + (article.content_html || '') + '</div>',
 			citationHtml,
 			'</article>'
@@ -96,4 +138,13 @@
 				setLoading(false);
 			});
 	});
+
+	if (postType) {
+		postType.addEventListener('change', syncCategoryFields);
+	}
+	if (resourceCategory) {
+		resourceCategory.addEventListener('change', syncLayoutFromCategory);
+	}
+	syncCategoryFields();
+	syncLayoutFromCategory();
 })();
