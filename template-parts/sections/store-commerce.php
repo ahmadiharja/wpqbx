@@ -77,13 +77,15 @@ $qubyx_store_categories = array(
 						<?php foreach ( $qubyx_store_groups as $group ) : ?>
 							<?php $active_plan = $group['plans'][0] ?? array(); ?>
 							<article class="adstore-card<?php echo ! empty( $group['featured'] ) ? ' is-featured' : ''; ?>" data-store-card data-categories="<?php echo esc_attr( implode( ',', $group['categories'] ) ); ?>" data-audiences="<?php echo esc_attr( implode( ',', $group['audiences'] ) ); ?>">
-								<div class="adstore-card__icon adstore-card__icon--<?php echo esc_attr( $group['icon'] ); ?>"><?php echo esc_html( $group['code'] ); ?></div>
-								<?php if ( ! empty( $group['badge'] ) ) : ?>
-									<span class="adstore-card__badge<?php echo ! empty( $group['badge_class'] ) ? ' adstore-card__badge--' . esc_attr( $group['badge_class'] ) : ''; ?>"><?php echo esc_html( $group['badge'] ); ?></span>
-								<?php endif; ?>
-								<p class="adstore-card__tag"><?php echo esc_html( $group['tag'] ); ?></p>
-								<h2 class="adstore-card__title"><?php echo esc_html( $group['title'] ); ?></h2>
-								<p class="adstore-card__desc"><?php echo esc_html( $group['desc'] ); ?></p>
+								<div class="adstore-card__summary">
+									<div class="adstore-card__icon adstore-card__icon--<?php echo esc_attr( $group['icon'] ); ?>"><?php echo esc_html( $group['code'] ); ?></div>
+									<?php if ( ! empty( $group['badge'] ) ) : ?>
+										<span class="adstore-card__badge<?php echo ! empty( $group['badge_class'] ) ? ' adstore-card__badge--' . esc_attr( $group['badge_class'] ) : ''; ?>"><?php echo esc_html( $group['badge'] ); ?></span>
+									<?php endif; ?>
+									<p class="adstore-card__tag"><?php echo esc_html( $group['tag'] ); ?></p>
+									<h2 class="adstore-card__title"><?php echo esc_html( $group['title'] ); ?></h2>
+									<p class="adstore-card__desc"><?php echo esc_html( $group['desc'] ); ?></p>
+								</div>
 
 								<div class="adstore-plan-tabs" role="tablist" aria-label="<?php echo esc_attr( $group['title'] ); ?>">
 									<?php foreach ( $group['plans'] as $index => $plan ) : ?>
@@ -111,7 +113,7 @@ $qubyx_store_categories = array(
 										<p class="adstore-card__desc"><?php echo esc_html( $plan['desc'] ); ?></p>
 										<?php if ( ! empty( $plan['features'] ) ) : ?>
 											<ul class="adstore-card__features">
-												<?php foreach ( array_slice( $plan['features'], 0, 7 ) as $feature ) : ?>
+												<?php foreach ( array_slice( $plan['features'], 0, 4 ) as $feature ) : ?>
 													<li><?php echo qubyx_icon( 'check', 13 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> <?php echo esc_html( $feature ); ?></li>
 												<?php endforeach; ?>
 											</ul>
