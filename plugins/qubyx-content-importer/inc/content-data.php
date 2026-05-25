@@ -1656,21 +1656,7 @@ function qubyx_ci_products() {
 				'Hosted or local deployment positioning for enterprise teams',
 			)
 		),
-		'qubyx-smartsensor-s1' => qubyx_ci_product(
-			'Qubyx SmartSensor S1',
-			'qubyx-smartsensor-s1',
-			'Compact luminance sensor for routine QA',
-			'SmartSensor S1 pairs with QUBYX workflows for practical medical display calibration and recurring luminance QA.',
-			'Sensor',
-			5,
-			array( 'product_category' => array( 'sensors' ) ),
-			array(
-				'Luminance measurement for routine QA workflows',
-				'Designed to pair with PerfectLum deployments',
-				'Useful for consistent workstation checks',
-				'Simple sensor story for software-and-hardware bundles',
-			)
-		),
+		'qubyx-smartsensor-s1' => qubyx_ci_smartsensor_s1_product(),
 		'qubyx-smartsensor-s2' => qubyx_ci_product(
 			'Qubyx SmartSensor S2',
 			'qubyx-smartsensor-s2',
@@ -1838,6 +1824,187 @@ function qubyx_ci_build_perfectlum_content( $asset_base ) {
 		<a href="/products/qubyx-smartsensor-s1/"><strong>Qubyx SmartSensor S1</strong><span>Sensor path for routine medical display QA and PerfectLum deployments.</span></a>
 		<a href="/products/qubyx-remoteqa/"><strong>Qubyx RemoteQA</strong><span>Centralized scheduling, status review, reports, and fleet operations.</span></a>
 		<a href="/solutions/medical-display-qa/"><strong>Medical Display QA</strong><span>Connect PerfectLum to the broader hospital QA content path.</span></a>
+	</div>';
+}
+
+/**
+ * Build the QUBYX SmartSensor S1 product page from the official product brochure.
+ */
+function qubyx_ci_smartsensor_s1_product() {
+	$asset_base  = '/wp-content/themes/qubyx-theme/assets/images/smartsensor-s1/';
+	$description = 'QUBYX SmartSensor S1 is an ultra-compact OEM display measurement module with a built-in micro tristimulus colorimeter for automatic calibration, verification, and DICOM-oriented compliance monitoring inside the display.';
+
+	return array(
+		'post_title'               => 'QUBYX SmartSensor S1',
+		'post_name'                => 'qubyx-smartsensor-s1',
+		'post_excerpt'             => $description,
+		'post_content'             => qubyx_ci_build_smartsensor_s1_content( $asset_base ),
+		'menu_order'               => 5,
+		'terms'                    => array( 'product_category' => array( 'sensors' ) ),
+		'seo_title'                => 'QUBYX SmartSensor S1 OEM Display Calibration Module',
+		'seo_description'          => 'QUBYX SmartSensor S1 is a compact OEM sensor module for automatic display calibration, verification, DICOM compliance tracking, and embedded luminance and color measurement.',
+		'focus_keyphrase'          => 'QUBYX SmartSensor S1',
+		'secondary_keyphrases'     => array(
+			'OEM display calibration module',
+			'micro tristimulus colorimeter',
+			'automatic display recalibration',
+			'DICOM compliance sensor',
+		),
+		'rank_math_pillar_content' => true,
+		'meta'                     => array(
+			'hero_eyebrow'        => 'OEM display calibration hardware',
+			'hero_headline'       => 'QUBYX SmartSensor S1',
+			'hero_description'    => $description,
+			'hero_image_url'      => $asset_base . 'smartsensor-s1-hero.jpg',
+			'cta_primary'         => array( 'title' => 'Request OEM quote', 'url' => '/request-demo/', 'target' => '' ),
+			'cta_secondary'       => array( 'title' => 'View sensor catalog', 'url' => '/store/sensors/', 'target' => '' ),
+			'features_eyebrow'    => 'SmartSensor S1 workflow',
+			'features_heading'    => 'Embedded measurement',
+			'features_accent'     => 'for display makers and OEM programs.',
+			'features_intro'      => 'SmartSensor S1 turns calibration and verification into a built-in display capability: no external measurement device, no extra user action, and no separate software setup for end users.',
+			'features'            => array(
+				array( 'badge' => 'OEM', 'title' => 'Built into the display', 'description' => 'The 44 mm module and 10 mm micro colorimeter are designed for integration into display bezels or enclosures without changing the product experience.', 'span' => 'wide' ),
+				array( 'badge' => 'Auto', 'title' => 'Automatic background QA', 'description' => 'Verification and recalibration can run in the background on predefined schedules while users continue working normally.', 'span' => '' ),
+				array( 'badge' => 'DICOM', 'title' => 'DICOM and GSDF monitoring', 'description' => 'S1 Manager helps verify DICOM compliance, track GSDF error rates, and monitor white and black level conformance over time.', 'span' => '' ),
+				array( 'badge' => 'Color', 'title' => 'Micro tristimulus colorimeter', 'description' => 'The built-in colorimeter measures luminance and color for consistent medical-grade display performance over the product lifecycle.', 'span' => 'wide' ),
+				array( 'badge' => 'I/O', 'title' => 'OEM connection options', 'description' => 'USB, I2C, and UART interfaces give manufacturers practical integration paths for display electronics and service workflows.', 'span' => '' ),
+				array( 'badge' => 'Fleet', 'title' => 'Firmware and compliance history', 'description' => 'S1 Manager supports target changes, schedule updates, firmware updates, and historical compliance review directly from the sensor.', 'span' => '' ),
+			),
+			'benefits'            => array(
+				array( 'title' => 'Perfect display out of the box', 'detail' => 'S1 works as soon as the display is powered on, helping manufacturers ship products with calibration and verification built in.' ),
+				array( 'title' => 'No external meter for routine checks', 'detail' => 'End users do not need a separate measurement device or manual action for scheduled background verification.' ),
+				array( 'title' => 'OEM differentiation', 'detail' => 'Adds measurable value to high-end televisions, B2B displays, white-label products, and medical imaging displays.' ),
+				array( 'title' => 'Medical-grade positioning', 'detail' => 'Supports precise luminance and color measurement for applications that require calibration, verification, and compliance evidence.' ),
+				array( 'title' => 'Compact industrial design fit', 'detail' => 'The brochure positions the module as ultra-compact, enabling integration into bezels or enclosures.' ),
+				array( 'title' => 'Serviceable over time', 'detail' => 'S1 Manager lets teams adjust targets, review historical data, and update firmware as display programs evolve.' ),
+			),
+			'specifications'      => array(
+				array( 'label' => 'Module size', 'value' => '44 mm x 38 mm chip module; 10 mm x 11 mm micro tristimulus colorimeter' ),
+				array( 'label' => 'Connection', 'value' => 'USB, I2C, UART' ),
+				array( 'label' => 'Filter technology', 'value' => 'CIE tristimulus glass filter' ),
+				array( 'label' => 'Resolution', 'value' => '20 bit' ),
+				array( 'label' => 'Calibration and verification', 'value' => 'Background verification and automatic recalibration when out of range' ),
+				array( 'label' => 'Supported backlights', 'value' => 'CCFL, LED, RGB LED, OLED' ),
+				array( 'label' => 'Dynamic range', 'value' => '0.001 to 5000 cd/m2' ),
+				array( 'label' => 'Wavelength range', 'value' => '400 - 690 nm' ),
+				array( 'label' => 'Measurement speed', 'value' => '0.5 sec per measurement' ),
+				array( 'label' => 'Manager software', 'value' => 'Targets, schedules, compliance history, firmware, DICOM compliance, GSDF error, and white/black level monitoring' ),
+			),
+			'comparison_intro'    => 'SmartSensor S1 should be positioned against external meter workflows and display products that have no embedded measurement capability.',
+			'comparison_columns'  => array(
+				array( 'name' => 'External meter', 'highlight' => false ),
+				array( 'name' => 'No embedded QA', 'highlight' => false ),
+				array( 'name' => 'SmartSensor S1', 'highlight' => true ),
+			),
+			'comparison_rows'     => array(
+				array( 'feature' => 'Built into display hardware', 'values' => array( array( 'value' => '-' ), array( 'value' => '-' ), array( 'value' => 'Yes' ) ) ),
+				array( 'feature' => 'Background verification', 'values' => array( array( 'value' => 'Manual' ), array( 'value' => '-' ), array( 'value' => 'Scheduled' ) ) ),
+				array( 'feature' => 'Automatic recalibration', 'values' => array( array( 'value' => 'Manual' ), array( 'value' => '-' ), array( 'value' => 'When out of range' ) ) ),
+				array( 'feature' => 'End-user software setup', 'values' => array( array( 'value' => 'Required' ), array( 'value' => '-' ), array( 'value' => 'Not required' ) ) ),
+				array( 'feature' => 'DICOM and GSDF tracking', 'values' => array( array( 'value' => 'Tool dependent' ), array( 'value' => '-' ), array( 'value' => 'S1 Manager' ) ) ),
+				array( 'feature' => 'OEM product differentiation', 'values' => array( array( 'value' => 'Accessory' ), array( 'value' => 'Limited' ), array( 'value' => 'Embedded feature' ) ) ),
+			),
+			'faqs'                => array(
+				array( 'question' => 'What is QUBYX SmartSensor S1?', 'answer' => 'SmartSensor S1 is an OEM display measurement module with a built-in micro tristimulus colorimeter for automatic calibration, verification, and compliance monitoring inside the display.' ),
+				array( 'question' => 'Who is SmartSensor S1 for?', 'answer' => 'The brochure positions S1 for LCD manufacturers, OEM white-label products, B2B display marketplaces, high-end television screens, medical displays, and other imaging applications that need precise calibration and verification.' ),
+				array( 'question' => 'Does the end user need extra software or an external meter?', 'answer' => 'The brochure states that S1 requires no software installation, registration, external measurement device, or user action for its embedded workflow.' ),
+				array( 'question' => 'What does S1 Manager do?', 'answer' => 'S1 Manager lets teams change calibration targets and schedules, view historical compliance data, update firmware, verify DICOM compliance, track GSDF error rates, and monitor white and black level conformance.' ),
+				array( 'question' => 'What interfaces are available?', 'answer' => 'The official specification lists USB, I2C, and UART connection options.' ),
+				array( 'question' => 'What display backlights are supported?', 'answer' => 'The brochure lists CCFL, LED, RGB LED, and OLED backlights.' ),
+				array( 'question' => 'How fast is a measurement?', 'answer' => 'The brochure specifies 0.5 seconds per measurement in both the standard and low-light ranges.' ),
+				array( 'question' => 'Is SmartSensor S1 the same as SmartSensor S2?', 'answer' => 'No. This page positions S1 as the embedded OEM module from the supplied brochure. SmartSensor S2 remains a separate product path for broader sensor positioning.' ),
+			),
+			'final_cta_heading'   => 'Build calibration and verification into the display itself.',
+			'final_cta_text'      => 'Use SmartSensor S1 when the product needs embedded measurement, automatic background verification, DICOM-oriented compliance history, and an OEM-ready integration path.',
+			'final_cta_primary'   => array( 'title' => 'Request OEM quote', 'url' => '/request-demo/', 'target' => '' ),
+			'final_cta_secondary' => array( 'title' => 'View Store sensors', 'url' => '/store/sensors/', 'target' => '' ),
+		),
+	);
+}
+
+/**
+ * Build the long-form QUBYX SmartSensor S1 product content.
+ */
+function qubyx_ci_build_smartsensor_s1_content( $asset_base ) {
+	return '<div class="qubyx-product-proof alignwide">
+		<div>
+			<span class="qubyx-product-proof__kicker">SmartSensor S1 at a glance</span>
+			<h2>An embedded calibration and verification module for OEM display programs.</h2>
+			<p>SmartSensor S1 is designed for display manufacturers that want calibration and verification to become part of the product itself. It supports high-end television screens, B2B displays, OEM white-label products, medical displays, and imaging applications where repeatable luminance and color measurement matters.</p>
+		</div>
+		<ul>
+			<li><strong>Embedded hardware:</strong> 44 mm chip module with a 10 mm micro tristimulus colorimeter.</li>
+			<li><strong>No end-user setup:</strong> no software installation, registration, external meter, or user action for the embedded workflow.</li>
+			<li><strong>Automatic QA:</strong> background verification and recalibration on predefined schedules.</li>
+			<li><strong>Compliance management:</strong> S1 Manager handles targets, schedules, history, firmware, DICOM compliance, GSDF error, and white/black levels.</li>
+		</ul>
+	</div>
+
+	<h2>Why SmartSensor S1 exists</h2>
+	<p>Display manufacturers are under pressure to ship products that look better, stay consistent longer, and prove quality without adding friction for customers. SmartSensor S1 gives the display its own measurement layer, so calibration and verification are no longer a separate accessory story.</p>
+	<p>For OEM teams, that changes the product promise: the display can be positioned as calibration-ready, compliance-aware, and easier to maintain over its useful life. For medical and imaging workflows, it helps connect display hardware to measurable luminance, color, DICOM, and GSDF evidence.</p>
+
+	<div class="qubyx-product-media-grid alignwide">
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s1-hero.jpg' ) . '" alt="QUBYX SmartSensor S1 integrated into a display" loading="lazy" /><figcaption>S1 is designed to become part of the display hardware.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s1-chip.jpg' ) . '" alt="QUBYX SmartSensor S1 44 mm chip module" loading="lazy" /><figcaption>44 mm x 38 mm chip module for OEM integration.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s1-colorimeter.jpg' ) . '" alt="QUBYX SmartSensor S1 micro tristimulus colorimeter" loading="lazy" /><figcaption>10 mm x 11 mm micro tristimulus colorimeter.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s1-manager.jpg' ) . '" alt="QUBYX S1 Manager software interface" loading="lazy" /><figcaption>S1 Manager for targets, schedules, history, and compliance status.</figcaption></figure>
+	</div>
+
+	<h2>Automatic in the background</h2>
+	<p>The module performs verification and recalibration in the background according to predefined schedules. That is the central product story: users can continue working normally while the display handles recurring measurement tasks behind the scenes.</p>
+	<ul>
+		<li>Background verification for recurring display quality checks.</li>
+		<li>Automatic recalibration when measurements move out of range.</li>
+		<li>Predefined schedules for consistent QA behavior.</li>
+		<li>Measurement hardware built into the display instead of attached later.</li>
+	</ul>
+
+	<h2>S1 Manager for OEM and compliance teams</h2>
+	<p>QUBYX S1 Manager is the onboard management layer for the module. It lets teams change calibration targets and schedules, view historical compliance data, update firmware, verify DICOM compliance, track GSDF error rates, and monitor white and black level conformance over time directly from the sensor.</p>
+	<div class="qubyx-s1-showcase alignwide">
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s1-module-integration.jpg' ) . '" alt="SmartSensor S1 chip and scaler placement inside display" loading="lazy" /><figcaption>Chip and scaler placement concept from the official brochure.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s1-module-photos.jpg' ) . '" alt="QUBYX SmartSensor S1 module photos" loading="lazy" /><figcaption>Module photos for physical integration review.</figcaption></figure>
+	</div>
+
+	<h2>Technical specification from the brochure</h2>
+	<div class="qubyx-product-spec-table alignwide">
+		<table>
+			<tbody>
+				<tr><th>Connection</th><td>USB, I2C, UART</td></tr>
+				<tr><th>Filter technology</th><td>CIE tristimulus glass filter</td></tr>
+				<tr><th>Resolution</th><td>20 bit</td></tr>
+				<tr><th>Calibration and verification</th><td>Background verification and automatic recalibration when out of range</td></tr>
+				<tr><th>Supported backlights</th><td>CCFL, LED, RGB LED, OLED</td></tr>
+				<tr><th>Dynamic range</th><td>0.001 to 5000 cd/m2</td></tr>
+				<tr><th>Wavelength range</th><td>400 - 690 nm</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h2>Accuracy and measurement ranges</h2>
+	<div class="qubyx-product-spec-table alignwide">
+		<table>
+			<thead>
+				<tr><th>Metric</th><th>Standard range<br />(1 cd/m2 &lt; Y &lt; 5000 cd/m2)</th><th>Low-light range<br />(0.05 cd/m2 &lt; Y &lt; 1.0 cd/m2)</th></tr>
+			</thead>
+			<tbody>
+				<tr><th>White accuracy</th><td>+/- 0.002</td><td>+/- 0.0035</td></tr>
+				<tr><th>Color accuracy</th><td>+/- 0.0035</td><td>+/- 0.006</td></tr>
+				<tr><th>Luminance accuracy</th><td>+/- 2%</td><td>+/- 4%</td></tr>
+				<tr><th>Repeatability</th><td>+/- 0.001, 0.5%</td><td>+/- 0.002, 2%</td></tr>
+				<tr><th>Measurement speed</th><td>0.5 sec / measurement</td><td>0.5 sec / measurement</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h2>Where S1 fits in the QUBYX portfolio</h2>
+	<p>SmartSensor S1 is the embedded OEM hardware path. It can support display manufacturers that want to ship calibration-aware products, medical display vendors that need DICOM-oriented verification, and enterprise programs that want hardware-level evidence to work alongside QUBYX software and RemoteQA workflows.</p>
+	<div class="qubyx-product-links alignwide">
+		<a href="/products/perfectlum/"><strong>PerfectLum 4</strong><span>Medical display calibration and QA software for DICOM workflows.</span></a>
+		<a href="/products/qubyx-remoteqa/"><strong>QUBYX RemoteQA</strong><span>Central scheduling, status review, reports, and fleet operations.</span></a>
+		<a href="/store/sensors/"><strong>SmartSensor catalog</strong><span>Sensor quote paths and hardware purchasing context.</span></a>
+		<a href="/solutions/oem-display-calibration/"><strong>OEM display calibration</strong><span>Position S1 inside display product lines and validation programs.</span></a>
 	</div>';
 }
 

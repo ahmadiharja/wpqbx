@@ -1227,6 +1227,17 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 .qubyx-product-links a { background: var(--color-bg-soft); border: 1px solid var(--color-border); border-radius: var(--r-lg); color: var(--color-ink); display: flex; flex-direction: column; gap: .35rem; padding: 1rem; text-decoration: none; transition: border-color var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
 .qubyx-product-links a:hover { border-color: var(--color-accent); color: var(--color-ink); transform: translateY(-2px); }
 .qubyx-product-links span { color: var(--color-ink-muted); font-size: var(--text-sm); line-height: 1.45; }
+.qubyx-s1-showcase { display: grid; gap: 1rem; grid-template-columns: .8fr 1.2fr; margin: 2rem 0 3rem; max-width: none; }
+.qubyx-s1-showcase figure { background: #fff; border: 1px solid var(--color-border); border-radius: var(--r-xl); margin: 0; overflow: hidden; }
+.qubyx-s1-showcase img { border-radius: 0; display: block; height: 100%; max-height: 320px; object-fit: cover; width: 100%; }
+.qubyx-s1-showcase figcaption { color: var(--color-ink-subtle); font-size: var(--text-xs); line-height: 1.4; padding: .75rem .85rem .9rem; }
+.qubyx-product-spec-table { background: #fff; border: 1px solid var(--color-border); border-radius: var(--r-xl); margin: 1.5rem 0 2.5rem; max-width: none; overflow-x: auto; }
+.qubyx-product-spec-table table { border-collapse: collapse; font-size: var(--text-sm); margin: 0; min-width: 680px; width: 100%; }
+.qubyx-product-spec-table th, .qubyx-product-spec-table td { border-bottom: 1px solid var(--color-border); padding: .85rem 1rem; text-align: left; vertical-align: top; }
+.qubyx-product-spec-table thead th { background: var(--color-bg-deep); color: #fff; font-weight: 700; }
+.qubyx-product-spec-table tbody th { color: var(--color-ink); font-weight: 700; width: 28%; }
+.qubyx-product-spec-table tbody td { color: var(--color-ink-muted); }
+.qubyx-product-spec-table tr:last-child th, .qubyx-product-spec-table tr:last-child td { border-bottom: 0; }
 
 .article__footer { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-border); }
 .article__tags { display: flex; gap: .5rem; flex-wrap: wrap; }
@@ -1242,10 +1253,10 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 
 @media (max-width: 900px) {
 	.product-hero, .qubyx-product-proof { grid-template-columns: 1fr; }
-	.qubyx-product-media-grid, .qubyx-product-links { grid-template-columns: 1fr 1fr; }
+	.qubyx-product-media-grid, .qubyx-product-links, .qubyx-s1-showcase { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
-	.qubyx-product-media-grid, .qubyx-product-links { grid-template-columns: 1fr; }
+	.qubyx-product-media-grid, .qubyx-product-links, .qubyx-s1-showcase { grid-template-columns: 1fr; }
 }
 
 .benefit-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem 2rem; }
