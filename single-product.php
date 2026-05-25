@@ -14,6 +14,7 @@ while ( have_posts() ) : the_post();
 	$headline  = qubyx_field( 'hero_headline', get_the_title() );
 	$desc      = qubyx_field( 'hero_description', get_the_excerpt() );
 	$image     = qubyx_field( 'hero_image' );
+	$image_url = qubyx_field( 'hero_image_url' );
 	$cta_p     = qubyx_field( 'cta_primary' );
 	$cta_s     = qubyx_field( 'cta_secondary' );
 	$benefits  = qubyx_field( 'benefits', array() );
@@ -37,6 +38,8 @@ while ( have_posts() ) : the_post();
 			<div class="product-hero__media">
 				<?php if ( $image && is_array( $image ) ) : ?>
 					<img src="<?php echo esc_url( $image['url'] ); ?>" alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>" />
+				<?php elseif ( $image_url ) : ?>
+					<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $headline ); ?>" />
 				<?php elseif ( has_post_thumbnail() ) : ?>
 					<?php the_post_thumbnail( 'qubyx-hero' ); ?>
 				<?php else : ?>

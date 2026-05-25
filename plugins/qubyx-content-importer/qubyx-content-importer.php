@@ -3,7 +3,7 @@
  * Plugin Name: Qubyx Content Importer
  * Plugin URI: https://qubyx.com
  * Description: Seeds the Qubyx enterprise website content, menus, products, resources, posts, and WPML-ready strings.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Qubyx
  * Author URI: https://qubyx.com
  * Text Domain: qubyx-content-importer
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUBYX_CI_VERSION', '1.0.3' );
+define( 'QUBYX_CI_VERSION', '1.0.4' );
 define( 'QUBYX_CI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'QUBYX_CI_URL', plugin_dir_url( __FILE__ ) );
 define( 'QUBYX_CI_FILE', __FILE__ );
@@ -1706,6 +1706,8 @@ function qubyx_ci_set_site_pages( $post_ids ) {
 
 	if ( class_exists( 'WooCommerce' ) ) {
 		update_option( 'woocommerce_currency', 'USD' );
+		update_option( 'woocommerce_coming_soon', 'no' );
+		update_option( 'woocommerce_store_pages_only', 'no' );
 	}
 }
 

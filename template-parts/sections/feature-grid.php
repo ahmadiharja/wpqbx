@@ -8,6 +8,10 @@
  */
 
 $features = qubyx_field( 'features', array() );
+$eyebrow  = qubyx_field( 'features_eyebrow', __( 'QUBYX platform', 'qubyx' ) );
+$heading  = qubyx_field( 'features_heading', __( 'Software, sensors, and', 'qubyx' ) );
+$accent   = qubyx_field( 'features_accent', __( 'remote QA for critical displays.', 'qubyx' ) );
+$lede     = qubyx_field( 'features_intro', __( 'Build a managed program for calibration, verification, reporting, and display quality evidence across medical and professional environments.', 'qubyx' ) );
 
 if ( empty( $features ) ) {
 	$features = array(
@@ -44,13 +48,13 @@ if ( empty( $features ) ) {
 <section class="section section--features" id="features">
 	<div class="container">
 		<header class="section__header">
-			<p class="eyebrow"><?php esc_html_e( 'QUBYX platform', 'qubyx' ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
 			<h2 class="section__title">
-				<?php esc_html_e( 'Software, sensors, and', 'qubyx' ); ?>
-				<span class="accent"><?php esc_html_e( 'remote QA for critical displays.', 'qubyx' ); ?></span>
+				<?php echo esc_html( $heading ); ?>
+				<span class="accent"><?php echo esc_html( $accent ); ?></span>
 			</h2>
 			<p class="section__lede">
-				<?php esc_html_e( 'Build a managed program for calibration, verification, reporting, and display quality evidence across medical and professional environments.', 'qubyx' ); ?>
+				<?php echo esc_html( $lede ); ?>
 			</p>
 		</header>
 

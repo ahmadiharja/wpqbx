@@ -1610,21 +1610,7 @@ function qubyx_ci_store_group_for_slug( $slug ) {
  */
 function qubyx_ci_products() {
 	return array(
-		'perfectlum' => qubyx_ci_product(
-			'PerfectLum',
-			'perfectlum',
-			'Medical display calibration and DICOM QA software',
-			'PerfectLum calibrates, verifies, schedules, records, and reports medical display quality for diagnostic imaging teams.',
-			'Software',
-			1,
-			array( 'product_category' => array( 'software' ) ),
-			array(
-				'DICOM Part 14 GSDF calibration and validation',
-				'Scheduled conformance checks and acceptance tests',
-				'History database and complete QA reporting',
-				'Support for multi-display medical workstations',
-			)
-		),
+		'perfectlum' => qubyx_ci_perfectlum_product(),
 		'perfectchroma' => qubyx_ci_product(
 			'PerfectChroma',
 			'perfectchroma',
@@ -1701,6 +1687,158 @@ function qubyx_ci_products() {
 			)
 		),
 	);
+}
+
+/**
+ * Build the PerfectLum 4 product page from official QUBYX source material.
+ */
+function qubyx_ci_perfectlum_product() {
+	$asset_base  = '/wp-content/themes/qubyx-theme/assets/images/perfectlum/';
+	$description = 'PerfectLum 4 is QUBYX calibration and quality assurance software for medical displays, designed for DICOM GSDF calibration, scheduled QA, reporting, and remote display management across diagnostic imaging workflows.';
+
+	return array(
+		'post_title'             => 'PerfectLum 4',
+		'post_name'              => 'perfectlum',
+		'post_excerpt'           => $description,
+		'post_content'           => qubyx_ci_build_perfectlum_content( $asset_base ),
+		'menu_order'             => 1,
+		'terms'                  => array( 'product_category' => array( 'software' ) ),
+		'seo_title'              => 'PerfectLum 4 DICOM Calibration Software | QUBYX',
+		'seo_description'        => 'PerfectLum 4 helps radiology, teleradiology, and healthcare teams calibrate, verify, monitor, and document medical display quality with DICOM GSDF workflows.',
+		'focus_keyphrase'        => 'PerfectLum 4 DICOM calibration software',
+		'secondary_keyphrases'   => array(
+			'medical display QA software',
+			'DICOM GSDF calibration',
+			'remote QA server for medical displays',
+			'PerfectLum maintenance plan',
+		),
+		'rank_math_pillar_content' => true,
+		'meta'                   => array(
+			'hero_eyebrow'        => 'Medical display calibration and QA software',
+			'hero_headline'       => 'PerfectLum 4',
+			'hero_description'    => $description,
+			'hero_image_url'      => $asset_base . 'perfectlum-display.jpg',
+			'cta_primary'         => array( 'title' => 'Request demo', 'url' => '/request-demo/', 'target' => '' ),
+			'cta_secondary'       => array( 'title' => 'View pricing', 'url' => '/store/perfectlum/', 'target' => '' ),
+			'features_eyebrow'    => 'PerfectLum 4 workflow',
+			'features_heading'    => 'Calibration, QA, and',
+			'features_accent'     => 'remote control for medical displays.',
+			'features_intro'      => 'PerfectLum 4 combines DICOM calibration, automated QA, reporting, remote management, and broad device compatibility for regulated medical imaging teams.',
+			'features'            => array(
+				array( 'badge' => 'DICOM', 'title' => 'DICOM GSDF calibration', 'description' => 'Calibrate diagnostic workstations to DICOM Part 14 GSDF and keep luminance response aligned with medical imaging expectations.', 'span' => 'wide' ),
+				array( 'badge' => 'QA', 'title' => 'Acceptance and consistency testing', 'description' => 'Use scheduled checks, conformance testing, and repeatable QA routines to keep displays under control over time.', 'span' => '' ),
+				array( 'badge' => 'Reports', 'title' => 'History and complete reports', 'description' => 'Generate documented results after calibration or QA tests so administrators have evidence for inspections and internal audits.', 'span' => '' ),
+				array( 'badge' => 'Remote', 'title' => 'Remote QA management', 'description' => 'Monitor and control displays across multiple facilities from a central administrator workflow.', 'span' => 'wide' ),
+				array( 'badge' => 'Devices', 'title' => 'Broad sensor and display support', 'description' => 'Works with many displays, graphics boards, colorimeters, photometers, and spot luminance meters.', 'span' => '' ),
+				array( 'badge' => 'License', 'title' => 'Per-workstation licensing', 'description' => 'One workstation license includes all features and can calibrate up to six displays.', 'span' => '' ),
+			),
+			'benefits'            => array(
+				array( 'title' => 'Diagnostic confidence', 'detail' => 'Keep radiology, teleradiology, mammography review, dental imaging, and other diagnostic screens measurable and consistent.' ),
+				array( 'title' => 'Audit-ready evidence', 'detail' => 'Store QA history and reports so teams can prove calibration activity, test results, and ongoing maintenance.' ),
+				array( 'title' => 'Less manual work', 'detail' => 'Use scheduling, remote status review, and centralized policies instead of ad hoc workstation visits.' ),
+				array( 'title' => 'Mixed-fleet flexibility', 'detail' => 'Support medical-grade, professional, commercial, older, laptop, and multi-display workstation environments.' ),
+				array( 'title' => 'Deployment choice', 'detail' => 'Use PerfectLum locally, with free remote management during evaluation, or connect to hosted or local Remote QA Server workflows.' ),
+				array( 'title' => 'Procurement clarity', 'detail' => 'Choose software-only, PerfectLum plus S1 Sensor, maintenance plans, volume quotes, or Remote QA Server licensing.' ),
+			),
+			'specifications'      => array(
+				array( 'label' => 'Primary workflow', 'value' => 'Medical display calibration, DICOM QA, conformance checks, reporting, and remote display management' ),
+				array( 'label' => 'Standards language', 'value' => 'NEMA DICOM Part 14 GSDF, AAPM TG18, AAPM TG270, DIN 6868-157, DIN 6868-57, ACR, NYC PDM, NY PDM, MQSA monitor inspection positioning' ),
+				array( 'label' => 'Operating systems', 'value' => 'Windows 7, 8, 10, 11 and macOS from version 12 according to QUBYX FAQ guidance' ),
+				array( 'label' => 'License model', 'value' => 'Per workstation; one license can calibrate up to six displays' ),
+				array( 'label' => 'Supported displays', 'value' => 'Nearly any display, including medical, professional, commercial, older, and laptop displays where hardware capability allows' ),
+				array( 'label' => 'Measurement devices', 'value' => 'QUBYX PerfectLum S1, Calibrite, X-Rite, Datacolor Spyder, Konica Minolta, PhotoResearch, IBA/Wellhoefer, Pehamed, Gossen, and other supported meters' ),
+				array( 'label' => 'Remote options', 'value' => 'Built-in remote management, hosted server, local server, relay system, notifications, scheduling, reporting, and Excel export workflows' ),
+				array( 'label' => 'Store paths', 'value' => 'PerfectLum 4, PerfectLum 4 + S1 Sensor, 3-year maintenance, 5-year maintenance, and Remote QA Server options' ),
+			),
+			'comparison_intro'    => 'PerfectLum 4 should be compared with manual QA routines and generic calibration utilities by its standards coverage, reporting depth, remote oversight, and medical workflow fit.',
+			'comparison_columns'  => array(
+				array( 'name' => 'Manual QA', 'highlight' => false ),
+				array( 'name' => 'Generic utility', 'highlight' => false ),
+				array( 'name' => 'PerfectLum 4', 'highlight' => true ),
+			),
+			'comparison_rows'     => array(
+				array( 'feature' => 'DICOM GSDF calibration', 'values' => array( array( 'value' => 'Manual' ), array( 'value' => 'Partial' ), array( 'value' => 'Full' ) ) ),
+				array( 'feature' => 'Acceptance and consistency testing', 'values' => array( array( 'value' => '-' ), array( 'value' => 'Limited' ), array( 'value' => 'Yes' ) ) ),
+				array( 'feature' => 'History database and QA reports', 'values' => array( array( 'value' => 'Spreadsheet' ), array( 'value' => 'Basic' ), array( 'value' => 'Structured' ) ) ),
+				array( 'feature' => 'Remote fleet management', 'values' => array( array( 'value' => '-' ), array( 'value' => '-' ), array( 'value' => 'Yes' ) ) ),
+				array( 'feature' => 'Mixed display and sensor support', 'values' => array( array( 'value' => 'Variable' ), array( 'value' => 'Partial' ), array( 'value' => 'Broad' ) ) ),
+				array( 'feature' => 'Maintenance and update path', 'values' => array( array( 'value' => '-' ), array( 'value' => 'Vendor dependent' ), array( 'value' => 'Yes' ) ) ),
+			),
+			'faqs'                => array(
+				array( 'question' => 'What is PerfectLum 4?', 'answer' => 'PerfectLum 4 is QUBYX software for medical display calibration and quality assurance. It is positioned for DICOM GSDF calibration, scheduled QA, reporting, and remote management across diagnostic imaging environments.' ),
+				array( 'question' => 'Which standards does PerfectLum support?', 'answer' => 'QUBYX positions PerfectLum around standards and guidance including NEMA DICOM Part 14 GSDF, AAPM TG18, AAPM TG270, DIN 6868-157, DIN 6868-57, ACR, NYC PDM, NY PDM, and MQSA monitor inspection workflows.' ),
+				array( 'question' => 'How many displays can one license calibrate?', 'answer' => 'The QUBYX product page states that PerfectLum is sold per workstation and that one license can calibrate up to six displays.' ),
+				array( 'question' => 'Can PerfectLum calibrate ordinary or older displays?', 'answer' => 'QUBYX FAQ guidance says PerfectLum can calibrate nearly any display and may help older, commercial, or laptop displays fit medical imaging workflows when the display hardware is capable.' ),
+				array( 'question' => 'Does PerfectLum work on Mac and Windows?', 'answer' => 'QUBYX lists Windows 7, 8, 10, 11 and Apple Macintosh OS X from macOS 12 as supported environments in its FAQ.' ),
+				array( 'question' => 'What sensors can be used?', 'answer' => 'QUBYX lists PerfectLum S1 plus Calibrite, X-Rite, Datacolor Spyder, Konica Minolta, PhotoResearch, IBA/Wellhoefer, Pehamed, Gossen, and other measurement devices in its supported-device guidance.' ),
+				array( 'question' => 'Does PerfectLum include remote management?', 'answer' => 'Yes. QUBYX describes built-in Remote Management for administrators who need to monitor and control displays across multiple facilities. Remote QA Server adds centralized scheduling, reports, notifications, and export workflows.' ),
+				array( 'question' => 'Is there a trial?', 'answer' => 'QUBYX download guidance references a free trial path for PerfectLum. The Store content can route visitors to demo, quote, maintenance, and bundle options.' ),
+			),
+			'final_cta_heading'   => 'Bring PerfectLum 4 into your medical display QA workflow.',
+			'final_cta_text'      => 'Request a product walkthrough, compare software-only and S1 Sensor options, or plan a Remote QA Server deployment for multi-site imaging teams.',
+			'final_cta_primary'   => array( 'title' => 'Request demo', 'url' => '/request-demo/', 'target' => '' ),
+			'final_cta_secondary' => array( 'title' => 'View Store plans', 'url' => '/store/perfectlum/', 'target' => '' ),
+		),
+	);
+}
+
+/**
+ * Build the long-form PerfectLum 4 product content.
+ */
+function qubyx_ci_build_perfectlum_content( $asset_base ) {
+	return '<div class="qubyx-product-proof alignwide">
+		<div>
+			<span class="qubyx-product-proof__kicker">PerfectLum 4 at a glance</span>
+			<h2>DICOM calibration, QA evidence, and remote oversight for diagnostic display programs.</h2>
+			<p>PerfectLum 4 is the QUBYX medical display calibration and QA product for teams that need more than a one-time calibration pass. It is built around DICOM GSDF calibration, recurring quality checks, report generation, remote management, and mixed-fleet support across radiology and distributed imaging environments.</p>
+		</div>
+		<ul>
+			<li><strong>DICOM and medical QA:</strong> standards-oriented calibration and verification for diagnostic display workflows.</li>
+			<li><strong>Complete evidence:</strong> reports and history records after calibration or QA tests.</li>
+			<li><strong>Remote operations:</strong> centralized status review, scheduling, notifications, and server-client workflows.</li>
+			<li><strong>Flexible purchasing:</strong> software-only, PerfectLum plus S1 Sensor, maintenance plans, Remote QA Server, and volume quote paths.</li>
+		</ul>
+	</div>
+
+	<h2>What PerfectLum 4 does</h2>
+	<p>PerfectLum calibrates and verifies medical displays so imaging teams can keep grayscale response, luminance behavior, QA schedules, and documentation under control. The product page positions it for NEMA DICOM Part 14 GSDF workflows and medical QA standards including AAPM TG18, AAPM TG270, DIN 6868-157, DIN 6868-57, ACR, NYC PDM, NY PDM, and MQSA monitor inspection language.</p>
+	<p>After calibration or QA testing, PerfectLum creates a report that documents the process and result. That reporting layer is important for healthcare teams that need traceability, recurring QA evidence, internal review, or inspection readiness.</p>
+
+	<div class="qubyx-product-media-grid alignwide">
+		<figure><img src="' . esc_url( $asset_base . 'perfectlum-display.jpg' ) . '" alt="PerfectLum 4 display and software package" loading="lazy" /><figcaption>PerfectLum 4 for medical display calibration.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'perfectlum-ui.jpg' ) . '" alt="PerfectLum 4 calibration user interface" loading="lazy" /><figcaption>Calibration and QA controls inside the PerfectLum interface.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'perfectlum-pl4-box.png' ) . '" alt="PerfectLum 4 product box" loading="lazy" /><figcaption>PerfectLum 4 software licensing and delivery path.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'perfectlum-angle.jpg' ) . '" alt="PerfectLum software package angled view" loading="lazy" /><figcaption>QUBYX PerfectLum product visual from the official product page.</figcaption></figure>
+	</div>
+
+	<h2>For radiology, teleradiology, and multi-site imaging</h2>
+	<p>PerfectLum is especially useful when medical displays are distributed across reading rooms, home workstations, outpatient centers, or multiple facilities. Instead of treating every workstation as an isolated manual task, teams can define calibration expectations, run recurring checks, and review results from a more centralized QA model.</p>
+	<ul>
+		<li>Radiology reading rooms and diagnostic review stations.</li>
+		<li>Teleradiology and home-reading workstations.</li>
+		<li>Hospital networks and imaging groups with many sites.</li>
+		<li>Dental imaging, mammography review, and other medical imaging environments where screen consistency matters.</li>
+	</ul>
+
+	<h2>Remote QA Server and fleet management</h2>
+	<p>QUBYX also positions PerfectLum with Remote QA Server workflows. The remote layer can schedule calibrations, conformance checks, acceptance tests, and consistency tests; review completed tasks; create reports; export data to Excel; and support hosted or local server deployment options.</p>
+	<p>For larger networks, the remote workflow can include notifications for critical status, calendar-based task management, history synchronization, local or hosted server choices, relay architecture, and security-oriented deployment patterns.</p>
+
+	<h2>Licensing, maintenance, and bundles</h2>
+	<p>PerfectLum is sold per workstation with all product features included. QUBYX states that one license can calibrate up to six displays. The current Store path should therefore keep the buyer choices clear: PerfectLum 4 software, PerfectLum 4 plus S1 Sensor, 3-year maintenance, 5-year maintenance, Remote QA Server, and volume quote requests.</p>
+	<p>The maintenance plan should be presented as a support and update path that gives buyers access to updates, service packs, releases, fixes, improvements, and higher-priority support options.</p>
+
+	<h2>Compatible displays and measurement devices</h2>
+	<p>QUBYX states that PerfectLum can calibrate nearly any display and supports a broad range of measuring devices and graphics boards. The FAQ lists PerfectLum S1, Calibrite Display Pro HL, Calibrite Display Plus HL, Calibrite Display SL, X-Rite i1 Display devices, X-Rite DTP 94, Datacolor Spyder devices, Konica Minolta devices, PhotoResearch PR 670, IBA/Wellhoefer devices, Pehamed devices, and Gossen Mavospot among compatible options.</p>
+	<p>For ambient light handling, the FAQ explains that PerfectLum measures veiling glare at the beginning of calibration and uses that value as an offset. For LUT handling, the correction LUT can be uploaded into the display when supported or applied on the graphics board.</p>
+
+	<h2>Related product paths</h2>
+	<div class="qubyx-product-links alignwide">
+		<a href="/store/perfectlum/"><strong>PerfectLum Store plans</strong><span>Compare software, maintenance, and bundle options.</span></a>
+		<a href="/products/qubyx-smartsensor-s1/"><strong>Qubyx SmartSensor S1</strong><span>Sensor path for routine medical display QA and PerfectLum deployments.</span></a>
+		<a href="/products/qubyx-remoteqa/"><strong>Qubyx RemoteQA</strong><span>Centralized scheduling, status review, reports, and fleet operations.</span></a>
+		<a href="/solutions/medical-display-qa/"><strong>Medical Display QA</strong><span>Connect PerfectLum to the broader hospital QA content path.</span></a>
+	</div>';
 }
 
 /**

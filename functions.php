@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUBYX_THEME_VERSION', '1.0.4' );
+define( 'QUBYX_THEME_VERSION', '1.0.5' );
 define( 'QUBYX_THEME_DIR', get_template_directory() );
 define( 'QUBYX_THEME_URI', get_template_directory_uri() );
 

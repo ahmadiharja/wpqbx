@@ -2,8 +2,8 @@ const PACKAGES = {
 	"qubyx-content-importer": {
 		id: "qubyx-content-importer",
 		name: "Qubyx Content Importer",
-		version: "1.0.3",
-		file: "downloads/qubyx-content-importer-1.0.3.zip",
+		version: "1.0.4",
+		file: "downloads/qubyx-content-importer-1.0.4.zip",
 		homepage: "https://qubyx.com",
 		requires: "6.0",
 		tested: "6.6",
@@ -11,14 +11,14 @@ const PACKAGES = {
 		last_updated: "2026-05-25",
 		sections: {
 			description: "Imports and updates Qubyx pages, products, resources, posts, taxonomies, menus, ACF/meta fields, and SEO metadata.",
-			changelog: "Groups WooCommerce Store products into interactive plan cards and configures cart, checkout, account, and USD currency settings."
+			changelog: "Expands the PerfectLum 4 product page with official QUBYX product content, media assets, SEO metadata, and disables WooCommerce coming-soon mode during import."
 		}
 	},
 	"qubyx-theme": {
 		id: "qubyx-theme",
 		name: "Qubyx Theme",
-		version: "1.0.4",
-		file: "downloads/qubyx-theme-1.0.4.zip",
+		version: "1.0.5",
+		file: "downloads/qubyx-theme-1.0.5.zip",
 		homepage: "https://qubyx.com",
 		requires: "6.0",
 		tested: "6.6",
@@ -26,7 +26,7 @@ const PACKAGES = {
 		last_updated: "2026-05-25",
 		sections: {
 			description: "Classic WordPress theme for Qubyx pages, products, resources, articles, and store-ready layouts.",
-			changelog: "Removes Store fallback cards and renders WooCommerce products as grouped interactive plan cards."
+			changelog: "Adds PerfectLum 4 product media assets, external hero image support, and product-specific feature headings."
 		}
 	}
 };
