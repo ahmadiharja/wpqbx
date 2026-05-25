@@ -17,6 +17,8 @@ while ( have_posts() ) :
 
 	if ( 'store' === $slug ) {
 		$family = 'store';
+	} elseif ( 0 === strpos( $page_path, 'store' ) ) {
+		$family = 'store';
 	} elseif ( 0 === strpos( $page_path, 'solutions' ) || 0 === strpos( $page_path, 'industries' ) ) {
 		$family = 'solution';
 	} elseif ( 0 === strpos( $page_path, 'support' ) || in_array( $slug, array( 'downloads', 'security' ), true ) ) {

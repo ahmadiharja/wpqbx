@@ -54,11 +54,9 @@
 						),
 					),
 					array(
-						'heading' => __( 'Remote QA', 'qubyx' ),
+						'heading' => __( 'Remote QA platform', 'qubyx' ),
 						'links'   => array(
 							array( __( 'Qubyx RemoteQA', 'qubyx' ), home_url( '/products/qubyx-remoteqa/' ), __( 'Centralized display QA across sites.', 'qubyx' ) ),
-							array( __( 'Enterprise display management', 'qubyx' ), home_url( '/solutions/enterprise-display-management/' ), __( 'Fleet visibility, scheduling, and evidence.', 'qubyx' ) ),
-							array( __( 'Remote monitor QA', 'qubyx' ), home_url( '/solutions/remote-monitor-qa/' ), __( 'Centralized scheduling, reports, and QA evidence.', 'qubyx' ) ),
 						),
 					),
 					array(
@@ -66,7 +64,6 @@
 						'links'   => array(
 							array( __( 'SmartSensor S1', 'qubyx' ), home_url( '/products/qubyx-smartsensor-s1/' ), __( 'Compact luminance QA sensor.', 'qubyx' ) ),
 							array( __( 'SmartSensor S2', 'qubyx' ), home_url( '/products/qubyx-smartsensor-s2/' ), __( 'Advanced validation sensor path.', 'qubyx' ) ),
-							array( __( 'Store', 'qubyx' ), home_url( '/store/' ), __( 'Licenses, bundles, and quotes.', 'qubyx' ) ),
 						),
 					),
 				),
@@ -92,13 +89,14 @@
 						'heading' => __( 'By team', 'qubyx' ),
 						'links'   => array(
 							array( __( 'Enterprise display management', 'qubyx' ), home_url( '/solutions/enterprise-display-management/' ), __( 'Centralized display QA operations.', 'qubyx' ) ),
+							array( __( 'Remote monitor QA', 'qubyx' ), home_url( '/solutions/remote-monitor-qa/' ), __( 'Centralized scheduling, reports, and QA evidence.', 'qubyx' ) ),
 							array( __( 'Color-critical workflows', 'qubyx' ), home_url( '/solutions/color-critical-workflows/' ), __( 'Photography, video, design, and prepress.', 'qubyx' ) ),
-							array( __( 'OEM display calibration', 'qubyx' ), home_url( '/solutions/oem-display-calibration/' ), __( 'Manufacturer and integrator validation.', 'qubyx' ) ),
 						),
 					),
 					array(
 						'heading' => __( 'Specialized', 'qubyx' ),
 						'links'   => array(
+							array( __( 'OEM display calibration', 'qubyx' ), home_url( '/solutions/oem-display-calibration/' ), __( 'Manufacturer and integrator validation.', 'qubyx' ) ),
 							array( __( 'E-paper display QA', 'qubyx' ), home_url( '/solutions/epaper-display-qa/' ), __( 'EPD contrast and reflectance workflows.', 'qubyx' ) ),
 							array( __( 'Display manufacturing', 'qubyx' ), home_url( '/industries/display-manufacturing/' ), __( 'OEM validation and production QA workflows.', 'qubyx' ) ),
 							array( __( 'Broadcast and post-production', 'qubyx' ), home_url( '/industries/broadcast-post-production/' ), __( 'Monitor calibration for video and studio delivery.', 'qubyx' ) ),
@@ -116,27 +114,26 @@
 				),
 				'columns'  => array(
 					array(
-						'heading' => __( 'Shop', 'qubyx' ),
+						'heading' => __( 'Software plans', 'qubyx' ),
 						'links'   => array(
-							array( __( 'Software licenses', 'qubyx' ), home_url( '/store/' ), __( 'PerfectLum, PerfectChroma, and product licensing.', 'qubyx' ) ),
-							array( __( 'Sensor bundles', 'qubyx' ), home_url( '/store/' ), __( 'SmartSensor S1/S2 and software bundles.', 'qubyx' ) ),
-							array( __( 'Maintenance plans', 'qubyx' ), home_url( '/store/' ), __( 'Support, updates, onboarding, and services.', 'qubyx' ) ),
+							array( __( 'PerfectLum pricing', 'qubyx' ), home_url( '/store/perfectlum/' ), __( 'Medical display QA plans.', 'qubyx' ) ),
+							array( __( 'PerfectChroma pricing', 'qubyx' ), home_url( '/store/perfectchroma/' ), __( 'Color calibration plans.', 'qubyx' ) ),
+							array( __( 'PerfectEPD pricing', 'qubyx' ), home_url( '/store/perfectepd/' ), __( 'E-paper validation plans.', 'qubyx' ) ),
 						),
 					),
 					array(
-						'heading' => __( 'Enterprise', 'qubyx' ),
+						'heading' => __( 'Hardware and bundles', 'qubyx' ),
 						'links'   => array(
-							array( __( 'Request quote', 'qubyx' ), home_url( '/request-demo/' ), __( 'Volume pricing and procurement support.', 'qubyx' ) ),
-							array( __( 'Volume licensing', 'qubyx' ), home_url( '/store/' ), __( 'Multi-seat and multi-site purchasing.', 'qubyx' ) ),
-							array( __( 'Partner purchasing', 'qubyx' ), home_url( '/partners/' ), __( 'OEM, reseller, and integrator programs.', 'qubyx' ) ),
+							array( __( 'SmartSensor catalog', 'qubyx' ), home_url( '/store/sensors/' ), __( 'Measurement hardware for QA workflows.', 'qubyx' ) ),
+							array( __( 'Bundles', 'qubyx' ), home_url( '/store/bundles/' ), __( 'Software, sensors, and onboarding in one path.', 'qubyx' ) ),
 						),
 					),
 					array(
-						'heading' => __( 'Evaluate', 'qubyx' ),
+						'heading' => __( 'Organisations', 'qubyx' ),
 						'links'   => array(
-							array( __( 'Request demo', 'qubyx' ), home_url( '/request-demo/' ), __( 'See the right product path first.', 'qubyx' ) ),
-							array( __( 'Product comparison', 'qubyx' ), home_url( '/products/' ), __( 'Compare software, sensors, and RemoteQA.', 'qubyx' ) ),
-							array( __( 'Contact sales', 'qubyx' ), home_url( '/contact/' ), __( 'Talk through requirements and deployment.', 'qubyx' ) ),
+							array( __( 'Enterprise pricing', 'qubyx' ), home_url( '/store/enterprise/' ), __( 'Volume licensing and procurement support.', 'qubyx' ) ),
+							array( __( 'Education licensing', 'qubyx' ), home_url( '/store/education/' ), __( 'Academic teams, students, and labs.', 'qubyx' ) ),
+							array( __( 'Request quote', 'qubyx' ), home_url( '/request-demo/' ), __( 'For multi-site and volume purchases.', 'qubyx' ) ),
 						),
 					),
 				),
@@ -194,19 +191,17 @@
 						),
 					),
 					array(
-						'heading' => __( 'Trust', 'qubyx' ),
+						'heading' => __( 'Account and hardware', 'qubyx' ),
 						'links'   => array(
-							array( __( 'Security', 'qubyx' ), home_url( '/security/' ), __( 'Enterprise review and deployment notes.', 'qubyx' ) ),
 							array( __( 'Warranty and RMA', 'qubyx' ), home_url( '/support/warranty-rma/' ), __( 'Hardware support and return flow.', 'qubyx' ) ),
-							array( __( 'Contact', 'qubyx' ), home_url( '/contact/' ), __( 'Sales, support, partners, and routing.', 'qubyx' ) ),
+							array( __( 'Security', 'qubyx' ), home_url( '/security/' ), __( 'Enterprise review and deployment notes.', 'qubyx' ) ),
 						),
 					),
 					array(
-						'heading' => __( 'Buy', 'qubyx' ),
+						'heading' => __( 'Support routes', 'qubyx' ),
 						'links'   => array(
-							array( __( 'Store', 'qubyx' ), home_url( '/store/' ), __( 'Software, sensors, and bundles.', 'qubyx' ) ),
-							array( __( 'Request demo', 'qubyx' ), home_url( '/request-demo/' ), __( 'Book an enterprise walkthrough.', 'qubyx' ) ),
-							array( __( 'Partners', 'qubyx' ), home_url( '/partners/' ), __( 'OEM, reseller, and integrator programs.', 'qubyx' ) ),
+							array( __( 'Contact support', 'qubyx' ), home_url( '/support/contact-support/' ), __( 'Product assistance and troubleshooting.', 'qubyx' ) ),
+							array( __( 'Contact QUBYX', 'qubyx' ), home_url( '/contact/' ), __( 'Sales, partnerships, and general routing.', 'qubyx' ) ),
 						),
 					),
 				),
@@ -229,11 +224,10 @@
 						),
 					),
 					array(
-						'heading' => __( 'Contact', 'qubyx' ),
+						'heading' => __( 'Partnerships', 'qubyx' ),
 						'links'   => array(
+							array( __( 'Partners', 'qubyx' ), home_url( '/partners/' ), __( 'OEM, reseller, and integrator programs.', 'qubyx' ) ),
 							array( __( 'Contact', 'qubyx' ), home_url( '/contact/' ), __( 'General routing page.', 'qubyx' ) ),
-							array( __( 'Request demo', 'qubyx' ), home_url( '/request-demo/' ), __( 'Enterprise conversion page.', 'qubyx' ) ),
-							array( __( 'Store', 'qubyx' ), home_url( '/store/' ), __( 'Commerce and quote page.', 'qubyx' ) ),
 						),
 					),
 					array(
