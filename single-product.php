@@ -19,6 +19,7 @@ while ( have_posts() ) : the_post();
 	$cta_s     = qubyx_field( 'cta_secondary' );
 	$benefits  = qubyx_field( 'benefits', array() );
 	$specs     = qubyx_field( 'specifications', array() );
+	$is_wide   = (bool) qubyx_field( 'product_wide_layout', false );
 	?>
 
 	<section class="section section--product-hero">
@@ -82,7 +83,7 @@ while ( have_posts() ) : the_post();
 					<p class="eyebrow"><?php esc_html_e( 'Specifications', 'qubyx' ); ?></p>
 					<h2 class="section__title"><?php esc_html_e( 'For the engineers in the room', 'qubyx' ); ?>.</h2>
 				</header>
-				<dl class="specs">
+				<dl class="specs<?php echo $is_wide ? ' specs--wide' : ''; ?>">
 					<?php foreach ( $specs as $row ) : ?>
 						<div class="specs__row">
 							<dt><?php echo esc_html( $row['label'] ?? '' ); ?></dt>
@@ -98,8 +99,8 @@ while ( have_posts() ) : the_post();
 
 	<?php if ( get_the_content() ) : ?>
 		<section class="section section--prose">
-			<div class="container container--narrow">
-				<article class="prose"><?php the_content(); ?></article>
+			<div class="container<?php echo $is_wide ? '' : ' container--narrow'; ?>">
+				<article class="prose<?php echo $is_wide ? ' prose--wide' : ''; ?>"><?php the_content(); ?></article>
 			</div>
 		</section>
 	<?php endif; ?>

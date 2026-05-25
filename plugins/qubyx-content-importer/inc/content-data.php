@@ -1856,6 +1856,7 @@ function qubyx_ci_smartsensor_s1_product() {
 			'hero_headline'       => 'QUBYX SmartSensor S1',
 			'hero_description'    => $description,
 			'hero_image_url'      => $asset_base . 'smartsensor-s1-hero.jpg',
+			'product_wide_layout' => 1,
 			'cta_primary'         => array( 'title' => 'Request OEM quote', 'url' => '/request-demo/', 'target' => '' ),
 			'cta_secondary'       => array( 'title' => 'View sensor catalog', 'url' => '/store/sensors/', 'target' => '' ),
 			'features_eyebrow'    => 'SmartSensor S1 workflow',
