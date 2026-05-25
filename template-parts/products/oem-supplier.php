@@ -16,7 +16,6 @@ $applications = qubyx_field( 'oem_applications', array() );
 $accuracy_rows = qubyx_field( 'oem_accuracy_rows', array() );
 $specs = qubyx_field( 'specifications', array() );
 $primary_cta = qubyx_field( 'cta_primary' );
-$secondary_cta = qubyx_field( 'cta_secondary' );
 $sku = qubyx_field( 'oem_sku', 'S1 OEM module' );
 $lead = qubyx_field( 'oem_lead_time', 'Project-based' );
 $moq = qubyx_field( 'oem_moq', 'By OEM program' );
@@ -77,21 +76,9 @@ if ( empty( $gallery ) ) {
 
 					<div class="oem-summary__actions">
 						<?php qubyx_render_link( $primary_cta, 'btn--primary btn--lg', __( 'Request OEM quote', 'qubyx' ) ); ?>
-						<?php qubyx_render_link( $secondary_cta, 'btn--ghost btn--lg', __( 'Ask for datasheet', 'qubyx' ) ); ?>
 					</div>
 
 				</div>
-
-				<aside class="oem-inquiry" aria-label="<?php esc_attr_e( 'Inquiry panel', 'qubyx' ); ?>">
-					<p><?php esc_html_e( 'Inquiry actions', 'qubyx' ); ?></p>
-					<a class="oem-inquiry__primary" href="<?php echo esc_url( home_url( '/request-demo/' ) ); ?>"><?php esc_html_e( 'Contact supplier', 'qubyx' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Send technical question', 'qubyx' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/store/sensors/' ) ); ?>"><?php esc_html_e( 'View sensor catalog', 'qubyx' ); ?></a>
-					<div class="oem-inquiry__profile">
-						<strong><?php esc_html_e( 'QUBYX supplier profile', 'qubyx' ); ?></strong>
-						<span><?php esc_html_e( 'Precision display calibration, hardware, and fleet management solutions for OEM and regulated display workflows.', 'qubyx' ); ?></span>
-					</div>
-				</aside>
 			</div>
 		</div>
 	</section>
