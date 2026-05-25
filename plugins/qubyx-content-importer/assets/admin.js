@@ -25,6 +25,9 @@
 		if (postCategoryField) {
 			postCategoryField.hidden = type !== 'post';
 		}
+		if (resourceLayout) {
+			resourceLayout.closest('.qubyx-field').hidden = type === 'page';
+		}
 	}
 
 	function syncLayoutFromCategory() {

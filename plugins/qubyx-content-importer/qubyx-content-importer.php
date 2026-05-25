@@ -342,10 +342,11 @@ function qubyx_ci_render_ai_writer_page() {
 					<div class="qubyx-field">
 						<label for="qubyx_ai_post_type"><?php esc_html_e( 'Draft type', 'qubyx-content-importer' ); ?></label>
 						<select id="qubyx_ai_post_type" name="post_type">
-							<option value="resource"><?php esc_html_e( 'Resource article', 'qubyx-content-importer' ); ?></option>
-							<option value="post"><?php esc_html_e( 'Blog post', 'qubyx-content-importer' ); ?></option>
+							<option value="resource"><?php esc_html_e( 'QUBYX Resource', 'qubyx-content-importer' ); ?></option>
+							<option value="post"><?php esc_html_e( 'WordPress Post', 'qubyx-content-importer' ); ?></option>
 							<option value="page"><?php esc_html_e( 'Page draft', 'qubyx-content-importer' ); ?></option>
 						</select>
+						<p><?php esc_html_e( 'Resources appear in the QUBYX resource library. WordPress Posts use the standard Posts area and blog categories.', 'qubyx-content-importer' ); ?></p>
 					</div>
 					<div class="qubyx-field">
 						<label for="qubyx_ai_layout"><?php esc_html_e( 'Article layout', 'qubyx-content-importer' ); ?></label>
@@ -366,7 +367,7 @@ function qubyx_ci_render_ai_writer_page() {
 						</select>
 					</div>
 					<div class="qubyx-field" data-qubyx-post-category hidden>
-						<label for="qubyx_ai_post_category"><?php esc_html_e( 'Post category', 'qubyx-content-importer' ); ?></label>
+						<label for="qubyx_ai_post_category"><?php esc_html_e( 'WordPress post category', 'qubyx-content-importer' ); ?></label>
 						<select id="qubyx_ai_post_category" name="post_category">
 							<?php foreach ( $post_categories as $slug => $label ) : ?>
 								<option value="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $label ); ?></option>
