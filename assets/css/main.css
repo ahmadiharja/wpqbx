@@ -564,15 +564,15 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 
 /* ---------- Store commerce page ----------------------------------------- */
 .adstore-page { background: #fff; }
-.adstore-hero { background: #fff; border-bottom: 1px solid var(--color-border); padding: clamp(3.5rem, 7vw, 5.5rem) 0 0; text-align: center; }
+.adstore-hero { background: #fff; border-bottom: 1px solid var(--color-border); padding: clamp(2.5rem, 5vw, 4.5rem) 0 0; text-align: center; }
 .adstore-hero__title { color: var(--color-ink); font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 3.75rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.05; margin: 0 auto; max-width: 18ch; }
 .adstore-hero__sub { color: var(--color-ink-muted); font-size: var(--text-base); margin: 1rem auto 0; max-width: 56ch; }
 .adstore-hero__sub a { align-items: center; color: var(--color-accent); display: inline-flex; gap: .3rem; text-decoration: underline; text-underline-offset: 3px; }
 .adstore-hero__assurance { color: var(--color-ink-subtle); font-size: var(--text-sm); margin: .75rem auto 0; }
-.adstore-segments { display: flex; flex-wrap: wrap; gap: 0; justify-content: center; margin: clamp(2rem, 4vw, 3rem) auto 0; max-width: 980px; }
-.adstore-segments a { background: var(--color-bg-alt); border: 1px solid transparent; border-bottom: 3px solid transparent; color: var(--color-ink-muted); flex: 1 1 0; font-size: var(--text-base); font-weight: 500; min-width: 180px; padding: 1.1rem 1.5rem; text-align: center; transition: border-color var(--t-base) var(--ease), color var(--t-base) var(--ease), background var(--t-base) var(--ease); }
-.adstore-segments a:hover { color: var(--color-ink); }
-.adstore-segments a.is-active { background: #fff; border-color: var(--color-border); border-bottom-color: var(--color-ink); color: var(--color-ink); margin-bottom: -1px; position: relative; z-index: 1; }
+.adstore-segments { align-items: center; background: #F1F3FB; border: 1px solid var(--color-border); border-radius: 999px; display: inline-flex; flex-wrap: wrap; gap: .35rem; justify-content: center; margin: clamp(2rem, 4vw, 3rem) auto -1.25rem; padding: .35rem; position: relative; z-index: 2; }
+.adstore-segments button { background: transparent; border: 1px solid transparent; border-radius: 999px; color: var(--color-ink-muted); cursor: pointer; font-size: var(--text-sm); font-weight: 700; min-height: 42px; padding: .65rem 1.15rem; text-align: center; transition: background var(--t-base) var(--ease), border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), color var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+.adstore-segments button:hover { color: var(--color-ink); transform: translateY(-1px); }
+.adstore-segments button.is-active { background: #fff; border-color: rgba(62,87,218,.18); box-shadow: 0 10px 26px rgba(13,15,44,.1); color: var(--color-ink); }
 .adstore-promo { background: var(--color-ink); color: #fff; padding: .8rem 0; position: sticky; top: 72px; z-index: 4; }
 .adstore-promo__inner { align-items: center; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
 .adstore-promo__icon { background: linear-gradient(135deg, #3E57DA, #5470F2); border-radius: 8px; color: #fff; display: grid; font-family: var(--font-mono); font-size: 11px; font-weight: 800; height: 30px; place-items: center; width: 30px; }
@@ -580,28 +580,29 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 .adstore-promo__text a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
 .adstore-promo__btn { border: 1px solid rgba(255,255,255,.4); border-radius: 999px; color: #fff; font-size: var(--text-sm); font-weight: 500; padding: .45rem 1.2rem; transition: background var(--t-base) var(--ease); }
 .adstore-promo__btn:hover { background: rgba(255,255,255,.1); }
-.adstore-catalog { background: #fff; padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(4rem, 8vw, 7rem); }
-.adstore-catalog__layout { display: grid; gap: clamp(2rem, 4vw, 3rem); grid-template-columns: 220px minmax(0, 1fr); }
-.adstore-sidebar { align-self: start; position: sticky; top: 156px; }
-.adstore-sidebar__h { color: var(--color-ink-subtle); font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 600; letter-spacing: .06em; margin: 0 0 1rem; padding-left: .75rem; text-transform: uppercase; }
+.adstore-catalog { background: #fff; padding: clamp(3rem, 5vw, 4.25rem) 0 clamp(4rem, 8vw, 7rem); }
+.adstore-catalog__layout { display: grid; gap: clamp(1.25rem, 2vw, 2rem); grid-template-columns: 250px minmax(0, 1fr); }
+.adstore-sidebar { align-self: start; background: #F7F8FC; border: 1px solid var(--color-border); border-radius: 8px; padding: .9rem; position: sticky; top: 156px; }
+.adstore-sidebar__h { color: var(--color-ink-subtle); font-family: var(--font-sans); font-size: 11px; font-weight: 800; letter-spacing: .08em; margin: .5rem 0 .7rem; padding-left: .45rem; text-transform: uppercase; }
 .adstore-sidebar ul { display: grid; gap: .15rem; list-style: none; margin: 0 0 1.5rem; padding: 0; }
-.adstore-sidebar li a { align-items: center; border-radius: 8px; color: var(--color-ink-muted); display: flex; font-size: var(--text-sm); font-weight: 500; gap: .75rem; padding: .55rem .75rem; transition: background var(--t-base) var(--ease), color var(--t-base) var(--ease); }
-.adstore-sidebar li a:hover, .adstore-sidebar li a.is-active { background: var(--color-bg-alt); color: var(--color-ink); }
-.adstore-sidebar li a.is-active { font-weight: 600; }
+.adstore-sidebar li a { align-items: center; border: 1px solid transparent; border-radius: 8px; color: var(--color-ink-muted); display: flex; font-size: var(--text-sm); font-weight: 650; gap: .75rem; padding: .62rem .7rem; transition: background var(--t-base) var(--ease), border-color var(--t-base) var(--ease), color var(--t-base) var(--ease); }
+.adstore-sidebar li a:hover, .adstore-sidebar li a.is-active { background: #fff; border-color: var(--color-border); color: var(--color-ink); }
+.adstore-sidebar li a.is-active { font-weight: 800; }
 .adstore-sidebar li a .ic { align-items: center; color: var(--color-ink-subtle); display: inline-flex; font-family: var(--font-mono); font-size: 10px; height: 18px; justify-content: center; width: 24px; }
 .adstore-sidebar li a.is-active .ic { color: var(--color-accent); }
 .adstore-sidebar__count { background: transparent; border-radius: 6px; color: var(--color-ink-subtle); font-family: var(--font-mono); font-size: 11px; margin-left: auto; min-width: 22px; padding: 2px 6px; text-align: center; }
 .adstore-sidebar li a.is-active .adstore-sidebar__count { background: var(--color-accent); color: #fff; }
-.adstore-toolbar { align-items: center; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-bottom: 1.5rem; }
+.adstore-toolbar { align-items: center; border-bottom: 1px solid var(--color-border); display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: 1rem; }
 .adstore-count { color: var(--color-ink-muted); font-size: var(--text-base); margin: 0; }
 .adstore-count strong { color: var(--color-ink); font-weight: 700; }
 .adstore-sort { align-items: center; color: var(--color-ink-muted); display: inline-flex; font-size: var(--text-sm); gap: .5rem; }
 .adstore-sort select { background: #fff; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-ink); cursor: pointer; font-size: var(--text-sm); padding: .5rem .75rem; }
-.adstore-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
-.adstore-card { background: #fff; border: 1px solid var(--color-border); border-radius: var(--r-xl); display: flex; flex-direction: column; padding: 1.5rem; position: relative; transition: border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease); }
+.adstore-grid { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.adstore-card { background: #fff; border: 1px solid var(--color-border); border-radius: 8px; display: grid; gap: 1.25rem; grid-template-columns: minmax(190px, .75fr) minmax(260px, 1fr); padding: 1rem; position: relative; transition: border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+.adstore-card[hidden] { display: none; }
 .adstore-card:hover { border-color: var(--color-ink); box-shadow: 0 12px 32px rgba(13,15,44,.06); }
-.adstore-card.is-featured { border-color: #FFC83D; border-width: 2px; padding: calc(1.5rem - 1px); }
-.adstore-card__icon { border-radius: 12px; color: #fff; display: grid; font-family: var(--font-mono); font-size: 13px; font-weight: 800; height: 52px; letter-spacing: .04em; margin-bottom: 1.25rem; place-items: center; width: 52px; }
+.adstore-card.is-featured { border-color: #FFC83D; border-width: 2px; padding: calc(1rem - 1px); }
+.adstore-card__icon { border-radius: 8px; color: #fff; display: grid; font-family: var(--font-mono); font-size: 12px; font-weight: 800; height: 46px; letter-spacing: .04em; margin-bottom: .9rem; place-items: center; width: 46px; }
 .adstore-card__icon--lum { background: linear-gradient(135deg, #3E57DA, #5470F2); }
 .adstore-card__icon--chr { background: linear-gradient(135deg, #E0573D, #F49B23); }
 .adstore-card__icon--epd { background: linear-gradient(135deg, #14826B, #4AC29A); }
@@ -612,16 +613,16 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 .adstore-card__badge { background: #FFC83D; border-radius: 6px; color: #0D0F2C; font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: .02em; padding: 4px 10px; position: absolute; right: 1.25rem; top: 1.25rem; }
 .adstore-card__badge--pop { background: var(--color-ink); color: #fff; }
 .adstore-card__badge--new { background: var(--color-accent); color: #fff; }
-.adstore-card__tag { color: var(--color-accent-text); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: .04em; margin: 0 0 .45rem; text-transform: uppercase; }
-.adstore-card__title { color: var(--color-ink); font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; letter-spacing: -.025em; line-height: 1.15; margin: 0 0 .25rem; }
+.adstore-card__tag { color: var(--color-accent-text); font-family: var(--font-mono); font-size: 11px; font-weight: 800; letter-spacing: .06em; margin: 0 0 .45rem; text-transform: uppercase; }
+.adstore-card__title { color: var(--color-ink); font-family: var(--font-display); font-size: clamp(1.4rem, 1.6vw, 1.9rem); font-weight: 650; letter-spacing: -.025em; line-height: 1.1; margin: 0 0 .35rem; }
 .adstore-card__plan { color: var(--color-ink); font-size: var(--text-base); font-weight: 700; margin: 0 0 .75rem; }
-.adstore-plan-tabs { align-items: center; display: flex; flex-wrap: wrap; gap: .45rem; margin: 1.05rem 0 1.2rem; }
-.adstore-plan-tabs button { background: #fff; border: 1px solid var(--color-border); border-radius: 999px; color: var(--color-ink-muted); cursor: pointer; display: inline-flex; flex-direction: column; font-family: var(--font-sans); gap: .05rem; min-height: 46px; padding: .48rem .85rem; text-align: left; transition: background var(--t-base) var(--ease), border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), color var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
+.adstore-plan-tabs { align-items: stretch; display: grid; gap: .45rem; grid-column: 1; grid-template-columns: 1fr; margin: 1rem 0 0; }
+.adstore-plan-tabs button { background: #F7F8FC; border: 1px solid var(--color-border); border-radius: 8px; color: var(--color-ink-muted); cursor: pointer; display: flex; flex-direction: column; font-family: var(--font-sans); gap: .05rem; min-height: 44px; padding: .55rem .7rem; text-align: left; transition: background var(--t-base) var(--ease), border-color var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), color var(--t-base) var(--ease), transform var(--t-base) var(--ease); }
 .adstore-plan-tabs button:hover { border-color: rgba(62,87,218,.45); color: var(--color-ink); transform: translateY(-1px); }
 .adstore-plan-tabs button.is-active { background: var(--color-ink); border-color: var(--color-ink); box-shadow: 0 10px 24px rgba(13,15,44,.14); color: #fff; }
 .adstore-plan-tabs__name { font-size: var(--text-xs); font-weight: 800; letter-spacing: .01em; line-height: 1.2; white-space: nowrap; }
 .adstore-plan-tabs__meta { color: inherit; font-size: 10px; font-weight: 600; line-height: 1.25; opacity: .62; white-space: nowrap; }
-.adstore-plan { display: flex; flex-direction: column; flex: 1; }
+.adstore-plan { background: #FAFBFE; border: 1px solid var(--color-border); border-radius: 8px; display: flex; flex-direction: column; grid-column: 2; grid-row: 1 / span 8; min-height: 100%; padding: 1rem; }
 .adstore-plan[hidden] { display: none; }
 .adstore-card__price-row { align-items: baseline; display: flex; flex-wrap: wrap; gap: .55rem; margin-bottom: .15rem; }
 .adstore-card__price-old { color: var(--color-ink-subtle); font-size: var(--text-sm); text-decoration: line-through; }
@@ -629,7 +630,7 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 .adstore-card__price small { color: var(--color-ink-muted); font-size: 1rem; font-weight: 500; }
 .adstore-card__period { color: var(--color-ink-muted); font-size: var(--text-sm); font-style: italic; margin: 0 0 1rem; }
 .adstore-card__desc { color: var(--color-ink-muted); font-size: var(--text-sm); line-height: 1.55; margin: 0 0 1rem; }
-.adstore-card__features { display: grid; gap: .45rem; list-style: none; margin: 0 0 1.25rem; padding: 0; }
+.adstore-card__features { display: grid; gap: .45rem; grid-template-columns: repeat(2, minmax(0, 1fr)); list-style: none; margin: 0 0 1.25rem; padding: 0; }
 .adstore-card__features li { align-items: flex-start; color: var(--color-ink-muted); display: flex; font-size: var(--text-sm); gap: .45rem; line-height: 1.45; }
 .adstore-card__features svg { color: var(--color-accent); flex: 0 0 auto; margin-top: 2px; }
 .adstore-card__links { display: flex; flex-direction: column; gap: .4rem; margin: 0 0 1.25rem; }
@@ -690,8 +691,13 @@ h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); color: var
 	.adstore-sidebar { position: static; }
 	.adstore-trust__grid { grid-template-columns: 1fr 1fr; }
 }
+@media (max-width: 1100px) {
+	.adstore-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 640px) {
-	.adstore-grid, .adstore-trust__grid { grid-template-columns: 1fr; }
+	.adstore-grid, .adstore-card, .adstore-trust__grid { grid-template-columns: 1fr; }
+	.adstore-plan { grid-column: auto; grid-row: auto; }
+	.adstore-card__features { grid-template-columns: 1fr; }
 	.adstore-card__footer { align-items: stretch; flex-direction: column; }
 	.adstore-card__cta { text-align: center; }
 	.adstore-promo { position: static; }

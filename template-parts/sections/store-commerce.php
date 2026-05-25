@@ -24,12 +24,12 @@ $qubyx_store_categories = array(
 			<h1 class="adstore-hero__title"><?php esc_html_e( 'Plans and pricing for QUBYX display quality.', 'qubyx' ); ?></h1>
 			<p class="adstore-hero__sub"><a href="<?php echo esc_url( home_url( '/products/' ) ); ?>"><?php esc_html_e( 'Learn more about QUBYX', 'qubyx' ); ?> <?php echo qubyx_icon( 'arrow-right', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></a></p>
 			<p class="adstore-hero__assurance"><?php esc_html_e( 'Choose a product, compare its plans, then add the exact option to cart.', 'qubyx' ); ?></p>
-			<nav class="adstore-segments" aria-label="<?php esc_attr_e( 'Audience', 'qubyx' ); ?>">
-				<a class="is-active" href="#" data-audience="hospitals"><?php esc_html_e( 'Hospitals', 'qubyx' ); ?></a>
-				<a href="#" data-audience="color"><?php esc_html_e( 'Color pros', 'qubyx' ); ?></a>
-				<a href="#" data-audience="oem"><?php esc_html_e( 'OEM & manufacturing', 'qubyx' ); ?></a>
-				<a href="#" data-audience="consumer"><?php esc_html_e( 'Consumers', 'qubyx' ); ?></a>
-				<a href="#" data-audience="education"><?php esc_html_e( 'Education', 'qubyx' ); ?></a>
+			<nav class="adstore-segments" role="tablist" aria-label="<?php esc_attr_e( 'Audience', 'qubyx' ); ?>">
+				<button class="is-active" type="button" role="tab" aria-selected="true" data-audience="hospitals"><?php esc_html_e( 'Hospitals', 'qubyx' ); ?></button>
+				<button type="button" role="tab" aria-selected="false" data-audience="color"><?php esc_html_e( 'Color pros', 'qubyx' ); ?></button>
+				<button type="button" role="tab" aria-selected="false" data-audience="oem"><?php esc_html_e( 'OEM & manufacturing', 'qubyx' ); ?></button>
+				<button type="button" role="tab" aria-selected="false" data-audience="consumer"><?php esc_html_e( 'Consumers', 'qubyx' ); ?></button>
+				<button type="button" role="tab" aria-selected="false" data-audience="education"><?php esc_html_e( 'Education', 'qubyx' ); ?></button>
 			</nav>
 		</div>
 	</section>

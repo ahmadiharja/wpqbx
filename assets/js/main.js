@@ -141,7 +141,7 @@
 		var storeCounter = document.querySelector('[data-store-count]');
 		var storeEmpty = document.querySelector('[data-store-empty]');
 		var storeCards = storeGrid.querySelectorAll('.adstore-card');
-		var storeSegments = document.querySelectorAll('.adstore-segments a[data-audience]');
+		var storeSegments = document.querySelectorAll('.adstore-segments [data-audience]');
 		var storeCategories = document.querySelectorAll('.adstore-sidebar a[data-category]');
 		var categoryLabels = {
 			all: 'All products',
@@ -194,7 +194,11 @@
 			link.addEventListener('click', function (e) {
 				e.preventDefault();
 				storeState.audience = link.getAttribute('data-audience');
-				storeSegments.forEach(function (item) { item.classList.toggle('is-active', item === link); });
+				storeSegments.forEach(function (item) {
+					var active = item === link;
+					item.classList.toggle('is-active', active);
+					item.setAttribute('aria-selected', active ? 'true' : 'false');
+				});
 				applyStoreFilters();
 			});
 		});
