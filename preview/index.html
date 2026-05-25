@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../assets/css/main.css?v=meganav3" />
+<link rel="stylesheet" href="../assets/css/main.css?v=lang1" />
 
 <style>
 	.preview-banner { position: fixed; bottom: 12px; right: 12px; z-index: 99; background: rgba(13,15,44,.92); color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 8px 12px; border-radius: 999px; backdrop-filter: blur(8px); }
@@ -254,6 +254,38 @@
 		</nav>
 
 		<div class="site-header__actions">
+
+			<!-- Language switcher -->
+			<div class="lang-switch" data-lang-switch>
+				<button class="lang-switch__trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+					<span class="lang-flag" data-current-flag>
+						<svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="us-h"><circle cx="30" cy="15" r="15"/></clipPath><g clip-path="url(#us-h)"><rect width="60" height="30" fill="#B22234"/><path stroke="#fff" stroke-width="2.31" d="M0 3.46h60M0 8.08h60M0 12.69h60M0 17.31h60M0 21.92h60M0 26.54h60"/><rect width="24" height="16.15" fill="#3C3B6E"/></g></svg>
+					</span>
+				</button>
+				<div class="lang-switch__panel" role="menu">
+					<button class="lang-switch__item is-active" role="menuitem" data-lang="en">
+						<span class="lang-flag"><svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="us-h2"><circle cx="30" cy="15" r="15"/></clipPath><g clip-path="url(#us-h2)"><rect width="60" height="30" fill="#B22234"/><path stroke="#fff" stroke-width="2.31" d="M0 3.46h60M0 8.08h60M0 12.69h60M0 17.31h60M0 21.92h60M0 26.54h60"/><rect width="24" height="16.15" fill="#3C3B6E"/></g></svg></span>
+						<span class="lang-switch__label">English</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="fr">
+						<span class="lang-flag"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="fr-h"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#fr-h)"><rect width="20" height="40" fill="#0055A4"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#EF4135"/></g></svg></span>
+						<span class="lang-switch__label">Français</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="de">
+						<span class="lang-flag"><svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="de-h"><circle cx="30" cy="18" r="18"/></clipPath><g clip-path="url(#de-h)"><rect width="60" height="12" fill="#000"/><rect y="12" width="60" height="12" fill="#DD0000"/><rect y="24" width="60" height="12" fill="#FFCE00"/></g></svg></span>
+						<span class="lang-switch__label">Deutsch</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="ko">
+						<span class="lang-flag"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="ko-h"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#ko-h)"><rect width="60" height="40" fill="#fff"/><circle cx="30" cy="20" r="8" fill="#CD2E3A"/><path d="M22 20a8 8 0 0 1 16 0 4 4 0 0 1-8 0 4 4 0 0 0-8 0z" fill="#0047A0"/></g></svg></span>
+						<span class="lang-switch__label">한국어</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="es">
+						<span class="lang-flag"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="es-h"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#es-h)"><rect width="60" height="40" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/></g></svg></span>
+						<span class="lang-switch__label">Español</span>
+					</button>
+				</div>
+			</div>
+
 			<a class="site-header__login" href="#support">Downloads</a>
 			<a class="btn btn--primary btn--sm" href="#demo">
 				Request demo
@@ -719,5 +751,41 @@
 	})();
 </script>
 <script src="../assets/js/main.js" defer></script>
+<script>
+	// Language switcher
+	(function () {
+		var sw = document.querySelector('[data-lang-switch]');
+		if (!sw) return;
+		var trigger = sw.querySelector('.lang-switch__trigger');
+		var items = sw.querySelectorAll('.lang-switch__item');
+		var currentFlag = sw.querySelector('[data-current-flag]');
+		function close() { sw.classList.remove('is-open'); trigger.setAttribute('aria-expanded', 'false'); }
+		function open()  { sw.classList.add('is-open');    trigger.setAttribute('aria-expanded', 'true');  }
+		trigger.addEventListener('click', function (e) {
+			e.preventDefault(); e.stopPropagation();
+			if (sw.classList.contains('is-open')) close(); else open();
+		});
+		items.forEach(function (item) {
+			item.addEventListener('click', function (e) {
+				e.preventDefault(); e.stopPropagation();
+				items.forEach(function (i) { i.classList.remove('is-active'); });
+				item.classList.add('is-active');
+				var flag = item.querySelector('.lang-flag');
+				if (flag && currentFlag) currentFlag.innerHTML = flag.innerHTML;
+				trigger.setAttribute('aria-label', 'Change language — current: ' + item.querySelector('.lang-switch__label').textContent);
+				close();
+				try { localStorage.setItem('qubyx-lang', item.dataset.lang); } catch (err) {}
+			});
+		});
+		try {
+			var saved = localStorage.getItem('qubyx-lang');
+			if (saved) {
+				var match = sw.querySelector('.lang-switch__item[data-lang="' + saved + '"]');
+				if (match) match.click();
+			}
+		} catch (err) {}
+		document.addEventListener('click', function (e) { if (!sw.contains(e.target)) close(); });
+	})();
+</script>
 </body>
 </html>

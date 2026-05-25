@@ -17,16 +17,16 @@ const PACKAGES = {
 	"qubyx-theme": {
 		id: "qubyx-theme",
 		name: "Qubyx Theme",
-		version: "1.0.0",
-		file: "downloads/qubyx-theme-1.0.0.zip",
+		version: "1.0.1",
+		file: "downloads/qubyx-theme-1.0.1.zip",
 		homepage: "https://qubyx.com",
 		requires: "6.0",
 		tested: "6.6",
 		requires_php: "7.4",
-		last_updated: "2026-05-24",
+		last_updated: "2026-05-25",
 		sections: {
 			description: "Classic WordPress theme for Qubyx pages, products, resources, articles, and store-ready layouts.",
-			changelog: "Initial private update channel."
+			changelog: "Adds the language switcher to the WordPress header and aligns the Store page with the preview commerce layout."
 		}
 	}
 };

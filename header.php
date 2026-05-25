@@ -331,6 +331,65 @@
 		</nav>
 
 		<div class="site-header__actions">
+
+			<?php
+			/**
+			 * Language switcher.
+			 * The "url" is a hook for WPML / Polylang / TranslatePress —
+			 * they auto-rewrite the URL when the plugin is active.
+			 * Without a translation plugin the links act as static anchors.
+			 */
+			$qubyx_languages = array(
+				'en' => array(
+					'label' => __( 'English', 'qubyx' ),
+					'url'   => apply_filters( 'qubyx_lang_url_en', home_url( '/' ) ),
+					'flag'  => '<svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="us-h"><circle cx="30" cy="15" r="15"/></clipPath><g clip-path="url(#us-h)"><rect width="60" height="30" fill="#B22234"/><path stroke="#fff" stroke-width="2.31" d="M0 3.46h60M0 8.08h60M0 12.69h60M0 17.31h60M0 21.92h60M0 26.54h60"/><rect width="24" height="16.15" fill="#3C3B6E"/></g></svg>',
+					'is_default' => true,
+				),
+				'fr' => array(
+					'label' => __( 'Français', 'qubyx' ),
+					'url'   => apply_filters( 'qubyx_lang_url_fr', home_url( '/fr/' ) ),
+					'flag'  => '<svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="fr-h"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#fr-h)"><rect width="20" height="40" fill="#0055A4"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#EF4135"/></g></svg>',
+				),
+				'de' => array(
+					'label' => __( 'Deutsch', 'qubyx' ),
+					'url'   => apply_filters( 'qubyx_lang_url_de', home_url( '/de/' ) ),
+					'flag'  => '<svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="de-h"><circle cx="30" cy="18" r="18"/></clipPath><g clip-path="url(#de-h)"><rect width="60" height="12" fill="#000"/><rect y="12" width="60" height="12" fill="#DD0000"/><rect y="24" width="60" height="12" fill="#FFCE00"/></g></svg>',
+				),
+				'ko' => array(
+					'label' => __( '한국어', 'qubyx' ),
+					'url'   => apply_filters( 'qubyx_lang_url_ko', home_url( '/ko/' ) ),
+					'flag'  => '<svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="ko-h"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#ko-h)"><rect width="60" height="40" fill="#fff"/><circle cx="30" cy="20" r="8" fill="#CD2E3A"/><path d="M22 20a8 8 0 0 1 16 0 4 4 0 0 1-8 0 4 4 0 0 0-8 0z" fill="#0047A0"/></g></svg>',
+				),
+				'es' => array(
+					'label' => __( 'Español', 'qubyx' ),
+					'url'   => apply_filters( 'qubyx_lang_url_es', home_url( '/es/' ) ),
+					'flag'  => '<svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="es-h"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#es-h)"><rect width="60" height="40" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/></g></svg>',
+				),
+			);
+
+			$current_locale = function_exists( 'get_locale' ) ? get_locale() : 'en_US';
+			$current_lang   = 'en';
+			if ( 0 === strpos( $current_locale, 'fr' ) ) { $current_lang = 'fr'; }
+			elseif ( 0 === strpos( $current_locale, 'de' ) ) { $current_lang = 'de'; }
+			elseif ( 0 === strpos( $current_locale, 'ko' ) ) { $current_lang = 'ko'; }
+			elseif ( 0 === strpos( $current_locale, 'es' ) ) { $current_lang = 'es'; }
+			$current = $qubyx_languages[ $current_lang ];
+			?>
+			<div class="lang-switch" data-lang-switch>
+				<button class="lang-switch__trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="<?php esc_attr_e( 'Change language', 'qubyx' ); ?>">
+					<span class="lang-flag" data-current-flag><?php echo $current['flag']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				</button>
+				<div class="lang-switch__panel" role="menu">
+					<?php foreach ( $qubyx_languages as $code => $lang ) : ?>
+						<a class="lang-switch__item<?php echo $code === $current_lang ? ' is-active' : ''; ?>" role="menuitem" data-lang="<?php echo esc_attr( $code ); ?>" href="<?php echo esc_url( $lang['url'] ); ?>" hreflang="<?php echo esc_attr( $code ); ?>">
+							<span class="lang-flag"><?php echo $lang['flag']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+							<span class="lang-switch__label"><?php echo esc_html( $lang['label'] ); ?></span>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			</div>
+
 			<a class="site-header__login" href="<?php echo esc_url( home_url( '/downloads/' ) ); ?>"><?php esc_html_e( 'Downloads', 'qubyx' ); ?></a>
 			<a class="btn btn--primary btn--sm" href="<?php echo esc_url( home_url( '/request-demo/' ) ); ?>">
 				<?php esc_html_e( 'Request demo', 'qubyx' ); ?>

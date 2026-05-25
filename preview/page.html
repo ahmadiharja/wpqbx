@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../assets/css/main.css?v=pchr2-light" />
+<link rel="stylesheet" href="../assets/css/main.css?v=lang1" />
 
 <style>
 	.preview-page { min-height: 100svh; background: var(--color-bg); color: var(--color-ink); }
@@ -917,6 +917,85 @@
 
 	/* Empty state for hub */
 	.res-hub__empty { text-align: center; padding: 3rem; color: var(--color-ink-muted); }
+
+	/* =====================================================================
+	   LANGUAGE SWITCHER — flag icon trigger + dropdown panel
+	   ===================================================================== */
+	.lang-switch { position: relative; }
+	.lang-switch__trigger {
+		display: inline-flex; align-items: center; justify-content: center;
+		gap: 6px;
+		width: 38px; height: 38px;
+		border-radius: 50%;
+		border: 1px solid var(--color-border);
+		background: var(--color-bg);
+		cursor: pointer;
+		padding: 0;
+		transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+		overflow: hidden;
+	}
+	.lang-switch__trigger:hover { border-color: var(--color-ink); }
+	.lang-switch__trigger:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+	.lang-switch__trigger .lang-flag { width: 22px; height: 22px; border-radius: 50%; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+	.lang-switch__trigger .lang-flag svg { width: 30px; height: 30px; display: block; }
+
+	.lang-switch__panel {
+		position: absolute; top: calc(100% + 10px); right: 0;
+		min-width: 200px;
+		background: #fff;
+		border: 1px solid var(--color-border);
+		border-radius: 12px;
+		box-shadow: 0 16px 40px rgba(13,15,44,.08), 0 4px 12px rgba(13,15,44,.05);
+		padding: 6px;
+		opacity: 0; visibility: hidden; pointer-events: none;
+		transform: translateY(-6px);
+		transition: opacity 180ms var(--ease), transform 180ms var(--ease), visibility 180ms var(--ease);
+		z-index: 70;
+	}
+	.lang-switch.is-open .lang-switch__panel,
+	.lang-switch:hover .lang-switch__panel,
+	.lang-switch:focus-within .lang-switch__panel {
+		opacity: 1; visibility: visible; pointer-events: auto;
+		transform: translateY(0);
+	}
+	.lang-switch__item {
+		display: flex; align-items: center; gap: 10px;
+		padding: 9px 12px;
+		border-radius: 8px;
+		font-size: 14px;
+		font-weight: 500;
+		color: var(--color-ink-muted);
+		text-decoration: none;
+		transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+		cursor: pointer;
+		border: 0;
+		background: transparent;
+		width: 100%;
+		text-align: left;
+		font-family: inherit;
+	}
+	.lang-switch__item:hover { background: var(--color-bg-alt); color: var(--color-ink); }
+	.lang-switch__item.is-active { color: var(--color-ink); }
+	.lang-switch__item.is-active::after {
+		content: '';
+		margin-left: auto;
+		width: 14px; height: 14px;
+		background: var(--color-accent);
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat;
+		-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat;
+	}
+	.lang-flag {
+		width: 22px; height: 22px; border-radius: 50%;
+		overflow: hidden; display: inline-flex; align-items: center; justify-content: center;
+		flex-shrink: 0;
+		box-shadow: 0 0 0 1px rgba(13,15,44,.08);
+	}
+	.lang-flag svg { width: 30px; height: 30px; display: block; }
+	.lang-switch__label { flex: 1; }
+
+	@media (max-width: 980px) {
+		.lang-switch { display: none; }
+	}
 </style>
 </head>
 <body class="preview-page">
@@ -1225,6 +1304,39 @@
 		</nav>
 
 		<div class="site-header__actions">
+
+			<!-- Language switcher (flag icon + dropdown) -->
+			<div class="lang-switch" data-lang-switch>
+				<button class="lang-switch__trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+					<span class="lang-flag" data-current-flag>
+						<!-- Default: English (US flag) -->
+						<svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="us-c"><circle cx="30" cy="15" r="15"/></clipPath><g clip-path="url(#us-c)"><rect width="60" height="30" fill="#B22234"/><path stroke="#fff" stroke-width="2.31" d="M0 3.46h60M0 8.08h60M0 12.69h60M0 17.31h60M0 21.92h60M0 26.54h60"/><rect width="24" height="16.15" fill="#3C3B6E"/></g></svg>
+					</span>
+				</button>
+				<div class="lang-switch__panel" role="menu">
+					<button class="lang-switch__item is-active" role="menuitem" data-lang="en">
+						<span class="lang-flag"><svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="us-i"><circle cx="30" cy="15" r="15"/></clipPath><g clip-path="url(#us-i)"><rect width="60" height="30" fill="#B22234"/><path stroke="#fff" stroke-width="2.31" d="M0 3.46h60M0 8.08h60M0 12.69h60M0 17.31h60M0 21.92h60M0 26.54h60"/><rect width="24" height="16.15" fill="#3C3B6E"/></g></svg></span>
+						<span class="lang-switch__label">English</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="fr">
+						<span class="lang-flag"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="fr-i"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#fr-i)"><rect width="20" height="40" fill="#0055A4"/><rect x="20" width="20" height="40" fill="#fff"/><rect x="40" width="20" height="40" fill="#EF4135"/></g></svg></span>
+						<span class="lang-switch__label">Français</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="de">
+						<span class="lang-flag"><svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="de-i"><circle cx="30" cy="18" r="18"/></clipPath><g clip-path="url(#de-i)"><rect width="60" height="12" fill="#000"/><rect y="12" width="60" height="12" fill="#DD0000"/><rect y="24" width="60" height="12" fill="#FFCE00"/></g></svg></span>
+						<span class="lang-switch__label">Deutsch</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="ko">
+						<span class="lang-flag"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="ko-i"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#ko-i)"><rect width="60" height="40" fill="#fff"/><circle cx="30" cy="20" r="8" fill="#CD2E3A"/><path d="M22 20a8 8 0 0 1 16 0 4 4 0 0 1-8 0 4 4 0 0 0-8 0z" fill="#0047A0"/><g fill="#000"><rect x="9" y="9" width="5" height="1.2" transform="rotate(-56.31 11.5 9.6)"/><rect x="9" y="12" width="5" height="1.2" transform="rotate(-56.31 11.5 12.6)"/><rect x="9" y="15" width="5" height="1.2" transform="rotate(-56.31 11.5 15.6)"/><rect x="46" y="9" width="5" height="1.2" transform="rotate(56.31 48.5 9.6)"/><rect x="46" y="12" width="5" height="1.2" transform="rotate(56.31 48.5 12.6)"/><rect x="46" y="15" width="5" height="1.2" transform="rotate(56.31 48.5 15.6)"/><rect x="9" y="25" width="5" height="1.2" transform="rotate(56.31 11.5 25.6)"/><rect x="9" y="28" width="5" height="1.2" transform="rotate(56.31 11.5 28.6)"/><rect x="9" y="31" width="5" height="1.2" transform="rotate(56.31 11.5 31.6)"/><rect x="46" y="25" width="5" height="1.2" transform="rotate(-56.31 48.5 25.6)"/><rect x="46" y="28" width="5" height="1.2" transform="rotate(-56.31 48.5 28.6)"/><rect x="46" y="31" width="5" height="1.2" transform="rotate(-56.31 48.5 31.6)"/></g></g></svg></span>
+						<span class="lang-switch__label">한국어</span>
+					</button>
+					<button class="lang-switch__item" role="menuitem" data-lang="es">
+						<span class="lang-flag"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><clipPath id="es-i"><circle cx="30" cy="20" r="20"/></clipPath><g clip-path="url(#es-i)"><rect width="60" height="10" fill="#AA151B"/><rect y="10" width="60" height="20" fill="#F1BF00"/><rect y="30" width="60" height="10" fill="#AA151B"/></g></svg></span>
+						<span class="lang-switch__label">Español</span>
+					</button>
+				</div>
+			</div>
+
 			<a class="site-header__login" href="page.html?slug=downloads">Downloads</a>
 			<a class="btn btn--primary btn--sm" href="page.html?slug=request-demo">Request demo<span class="btn__icon" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span></a>
 			<button class="site-header__menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" data-mobile-toggle><span class="screen-reader-text">Open menu</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -5210,6 +5322,52 @@
 
 		document.addEventListener('click', route);
 		render();
+
+		// ===== Language switcher =====
+		(function () {
+			var sw = document.querySelector('[data-lang-switch]');
+			if (!sw) return;
+			var trigger = sw.querySelector('.lang-switch__trigger');
+			var panel = sw.querySelector('.lang-switch__panel');
+			var items = sw.querySelectorAll('.lang-switch__item');
+			var currentFlag = sw.querySelector('[data-current-flag]');
+
+			function close() { sw.classList.remove('is-open'); trigger.setAttribute('aria-expanded', 'false'); }
+			function open()  { sw.classList.add('is-open');    trigger.setAttribute('aria-expanded', 'true');  }
+
+			trigger.addEventListener('click', function (e) {
+				e.preventDefault(); e.stopPropagation();
+				if (sw.classList.contains('is-open')) close(); else open();
+			});
+
+			items.forEach(function (item) {
+				item.addEventListener('click', function (e) {
+					e.preventDefault(); e.stopPropagation();
+					items.forEach(function (i) { i.classList.remove('is-active'); });
+					item.classList.add('is-active');
+					// Copy the SVG flag into the trigger
+					var flag = item.querySelector('.lang-flag');
+					if (flag && currentFlag) currentFlag.innerHTML = flag.innerHTML;
+					trigger.setAttribute('aria-label', 'Change language — current: ' + item.querySelector('.lang-switch__label').textContent);
+					close();
+					// Persist choice (so refresh keeps selection)
+					try { localStorage.setItem('qubyx-lang', item.dataset.lang); } catch (err) {}
+				});
+			});
+
+			// Restore saved language on load
+			try {
+				var saved = localStorage.getItem('qubyx-lang');
+				if (saved) {
+					var match = sw.querySelector('.lang-switch__item[data-lang="' + saved + '"]');
+					if (match) match.click();
+				}
+			} catch (err) {}
+
+			document.addEventListener('click', function (e) {
+				if (!sw.contains(e.target)) close();
+			});
+		})();
 	})();
 </script>
 <script src="../assets/js/main.js" defer></script>

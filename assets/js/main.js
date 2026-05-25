@@ -92,4 +92,119 @@
 			}, 60);
 		}
 	}
+
+	// ---- 6. Language switcher --------------------------------------------
+	var langSw = document.querySelector('[data-lang-switch]');
+	if (langSw) {
+		var trigger = langSw.querySelector('.lang-switch__trigger');
+		var items   = langSw.querySelectorAll('.lang-switch__item');
+		var currentFlag = langSw.querySelector('[data-current-flag]');
+
+		function langClose() { langSw.classList.remove('is-open'); trigger.setAttribute('aria-expanded', 'false'); }
+		function langOpen()  { langSw.classList.add('is-open');    trigger.setAttribute('aria-expanded', 'true');  }
+
+		trigger.addEventListener('click', function (e) {
+			e.preventDefault(); e.stopPropagation();
+			if (langSw.classList.contains('is-open')) langClose(); else langOpen();
+		});
+
+		items.forEach(function (item) {
+			item.addEventListener('click', function (e) {
+				// In WordPress with WPML/Polylang the <a> href is the translated URL — let it navigate.
+				// We only intercept when href is "#" (no plugin active) so the picker still works visually.
+				if (item.tagName === 'A' && item.getAttribute('href') && item.getAttribute('href') !== '#') {
+					// Update visible flag immediately so user sees the change as page loads.
+					var flag = item.querySelector('.lang-flag');
+					if (flag && currentFlag) currentFlag.innerHTML = flag.innerHTML;
+					try { localStorage.setItem('qubyx-lang', item.dataset.lang); } catch (err) {}
+					return; // allow link navigation
+				}
+				e.preventDefault(); e.stopPropagation();
+				items.forEach(function (i) { i.classList.remove('is-active'); });
+				item.classList.add('is-active');
+				var flag = item.querySelector('.lang-flag');
+				if (flag && currentFlag) currentFlag.innerHTML = flag.innerHTML;
+				langClose();
+				try { localStorage.setItem('qubyx-lang', item.dataset.lang); } catch (err) {}
+			});
+		});
+
+		document.addEventListener('click', function (e) {
+			if (!langSw.contains(e.target)) langClose();
+		});
+	}
+
+	// ---- 7. Store catalog filters -----------------------------------------
+	var storeGrid = document.querySelector('[data-store-grid]');
+	if (storeGrid) {
+		var storeState = { audience: 'hospitals', category: 'all' };
+		var storeCounter = document.querySelector('[data-store-count]');
+		var storeEmpty = document.querySelector('[data-store-empty]');
+		var storeCards = storeGrid.querySelectorAll('.adstore-card');
+		var storeSegments = document.querySelectorAll('.adstore-segments a[data-audience]');
+		var storeCategories = document.querySelectorAll('.adstore-sidebar a[data-category]');
+		var categoryLabels = {
+			all: 'All products',
+			medical: 'Medical / DICOM',
+			color: 'Color / Creative',
+			epd: 'E-paper / OEM',
+			sensors: 'Sensors',
+			bundles: 'Bundles'
+		};
+		var audienceLabels = {
+			hospitals: 'Hospitals',
+			color: 'Color professionals',
+			oem: 'OEM & manufacturing',
+			education: 'Education'
+		};
+
+		function cardMatches(card, audience, category) {
+			var cats = (card.getAttribute('data-categories') || '').split(',');
+			var auds = (card.getAttribute('data-audiences') || '').split(',');
+			return auds.indexOf(audience) !== -1 && (category === 'all' || cats.indexOf(category) !== -1);
+		}
+
+		function applyStoreFilters() {
+			var shown = 0;
+			storeCards.forEach(function (card) {
+				var visible = cardMatches(card, storeState.audience, storeState.category);
+				card.hidden = !visible;
+				if (visible) shown++;
+			});
+			if (storeCounter) {
+				storeCounter.innerHTML = '<strong>' + shown + ' result' + (shown === 1 ? '' : 's') + '</strong> in ' + (categoryLabels[storeState.category] || storeState.category) + ' - ' + (audienceLabels[storeState.audience] || storeState.audience);
+			}
+			if (storeEmpty) storeEmpty.hidden = shown !== 0;
+			storeGrid.hidden = shown === 0;
+
+			document.querySelectorAll('.adstore-sidebar__count[data-count]').forEach(function (el) {
+				var cat = el.getAttribute('data-count');
+				var count = 0;
+				storeCards.forEach(function (card) {
+					if (cardMatches(card, storeState.audience, cat)) count++;
+				});
+				el.textContent = count;
+			});
+		}
+
+		storeSegments.forEach(function (link) {
+			link.addEventListener('click', function (e) {
+				e.preventDefault();
+				storeState.audience = link.getAttribute('data-audience');
+				storeSegments.forEach(function (item) { item.classList.toggle('is-active', item === link); });
+				applyStoreFilters();
+			});
+		});
+
+		storeCategories.forEach(function (link) {
+			link.addEventListener('click', function (e) {
+				e.preventDefault();
+				storeState.category = link.getAttribute('data-category');
+				storeCategories.forEach(function (item) { item.classList.toggle('is-active', item === link); });
+				applyStoreFilters();
+			});
+		});
+
+		applyStoreFilters();
+	}
 })();

@@ -6,6 +6,8 @@
  */
 
 get_header();
+$qubyx_render_global_cta = true;
+
 while ( have_posts() ) :
 	the_post();
 
@@ -23,6 +25,12 @@ while ( have_posts() ) :
 		$family = 'resource';
 	} elseif ( 'products' === $slug ) {
 		$family = 'product';
+	}
+
+	if ( 'store' === $slug ) {
+		$qubyx_render_global_cta = false;
+		get_template_part( 'template-parts/sections/store-commerce' );
+		continue;
 	}
 
 	$family_data = array(
@@ -170,5 +178,9 @@ while ( have_posts() ) :
 
 <?php endwhile; ?>
 
-<?php get_template_part( 'template-parts/sections/cta' ); ?>
+<?php
+if ( $qubyx_render_global_cta ) {
+	get_template_part( 'template-parts/sections/cta' );
+}
+?>
 <?php get_footer(); ?>
