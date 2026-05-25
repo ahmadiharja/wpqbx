@@ -148,13 +148,16 @@
 			medical: 'Medical / DICOM',
 			color: 'Color / Creative',
 			epd: 'E-paper / OEM',
+			remote: 'Remote QA',
 			sensors: 'Sensors',
-			bundles: 'Bundles'
+			bundles: 'Bundles',
+			free: 'Free tools'
 		};
 		var audienceLabels = {
 			hospitals: 'Hospitals',
 			color: 'Color professionals',
 			oem: 'OEM & manufacturing',
+			consumer: 'Consumers',
 			education: 'Education'
 		};
 

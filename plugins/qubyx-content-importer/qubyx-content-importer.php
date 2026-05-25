@@ -3,7 +3,7 @@
  * Plugin Name: Qubyx Content Importer
  * Plugin URI: https://qubyx.com
  * Description: Seeds the Qubyx enterprise website content, menus, products, resources, posts, and WPML-ready strings.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Qubyx
  * Author URI: https://qubyx.com
  * Text Domain: qubyx-content-importer
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'QUBYX_CI_VERSION', '1.0.1' );
+define( 'QUBYX_CI_VERSION', '1.0.2' );
 define( 'QUBYX_CI_DIR', plugin_dir_path( __FILE__ ) );
 define( 'QUBYX_CI_URL', plugin_dir_url( __FILE__ ) );
 define( 'QUBYX_CI_FILE', __FILE__ );
@@ -1425,15 +1425,21 @@ function qubyx_ci_run_import() {
 		$result['posts']++;
 	}
 
-	foreach ( $data['products'] ?? array() as $key => $product ) {
-		$post_ids[ $key ] = qubyx_ci_upsert_post( 'product', $key, $product, $post_ids );
-		qubyx_ci_set_terms( $post_ids[ $key ], $product['terms'] ?? array() );
-		$result['posts']++;
-	}
+foreach ( $data['products'] ?? array() as $key => $product ) {
+	$post_ids[ $key ] = qubyx_ci_upsert_post( 'product', $key, $product, $post_ids );
+	qubyx_ci_set_terms( $post_ids[ $key ], $product['terms'] ?? array() );
+	$result['posts']++;
+}
 
-	foreach ( $data['resources'] ?? array() as $key => $resource ) {
-		$post_ids[ $key ] = qubyx_ci_upsert_post( 'resource', $key, $resource, $post_ids );
-		qubyx_ci_set_terms( $post_ids[ $key ], $resource['terms'] ?? array() );
+foreach ( $data['store_products'] ?? array() as $key => $product ) {
+	$post_ids[ $key ] = qubyx_ci_upsert_post( 'product', $key, $product, $post_ids );
+	qubyx_ci_prepare_store_product( $post_ids[ $key ] );
+	$result['posts']++;
+}
+
+foreach ( $data['resources'] ?? array() as $key => $resource ) {
+	$post_ids[ $key ] = qubyx_ci_upsert_post( 'resource', $key, $resource, $post_ids );
+	qubyx_ci_set_terms( $post_ids[ $key ], $resource['terms'] ?? array() );
 		$result['posts']++;
 	}
 
@@ -1496,6 +1502,27 @@ function qubyx_ci_upsert_post( $post_type, $key, $item, $post_ids = array() ) {
 	qubyx_ci_update_seo_meta( $post_id, $item );
 
 	return (int) $post_id;
+}
+
+/**
+ * Add WooCommerce product settings for Store products when WooCommerce is active.
+ */
+function qubyx_ci_prepare_store_product( $post_id ) {
+	if ( ! $post_id ) {
+		return;
+	}
+
+	if ( taxonomy_exists( 'product_type' ) ) {
+		wp_set_object_terms( $post_id, 'simple', 'product_type' );
+	}
+
+	if ( taxonomy_exists( 'product_visibility' ) ) {
+		wp_set_object_terms( $post_id, array(), 'product_visibility', false );
+	}
+
+	if ( function_exists( 'wc_delete_product_transients' ) ) {
+		wc_delete_product_transients( $post_id );
+	}
 }
 
 /**
