@@ -33,6 +33,7 @@ add_action( 'admin_enqueue_scripts', 'qubyx_ci_admin_assets' );
 add_action( 'admin_init', 'qubyx_ci_register_wpml_strings' );
 add_action( 'admin_init', 'qubyx_ci_register_settings' );
 add_action( 'admin_post_qubyx_ci_import', 'qubyx_ci_handle_import' );
+add_action( 'wp_ajax_qubyx_ci_ai_generate', 'qubyx_ci_ajax_ai_generate' );
 
 /**
  * Load plugin translations.
@@ -84,6 +85,15 @@ function qubyx_ci_admin_menu() {
 
 	add_submenu_page(
 		'qubyx-dashboard',
+		__( 'Qubyx AI Writer', 'qubyx-content-importer' ),
+		__( 'AI Writer', 'qubyx-content-importer' ),
+		'manage_options',
+		'qubyx-ai-writer',
+		'qubyx_ci_render_ai_writer_page'
+	);
+
+	add_submenu_page(
+		'qubyx-dashboard',
 		__( 'Qubyx Updates', 'qubyx-content-importer' ),
 		__( 'Updates', 'qubyx-content-importer' ),
 		'manage_options',
@@ -125,6 +135,27 @@ function qubyx_ci_admin_assets( $hook ) {
 		QUBYX_CI_URL . 'assets/admin.css',
 		array(),
 		QUBYX_CI_VERSION
+	);
+
+	wp_enqueue_script(
+		'qubyx-ci-admin',
+		QUBYX_CI_URL . 'assets/admin.js',
+		array(),
+		QUBYX_CI_VERSION,
+		true
+	);
+
+	wp_localize_script(
+		'qubyx-ci-admin',
+		'QubyxCI',
+		array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'qubyx_ci_ai' ),
+			'i18n'    => array(
+				'generating' => __( 'Researching and drafting...', 'qubyx-content-importer' ),
+				'error'      => __( 'The AI request could not be completed.', 'qubyx-content-importer' ),
+			),
+		)
 	);
 }
 
@@ -257,6 +288,111 @@ function qubyx_ci_render_content_page() {
 		<?php qubyx_ci_link_card( __( 'Resources', 'qubyx-content-importer' ), $counts['resources'], admin_url( 'edit.php?post_type=resource' ), __( 'Manage guides, news, and blog resources.', 'qubyx-content-importer' ) ); ?>
 		<?php qubyx_ci_link_card( __( 'Menus', 'qubyx-content-importer' ), __( 'Primary', 'qubyx-content-importer' ), admin_url( 'nav-menus.php' ), __( 'Review navigation imported by QUBYX.', 'qubyx-content-importer' ) ); ?>
 	</div>
+	<?php
+	qubyx_ci_admin_footer();
+}
+
+/**
+ * Render AI writer page.
+ */
+function qubyx_ci_render_ai_writer_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	$settings = qubyx_ci_get_settings();
+	$has_key  = (bool) qubyx_ci_get_openai_api_key();
+	qubyx_ci_admin_header(
+		'ai',
+		__( 'AI Writer', 'qubyx-content-importer' ),
+		__( 'Research topics and create SEO-ready WordPress drafts for the QUBYX site.', 'qubyx-content-importer' )
+	);
+	?>
+	<div class="qubyx-grid qubyx-grid--main qubyx-ai-layout">
+		<section class="qubyx-panel qubyx-ai-composer">
+			<div class="qubyx-ai-composer__head">
+				<div>
+					<p class="qubyx-kicker"><?php esc_html_e( 'Research assistant', 'qubyx-content-importer' ); ?></p>
+					<h2><?php esc_html_e( 'Generate a researched article draft.', 'qubyx-content-importer' ); ?></h2>
+					<p><?php esc_html_e( 'Give the assistant a topic, audience, and SEO angle. It can use web search, then save the result as a draft post or resource.', 'qubyx-content-importer' ); ?></p>
+				</div>
+				<span class="qubyx-ai-key-status <?php echo esc_attr( $has_key ? 'is-ready' : 'is-missing' ); ?>">
+					<?php echo esc_html( $has_key ? __( 'API ready', 'qubyx-content-importer' ) : __( 'API key missing', 'qubyx-content-importer' ) ); ?>
+				</span>
+			</div>
+
+			<form class="qubyx-ai-form" data-qubyx-ai-form>
+				<div class="qubyx-field">
+					<label for="qubyx_ai_topic"><?php esc_html_e( 'Topic or brief', 'qubyx-content-importer' ); ?></label>
+					<textarea id="qubyx_ai_topic" name="topic" rows="5" required placeholder="<?php esc_attr_e( 'Example: DICOM display calibration checklist for radiology departments preparing annual QA audits.', 'qubyx-content-importer' ); ?>"></textarea>
+				</div>
+				<div class="qubyx-form-grid">
+					<div class="qubyx-field">
+						<label for="qubyx_ai_keywords"><?php esc_html_e( 'SEO keywords', 'qubyx-content-importer' ); ?></label>
+						<input id="qubyx_ai_keywords" name="keywords" type="text" placeholder="<?php esc_attr_e( 'DICOM calibration, medical display QA, GSDF', 'qubyx-content-importer' ); ?>" />
+					</div>
+					<div class="qubyx-field">
+						<label for="qubyx_ai_audience"><?php esc_html_e( 'Audience', 'qubyx-content-importer' ); ?></label>
+						<input id="qubyx_ai_audience" name="audience" type="text" value="<?php esc_attr_e( 'Healthcare imaging and enterprise display QA teams', 'qubyx-content-importer' ); ?>" />
+					</div>
+				</div>
+				<div class="qubyx-form-grid">
+					<div class="qubyx-field">
+						<label for="qubyx_ai_post_type"><?php esc_html_e( 'Draft type', 'qubyx-content-importer' ); ?></label>
+						<select id="qubyx_ai_post_type" name="post_type">
+							<option value="resource"><?php esc_html_e( 'Resource article', 'qubyx-content-importer' ); ?></option>
+							<option value="post"><?php esc_html_e( 'Blog post', 'qubyx-content-importer' ); ?></option>
+							<option value="page"><?php esc_html_e( 'Page draft', 'qubyx-content-importer' ); ?></option>
+						</select>
+					</div>
+					<div class="qubyx-field">
+						<label for="qubyx_ai_layout"><?php esc_html_e( 'Article layout', 'qubyx-content-importer' ); ?></label>
+						<select id="qubyx_ai_layout" name="resource_layout">
+							<option value="guide"><?php esc_html_e( 'Guide', 'qubyx-content-importer' ); ?></option>
+							<option value="news"><?php esc_html_e( 'News / update', 'qubyx-content-importer' ); ?></option>
+							<option value="blog"><?php esc_html_e( 'Blog / opinion', 'qubyx-content-importer' ); ?></option>
+						</select>
+					</div>
+				</div>
+				<div class="qubyx-form-grid">
+					<div class="qubyx-field">
+						<label for="qubyx_ai_language"><?php esc_html_e( 'Language', 'qubyx-content-importer' ); ?></label>
+						<select id="qubyx_ai_language" name="language">
+							<option value="English"><?php esc_html_e( 'English', 'qubyx-content-importer' ); ?></option>
+							<option value="Indonesian"><?php esc_html_e( 'Indonesian', 'qubyx-content-importer' ); ?></option>
+						</select>
+					</div>
+					<div class="qubyx-field">
+						<label for="qubyx_ai_model"><?php esc_html_e( 'Model', 'qubyx-content-importer' ); ?></label>
+						<input id="qubyx_ai_model" name="model" type="text" value="<?php echo esc_attr( $settings['openai_model'] ); ?>" />
+					</div>
+				</div>
+				<div class="qubyx-ai-options">
+					<label><input type="checkbox" name="use_web_search" value="1" <?php checked( $settings['ai_use_web_search'] ); ?> /> <?php esc_html_e( 'Use web research with citations', 'qubyx-content-importer' ); ?></label>
+					<label><input type="checkbox" name="save_draft" value="1" checked /> <?php esc_html_e( 'Create WordPress draft after generation', 'qubyx-content-importer' ); ?></label>
+				</div>
+				<button class="qubyx-button qubyx-button--primary qubyx-button--large" type="submit" <?php disabled( ! $has_key ); ?>><?php esc_html_e( 'Generate Draft', 'qubyx-content-importer' ); ?></button>
+			</form>
+		</section>
+
+		<aside class="qubyx-panel qubyx-ai-sidebar">
+			<h2><?php esc_html_e( 'AI Setup', 'qubyx-content-importer' ); ?></h2>
+			<ul class="qubyx-status-list">
+				<?php qubyx_ci_status_item( __( 'Credential', 'qubyx-content-importer' ), $has_key ? qubyx_ci_get_openai_key_source_label() : __( 'Add a key in Settings or environment.', 'qubyx-content-importer' ), $has_key ? 'good' : 'warn' ); ?>
+				<?php qubyx_ci_status_item( __( 'Default model', 'qubyx-content-importer' ), $settings['openai_model'], 'good' ); ?>
+				<?php qubyx_ci_status_item( __( 'Web research', 'qubyx-content-importer' ), ! empty( $settings['ai_use_web_search'] ) ? __( 'Enabled', 'qubyx-content-importer' ) : __( 'Disabled', 'qubyx-content-importer' ), ! empty( $settings['ai_use_web_search'] ) ? 'good' : 'warn' ); ?>
+			</ul>
+			<a class="qubyx-button" href="<?php echo esc_url( admin_url( 'admin.php?page=qubyx-settings' ) ); ?>"><?php esc_html_e( 'Open AI Settings', 'qubyx-content-importer' ); ?></a>
+		</aside>
+	</div>
+
+	<section class="qubyx-panel qubyx-ai-result" data-qubyx-ai-result hidden>
+		<div class="qubyx-ai-result__head">
+			<h2><?php esc_html_e( 'Generated Draft', 'qubyx-content-importer' ); ?></h2>
+			<div data-qubyx-ai-actions></div>
+		</div>
+		<div class="qubyx-ai-result__body" data-qubyx-ai-output></div>
+	</section>
 	<?php
 	qubyx_ci_admin_footer();
 }
@@ -411,19 +547,24 @@ function qubyx_ci_admin_tabs() {
 			'icon'  => '03',
 			'url'   => admin_url( 'admin.php?page=qubyx-content' ),
 		),
+		'ai'        => array(
+			'label' => __( 'AI Writer', 'qubyx-content-importer' ),
+			'icon'  => '04',
+			'url'   => admin_url( 'admin.php?page=qubyx-ai-writer' ),
+		),
 		'updates'   => array(
 			'label' => __( 'Updates', 'qubyx-content-importer' ),
-			'icon'  => '04',
+			'icon'  => '05',
 			'url'   => admin_url( 'admin.php?page=qubyx-updates' ),
 		),
 		'settings'  => array(
 			'label' => __( 'Settings', 'qubyx-content-importer' ),
-			'icon'  => '05',
+			'icon'  => '06',
 			'url'   => admin_url( 'admin.php?page=qubyx-settings' ),
 		),
 		'system'    => array(
 			'label' => __( 'System', 'qubyx-content-importer' ),
-			'icon'  => '06',
+			'icon'  => '07',
 			'url'   => admin_url( 'admin.php?page=qubyx-system' ),
 		),
 	);
@@ -537,9 +678,39 @@ function qubyx_ci_link_card( $label, $value, $url, $detail ) {
  */
 function qubyx_ci_render_settings_form() {
 	$settings = qubyx_ci_get_settings();
+	$has_saved_key = ! empty( $settings['openai_api_key'] );
+	$has_env_key   = (bool) qubyx_ci_get_openai_api_key_from_environment();
 	?>
 	<form class="qubyx-form" method="post" action="options.php">
 		<?php settings_fields( 'qubyx_ci_settings' ); ?>
+		<h3><?php esc_html_e( 'AI Credentials', 'qubyx-content-importer' ); ?></h3>
+		<div class="qubyx-field">
+			<label for="qubyx_ci_openai_api_key"><?php esc_html_e( 'OpenAI API key', 'qubyx-content-importer' ); ?></label>
+			<input class="regular-text code" type="password" id="qubyx_ci_openai_api_key" name="qubyx_ci_settings[openai_api_key]" value="" autocomplete="new-password" placeholder="<?php echo esc_attr( $has_saved_key ? __( 'Saved key configured. Leave blank to keep it.', 'qubyx-content-importer' ) : __( 'Uses environment key when left blank.', 'qubyx-content-importer' ) ); ?>" />
+			<p>
+				<?php
+				echo esc_html(
+					$has_saved_key
+						? __( 'A WordPress-stored API key is configured. Leave this field blank to keep the existing key.', 'qubyx-content-importer' )
+						: ( $has_env_key ? __( 'No WordPress key is saved. The plugin will use the local environment key.', 'qubyx-content-importer' ) : __( 'No API key is currently available. Add one here or define OPENAI_API_KEY in the environment.', 'qubyx-content-importer' ) )
+				);
+				?>
+			</p>
+		</div>
+		<div class="qubyx-form-grid">
+			<div class="qubyx-field">
+				<label for="qubyx_ci_openai_model"><?php esc_html_e( 'Default AI model', 'qubyx-content-importer' ); ?></label>
+				<input class="regular-text code" type="text" id="qubyx_ci_openai_model" name="qubyx_ci_settings[openai_model]" value="<?php echo esc_attr( $settings['openai_model'] ); ?>" />
+			</div>
+			<div class="qubyx-field qubyx-field--toggle">
+				<label>
+					<input type="checkbox" name="qubyx_ci_settings[ai_use_web_search]" value="1" <?php checked( $settings['ai_use_web_search'] ); ?> />
+					<span><?php esc_html_e( 'Enable web research by default in AI Writer.', 'qubyx-content-importer' ); ?></span>
+				</label>
+			</div>
+		</div>
+		<hr />
+		<h3><?php esc_html_e( 'Private Updates', 'qubyx-content-importer' ); ?></h3>
 		<div class="qubyx-field">
 			<label for="qubyx_ci_update_endpoint"><?php esc_html_e( 'Update manifest URL', 'qubyx-content-importer' ); ?></label>
 			<input class="regular-text code" type="url" id="qubyx_ci_update_endpoint" name="qubyx_ci_settings[update_endpoint]" value="<?php echo esc_attr( $settings['update_endpoint'] ); ?>" />
@@ -554,6 +725,410 @@ function qubyx_ci_render_settings_form() {
 		<button class="qubyx-button qubyx-button--primary" type="submit"><?php esc_html_e( 'Save Settings', 'qubyx-content-importer' ); ?></button>
 	</form>
 	<?php
+}
+
+/**
+ * Return the active OpenAI API key without exposing it.
+ *
+ * @return string
+ */
+function qubyx_ci_get_openai_api_key() {
+	$settings = qubyx_ci_get_settings();
+	if ( ! empty( $settings['openai_api_key'] ) ) {
+		return (string) $settings['openai_api_key'];
+	}
+
+	return qubyx_ci_get_openai_api_key_from_environment();
+}
+
+/**
+ * Read OpenAI API key from constants or environment variables.
+ *
+ * @return string
+ */
+function qubyx_ci_get_openai_api_key_from_environment() {
+	if ( defined( 'QUBYX_OPENAI_API_KEY' ) && QUBYX_OPENAI_API_KEY ) {
+		return (string) QUBYX_OPENAI_API_KEY;
+	}
+
+	if ( defined( 'OPENAI_API_KEY' ) && OPENAI_API_KEY ) {
+		return (string) OPENAI_API_KEY;
+	}
+
+	$env_key = getenv( 'QUBYX_OPENAI_API_KEY' );
+	if ( $env_key ) {
+		return (string) $env_key;
+	}
+
+	$env_key = getenv( 'OPENAI_API_KEY' );
+	if ( $env_key ) {
+		return (string) $env_key;
+	}
+
+	return '';
+}
+
+/**
+ * Describe where the OpenAI key is coming from without revealing it.
+ *
+ * @return string
+ */
+function qubyx_ci_get_openai_key_source_label() {
+	$settings = qubyx_ci_get_settings();
+	if ( ! empty( $settings['openai_api_key'] ) ) {
+		return __( 'Stored in QUBYX settings', 'qubyx-content-importer' );
+	}
+
+	if ( qubyx_ci_get_openai_api_key_from_environment() ) {
+		return __( 'Loaded from local environment', 'qubyx-content-importer' );
+	}
+
+	return __( 'Not configured', 'qubyx-content-importer' );
+}
+
+/**
+ * AJAX handler for AI article generation.
+ */
+function qubyx_ci_ajax_ai_generate() {
+	check_ajax_referer( 'qubyx_ci_ai', 'nonce' );
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array( 'message' => __( 'You are not allowed to use QUBYX AI Writer.', 'qubyx-content-importer' ) ), 403 );
+	}
+
+	$topic = isset( $_POST['topic'] ) ? sanitize_textarea_field( wp_unslash( $_POST['topic'] ) ) : '';
+	if ( '' === trim( $topic ) ) {
+		wp_send_json_error( array( 'message' => __( 'Please enter a topic or brief.', 'qubyx-content-importer' ) ), 400 );
+	}
+
+	$args = array(
+		'topic'           => $topic,
+		'keywords'        => isset( $_POST['keywords'] ) ? sanitize_text_field( wp_unslash( $_POST['keywords'] ) ) : '',
+		'audience'        => isset( $_POST['audience'] ) ? sanitize_text_field( wp_unslash( $_POST['audience'] ) ) : '',
+		'post_type'       => isset( $_POST['post_type'] ) ? sanitize_key( wp_unslash( $_POST['post_type'] ) ) : 'resource',
+		'resource_layout' => isset( $_POST['resource_layout'] ) ? sanitize_key( wp_unslash( $_POST['resource_layout'] ) ) : 'guide',
+		'language'        => isset( $_POST['language'] ) ? sanitize_text_field( wp_unslash( $_POST['language'] ) ) : 'English',
+		'model'           => isset( $_POST['model'] ) ? sanitize_text_field( wp_unslash( $_POST['model'] ) ) : '',
+		'use_web_search'  => ! empty( $_POST['use_web_search'] ),
+	);
+
+	$article = qubyx_ci_generate_ai_article( $args );
+	if ( is_wp_error( $article ) ) {
+		wp_send_json_error( array( 'message' => $article->get_error_message() ), 500 );
+	}
+
+	$draft = null;
+	if ( ! empty( $_POST['save_draft'] ) ) {
+		$draft = qubyx_ci_create_ai_draft( $article, $args );
+		if ( is_wp_error( $draft ) ) {
+			wp_send_json_error( array( 'message' => $draft->get_error_message(), 'article' => $article ), 500 );
+		}
+	}
+
+	wp_send_json_success(
+		array(
+			'article' => $article,
+			'draft'   => $draft,
+		)
+	);
+}
+
+/**
+ * Generate an article with OpenAI Responses API.
+ *
+ * @param array $args Generation args.
+ * @return array|WP_Error
+ */
+function qubyx_ci_generate_ai_article( $args ) {
+	$api_key = qubyx_ci_get_openai_api_key();
+	if ( ! $api_key ) {
+		return new WP_Error( 'qubyx_ai_missing_key', __( 'OpenAI API key is missing. Add it in QUBYX Settings or define OPENAI_API_KEY in the environment.', 'qubyx-content-importer' ) );
+	}
+
+	$settings = qubyx_ci_get_settings();
+	$model    = ! empty( $args['model'] ) ? $args['model'] : ( $settings['openai_model'] ?? 'gpt-5-mini' );
+	$schema   = qubyx_ci_ai_article_schema();
+	$prompt   = qubyx_ci_build_ai_prompt( $args );
+	$body     = array(
+		'model' => $model,
+		'input' => array(
+			array(
+				'role'    => 'system',
+				'content' => 'You are the QUBYX editorial research assistant. Create factual, useful, SEO-aware WordPress drafts for display calibration, DICOM QA, RemoteQA, SmartSensor, healthcare imaging, creative color workflows, OEM display validation, and enterprise display management. Avoid unsupported claims. Cite sources when web research is used.',
+			),
+			array(
+				'role'    => 'user',
+				'content' => $prompt,
+			),
+		),
+		'text'  => array(
+			'format' => array(
+				'type'        => 'json_schema',
+				'name'        => 'qubyx_article',
+				'description' => 'QUBYX WordPress article draft',
+				'schema'      => $schema,
+				'strict'      => false,
+			),
+		),
+	);
+
+	if ( ! empty( $args['use_web_search'] ) ) {
+		$body['tools'] = array(
+			array(
+				'type'                => 'web_search',
+				'search_context_size' => 'medium',
+			),
+		);
+		$body['tool_choice'] = 'auto';
+		$body['include']     = array( 'web_search_call.action.sources' );
+	}
+
+	$response = wp_remote_post(
+		'https://api.openai.com/v1/responses',
+		array(
+			'timeout' => 90,
+			'headers' => array(
+				'Authorization' => 'Bearer ' . $api_key,
+				'Content-Type'  => 'application/json',
+			),
+			'body'    => wp_json_encode( $body ),
+		)
+	);
+
+	if ( is_wp_error( $response ) ) {
+		return $response;
+	}
+
+	$status = wp_remote_retrieve_response_code( $response );
+	$data   = json_decode( wp_remote_retrieve_body( $response ), true );
+	if ( $status < 200 || $status >= 300 ) {
+		$message = $data['error']['message'] ?? __( 'OpenAI request failed.', 'qubyx-content-importer' );
+		return new WP_Error( 'qubyx_ai_openai_error', sanitize_text_field( $message ) );
+	}
+
+	$text = qubyx_ci_extract_openai_text( is_array( $data ) ? $data : array() );
+	if ( ! $text ) {
+		return new WP_Error( 'qubyx_ai_empty_response', __( 'OpenAI returned an empty response.', 'qubyx-content-importer' ) );
+	}
+
+	$article = qubyx_ci_parse_ai_article_json( $text );
+	if ( is_wp_error( $article ) ) {
+		return $article;
+	}
+
+	$article['citations'] = qubyx_ci_normalize_ai_citations( $article['citations'] ?? array(), is_array( $data ) ? $data : array() );
+	return $article;
+}
+
+/**
+ * Build the AI article prompt.
+ *
+ * @param array $args Generation args.
+ * @return string
+ */
+function qubyx_ci_build_ai_prompt( $args ) {
+	return sprintf(
+		"Create a %1\$s QUBYX article draft in %2\$s.\n\nTopic or brief:\n%3\$s\n\nAudience: %4\$s\nSEO keywords: %5\$s\nDraft type: %6\$s\nResource layout: %7\$s\n\nReturn only valid JSON matching the supplied schema. content_html must be clean WordPress-friendly HTML with headings, paragraphs, lists, and no markdown fences. Include a practical introduction, scannable sections, and a final CTA that routes readers toward QUBYX products, resources, or demo requests. If web research is used, include citations with title and URL.",
+		$args['resource_layout'] ?? 'guide',
+		$args['language'] ?? 'English',
+		$args['topic'] ?? '',
+		$args['audience'] ?? '',
+		$args['keywords'] ?? '',
+		$args['post_type'] ?? 'resource',
+		$args['resource_layout'] ?? 'guide'
+	);
+}
+
+/**
+ * JSON schema for AI article response.
+ *
+ * @return array
+ */
+function qubyx_ci_ai_article_schema() {
+	return array(
+		'type'                 => 'object',
+		'additionalProperties' => false,
+		'properties'           => array(
+			'title'           => array( 'type' => 'string' ),
+			'slug'            => array( 'type' => 'string' ),
+			'excerpt'         => array( 'type' => 'string' ),
+			'seo_title'       => array( 'type' => 'string' ),
+			'seo_description' => array( 'type' => 'string' ),
+			'content_html'    => array( 'type' => 'string' ),
+			'reading_time'    => array( 'type' => 'integer' ),
+			'summary'         => array( 'type' => 'string' ),
+			'tags'            => array( 'type' => 'array', 'items' => array( 'type' => 'string' ) ),
+			'citations'       => array(
+				'type'  => 'array',
+				'items' => array(
+					'type'                 => 'object',
+					'additionalProperties' => false,
+					'properties'           => array(
+						'title' => array( 'type' => 'string' ),
+						'url'   => array( 'type' => 'string' ),
+					),
+					'required'             => array( 'title', 'url' ),
+				),
+			),
+		),
+		'required'             => array( 'title', 'slug', 'excerpt', 'seo_title', 'seo_description', 'content_html', 'reading_time', 'summary', 'tags', 'citations' ),
+	);
+}
+
+/**
+ * Extract text from a Responses API response.
+ *
+ * @param array $data Response data.
+ * @return string
+ */
+function qubyx_ci_extract_openai_text( $data ) {
+	if ( ! empty( $data['output_text'] ) && is_string( $data['output_text'] ) ) {
+		return $data['output_text'];
+	}
+
+	foreach ( $data['output'] ?? array() as $item ) {
+		if ( ( $item['type'] ?? '' ) !== 'message' ) {
+			continue;
+		}
+
+		foreach ( $item['content'] ?? array() as $content ) {
+			if ( isset( $content['text'] ) && is_string( $content['text'] ) ) {
+				return $content['text'];
+			}
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Parse article JSON from model output.
+ *
+ * @param string $text Output text.
+ * @return array|WP_Error
+ */
+function qubyx_ci_parse_ai_article_json( $text ) {
+	$text = trim( $text );
+	$text = preg_replace( '/^```(?:json)?\s*/i', '', $text );
+	$text = preg_replace( '/\s*```$/', '', $text );
+	$data = json_decode( $text, true );
+
+	if ( ! is_array( $data ) ) {
+		return new WP_Error( 'qubyx_ai_invalid_json', __( 'OpenAI returned a response that could not be parsed as article JSON.', 'qubyx-content-importer' ) );
+	}
+
+	return array(
+		'title'           => sanitize_text_field( $data['title'] ?? '' ),
+		'slug'            => sanitize_title( $data['slug'] ?? ( $data['title'] ?? '' ) ),
+		'excerpt'         => sanitize_textarea_field( $data['excerpt'] ?? '' ),
+		'seo_title'       => sanitize_text_field( $data['seo_title'] ?? ( $data['title'] ?? '' ) ),
+		'seo_description' => sanitize_textarea_field( $data['seo_description'] ?? ( $data['excerpt'] ?? '' ) ),
+		'content_html'    => wp_kses_post( $data['content_html'] ?? '' ),
+		'reading_time'    => max( 1, absint( $data['reading_time'] ?? 6 ) ),
+		'summary'         => sanitize_textarea_field( $data['summary'] ?? ( $data['excerpt'] ?? '' ) ),
+		'tags'            => array_values( array_filter( array_map( 'sanitize_text_field', (array) ( $data['tags'] ?? array() ) ) ) ),
+		'citations'       => (array) ( $data['citations'] ?? array() ),
+	);
+}
+
+/**
+ * Normalize citations from model JSON and Responses API annotations/sources.
+ *
+ * @param array $citations Model citations.
+ * @param array $response_data Raw response data.
+ * @return array
+ */
+function qubyx_ci_normalize_ai_citations( $citations, $response_data ) {
+	$items = array();
+
+	foreach ( $citations as $citation ) {
+		$url = esc_url_raw( $citation['url'] ?? '' );
+		if ( ! $url ) {
+			continue;
+		}
+		$items[ $url ] = array(
+			'title' => sanitize_text_field( $citation['title'] ?? $url ),
+			'url'   => $url,
+		);
+	}
+
+	foreach ( $response_data['output'] ?? array() as $output ) {
+		foreach ( $output['content'] ?? array() as $content ) {
+			foreach ( $content['annotations'] ?? array() as $annotation ) {
+				$url = esc_url_raw( $annotation['url'] ?? '' );
+				if ( $url ) {
+					$items[ $url ] = array(
+						'title' => sanitize_text_field( $annotation['title'] ?? $url ),
+						'url'   => $url,
+					);
+				}
+			}
+		}
+	}
+
+	return array_values( $items );
+}
+
+/**
+ * Create a WordPress draft from an AI article.
+ *
+ * @param array $article Article data.
+ * @param array $args Generation args.
+ * @return array|WP_Error
+ */
+function qubyx_ci_create_ai_draft( $article, $args ) {
+	$post_type = in_array( $args['post_type'] ?? 'resource', array( 'post', 'page', 'resource' ), true ) ? $args['post_type'] : 'resource';
+	$post_id   = wp_insert_post(
+		array(
+			'post_type'    => $post_type,
+			'post_status'  => 'draft',
+			'post_title'   => $article['title'],
+			'post_name'    => $article['slug'],
+			'post_excerpt' => $article['excerpt'],
+			'post_content' => $article['content_html'],
+			'meta_input'   => array(
+				'_qubyx_ai_generated' => current_time( 'mysql' ),
+				'summary'             => $article['summary'],
+				'reading_time'        => $article['reading_time'],
+			),
+		),
+		true
+	);
+
+	if ( is_wp_error( $post_id ) ) {
+		return $post_id;
+	}
+
+	qubyx_ci_update_seo_meta(
+		$post_id,
+		array(
+			'post_title'      => $article['title'],
+			'post_excerpt'    => $article['excerpt'],
+			'seo_title'       => $article['seo_title'],
+			'seo_description' => $article['seo_description'],
+		)
+	);
+
+	if ( 'resource' === $post_type && taxonomy_exists( 'resource_category' ) ) {
+		$layout = in_array( $args['resource_layout'] ?? 'guide', array( 'guide', 'news', 'blog' ), true ) ? $args['resource_layout'] : 'guide';
+		update_post_meta( $post_id, 'resource_layout', $layout );
+		$term = 'blog' === $layout ? 'blog' : ( 'news' === $layout ? 'news' : 'guides' );
+		wp_set_object_terms( $post_id, array( $term ), 'resource_category', false );
+	}
+
+	if ( ! empty( $article['tags'] ) && taxonomy_exists( 'post_tag' ) && 'page' !== $post_type ) {
+		wp_set_post_tags( $post_id, $article['tags'], false );
+	}
+
+	if ( ! empty( $article['citations'] ) ) {
+		update_post_meta( $post_id, '_qubyx_ai_citations', $article['citations'] );
+	}
+
+	return array(
+		'id'       => $post_id,
+		'edit_url' => get_edit_post_link( $post_id, 'raw' ),
+		'view_url' => get_preview_post_link( $post_id ),
+	);
 }
 
 /**
@@ -580,6 +1155,9 @@ function qubyx_ci_default_settings() {
 	return array(
 		'update_endpoint'          => QUBYX_CI_UPDATE_ENDPOINT,
 		'auto_import_after_update' => 1,
+		'openai_api_key'           => '',
+		'openai_model'             => 'gpt-5-mini',
+		'ai_use_web_search'        => 1,
 	);
 }
 
@@ -601,10 +1179,15 @@ function qubyx_ci_get_settings() {
  */
 function qubyx_ci_sanitize_settings( $settings ) {
 	$settings = is_array( $settings ) ? $settings : array();
+	$current  = qubyx_ci_get_settings();
+	$new_key  = isset( $settings['openai_api_key'] ) ? trim( (string) $settings['openai_api_key'] ) : '';
 
 	return array(
 		'update_endpoint'          => esc_url_raw( $settings['update_endpoint'] ?? QUBYX_CI_UPDATE_ENDPOINT ),
 		'auto_import_after_update' => empty( $settings['auto_import_after_update'] ) ? 0 : 1,
+		'openai_api_key'           => '' === $new_key ? ( $current['openai_api_key'] ?? '' ) : sanitize_text_field( $new_key ),
+		'openai_model'             => sanitize_text_field( $settings['openai_model'] ?? 'gpt-5-mini' ),
+		'ai_use_web_search'        => empty( $settings['ai_use_web_search'] ) ? 0 : 1,
 	);
 }
 
