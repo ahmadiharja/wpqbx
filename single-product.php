@@ -8,7 +8,16 @@
  */
 
 get_header();
+$qubyx_skip_product_global_cta = false;
+
 while ( have_posts() ) : the_post();
+
+	$product_layout = qubyx_field( 'product_layout', '' );
+	if ( 'oem-supplier' === $product_layout ) {
+		$qubyx_skip_product_global_cta = true;
+		get_template_part( 'template-parts/products/oem-supplier' );
+		continue;
+	}
 
 	$eyebrow   = qubyx_field( 'hero_eyebrow', get_post_type_object( 'product' )->labels->singular_name );
 	$headline  = qubyx_field( 'hero_headline', get_the_title() );
@@ -109,5 +118,9 @@ while ( have_posts() ) : the_post();
 
 <?php endwhile; ?>
 
-<?php get_template_part( 'template-parts/sections/cta' ); ?>
+<?php
+if ( ! $qubyx_skip_product_global_cta ) {
+	get_template_part( 'template-parts/sections/cta' );
+}
+?>
 <?php get_footer();
