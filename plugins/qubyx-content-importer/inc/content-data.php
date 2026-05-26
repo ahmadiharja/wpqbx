@@ -1657,21 +1657,7 @@ function qubyx_ci_products() {
 			)
 		),
 		'qubyx-smartsensor-s1' => qubyx_ci_smartsensor_s1_product(),
-		'qubyx-smartsensor-s2' => qubyx_ci_product(
-			'Qubyx SmartSensor S2',
-			'qubyx-smartsensor-s2',
-			'Advanced sensor positioning for demanding validation workflows',
-			'SmartSensor S2 is positioned for teams that need a more capable measurement path across luminance, color, and enterprise QA programs.',
-			'Advanced sensor',
-			6,
-			array( 'product_category' => array( 'sensors' ) ),
-			array(
-				'Advanced measurement positioning for professional workflows',
-				'Designed for PerfectLum, PerfectChroma, and RemoteQA narratives',
-				'Comparison path against SmartSensor S1',
-				'Built for enterprise product pages without unverified technical claims',
-			)
-		),
+		'qubyx-smartsensor-s2' => qubyx_ci_smartsensor_s2_product(),
 	);
 }
 
@@ -2061,6 +2047,147 @@ function qubyx_ci_build_smartsensor_s1_content( $asset_base ) {
 		<a href="/products/qubyx-remoteqa/"><strong>QUBYX RemoteQA</strong><span>Central scheduling, status review, reports, and fleet operations.</span></a>
 		<a href="/store/sensors/"><strong>SmartSensor catalog</strong><span>Sensor quote paths and hardware purchasing context.</span></a>
 		<a href="/solutions/oem-display-calibration/"><strong>OEM display calibration</strong><span>Position S1 inside display product lines and validation programs.</span></a>
+	</div>';
+}
+
+/**
+ * Build the QUBYX SmartSensor S2 consumer product page from the official brochure.
+ */
+function qubyx_ci_smartsensor_s2_product() {
+	$asset_base  = '/wp-content/themes/qubyx-theme/assets/images/smartsensor-s2/';
+	$description = 'QUBYX SmartSensor S2 is a premium external colorimeter for contact and distance display measurement across monitors, TVs, projectors, and QUBYX calibration workflows.';
+
+	return array(
+		'post_title'               => 'QUBYX SmartSensor S2',
+		'post_name'                => 'qubyx-smartsensor-s2',
+		'post_excerpt'             => $description,
+		'post_content'             => qubyx_ci_build_smartsensor_s2_content( $asset_base ),
+		'menu_order'               => 6,
+		'terms'                    => array( 'product_category' => array( 'sensors' ) ),
+		'seo_title'                => 'QUBYX SmartSensor S2 Consumer Display Calibration Sensor',
+		'seo_description'          => 'QUBYX SmartSensor S2 is a premium external colorimeter for accurate monitor, TV, and projector calibration with QUBYX software.',
+		'focus_keyphrase'          => 'QUBYX SmartSensor S2',
+		'secondary_keyphrases'     => array(
+			'consumer display calibration sensor',
+			'external colorimeter for monitor calibration',
+			'PerfectChroma sensor',
+			'TV and projector calibration sensor',
+		),
+		'rank_math_pillar_content' => true,
+		'meta'                     => array(
+			'hero_eyebrow'        => 'Consumer display calibration sensor',
+			'hero_headline'       => 'QUBYX SmartSensor S2',
+			'hero_description'    => $description,
+			'hero_image_url'      => $asset_base . 'smartsensor-s2-source-1-1.jpeg',
+			'product_wide_layout' => 1,
+			'cta_primary'         => array( 'title' => 'View sensor options', 'url' => '/store/sensors/', 'target' => '' ),
+			'cta_secondary'       => array( 'title' => 'Pair with PerfectChroma', 'url' => '/products/perfectchroma/', 'target' => '' ),
+			'features_eyebrow'    => 'SmartSensor S2 workflow',
+			'features_heading'    => 'External measurement',
+			'features_accent'     => 'for personal and professional calibration.',
+			'features_intro'      => 'SmartSensor S2 gives consumer buyers and creative professionals a practical external measurement path for displays, TVs, projectors, and recurring calibration checks.',
+			'features'            => array(
+				array( 'badge' => 'Color', 'title' => 'Reliable color measurement', 'description' => 'Capture color values for calibration, verification, and color-managed display workflows.', 'span' => 'wide' ),
+				array( 'badge' => 'Lum', 'title' => 'Accurate luminance readings', 'description' => 'Measure brightness and luminance response for consistent visual performance.', 'span' => '' ),
+				array( 'badge' => 'Setup', 'title' => 'Contact and distance use', 'description' => 'Support monitor, TV, and projector setups where measurement geometry matters.', 'span' => '' ),
+				array( 'badge' => 'Room', 'title' => 'Ambient light support', 'description' => 'Evaluate viewing conditions that influence perceived color and contrast.', 'span' => '' ),
+			),
+			'benefits'            => array(
+				array( 'title' => 'Better confidence for your own screen', 'detail' => 'Use real optical measurement instead of visual guessing when calibrating a monitor, TV, projector, or editing setup.' ),
+				array( 'title' => 'Designed for repeat checks', 'detail' => 'Use the same external sensor path for initial calibration and later verification after display aging or room changes.' ),
+				array( 'title' => 'Pairs with QUBYX software', 'detail' => 'The brochure positions S2 with PerfectLum, PerfectChroma, PerfectEPD, and RemoteQA workflows.' ),
+				array( 'title' => 'Useful beyond one monitor', 'detail' => 'S2 supports displays, TVs, and projectors, which makes it a practical sensor path for multi-device users.' ),
+			),
+			'specifications'      => array(
+				array( 'label' => 'Product type', 'value' => 'Professional external colorimeter for contact and distance measurement' ),
+				array( 'label' => 'Connection', 'value' => 'USB, I2C, UART' ),
+				array( 'label' => 'Filter technology', 'value' => 'CIE tristimulus glass filter' ),
+				array( 'label' => 'Resolution', 'value' => '20 bit' ),
+				array( 'label' => 'Supported displays', 'value' => 'Displays, TVs, and projectors' ),
+				array( 'label' => 'Supported backlights', 'value' => 'CCFL, LED, RGB LED, OLED' ),
+				array( 'label' => 'Dynamic range', 'value' => '0.001 to 5000 cd/m2' ),
+				array( 'label' => 'Wavelength range', 'value' => '400 - 690 nm' ),
+				array( 'label' => 'Measurement speed', 'value' => '0.5 sec per measurement' ),
+			),
+			'faqs'                => array(
+				array( 'question' => 'Who is SmartSensor S2 for?', 'answer' => 'SmartSensor S2 is the consumer-facing external sensor path for users and professionals who want accurate monitor, TV, or projector measurement with QUBYX calibration software.' ),
+				array( 'question' => 'Is SmartSensor S2 built into a display like SmartSensor S1?', 'answer' => 'No. S1 is positioned as an embedded OEM module, while S2 is an external colorimeter for contact and distance measurement.' ),
+				array( 'question' => 'Which QUBYX software works with S2?', 'answer' => 'The brochure positions S2 with PerfectLum, PerfectChroma, PerfectEPD, and RemoteQA.' ),
+				array( 'question' => 'What is the measurement range?', 'answer' => 'The official brochure lists a dynamic range of 0.001 to 5000 cd/m2 and a wavelength range of 400 to 690 nm.' ),
+			),
+			'final_cta_heading'   => 'Calibrate your own display with better measurement confidence.',
+			'final_cta_text'      => 'Use SmartSensor S2 when you want an external measurement device for accurate, repeatable calibration and verification.',
+			'final_cta_primary'   => array( 'title' => 'View sensor options', 'url' => '/store/sensors/', 'target' => '' ),
+			'final_cta_secondary' => array( 'title' => 'View PerfectChroma', 'url' => '/products/perfectchroma/', 'target' => '' ),
+		),
+	);
+}
+
+/**
+ * Build long-form QUBYX SmartSensor S2 content for importer fallback.
+ */
+function qubyx_ci_build_smartsensor_s2_content( $asset_base ) {
+	return '<div class="qubyx-product-proof alignwide">
+		<div>
+			<span class="qubyx-product-proof__kicker">SmartSensor S2 at a glance</span>
+			<h2>Premium external measurement for personal and professional display calibration.</h2>
+			<p>SmartSensor S2 is a professional external colorimeter for contact and distance measurements across displays, TVs, and projectors. For consumer buyers, it creates a clearer route to dependable monitor calibration, recurring verification, and better confidence in the screen they use every day.</p>
+		</div>
+		<ul>
+			<li><strong>External colorimeter:</strong> contact and distance measurement support.</li>
+			<li><strong>Display coverage:</strong> monitors, TVs, and projectors.</li>
+			<li><strong>QUBYX ecosystem:</strong> PerfectLum, PerfectChroma, PerfectEPD, and RemoteQA.</li>
+			<li><strong>Official range:</strong> 0.001 to 5000 cd/m2, 400 - 690 nm, 0.5 sec per measurement.</li>
+		</ul>
+	</div>
+
+	<h2>Why SmartSensor S2 matters for consumer calibration</h2>
+	<p>Color-critical work is easier to trust when the display is measured, not guessed. SmartSensor S2 gives photographers, designers, editors, home theater users, and advanced monitor owners a measurement device that can support calibration, verification, and long-term display quality checks.</p>
+
+	<div class="qubyx-product-media-grid alignwide">
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s2-source-1-1.jpeg' ) . '" alt="QUBYX SmartSensor S2 attached to a monitor" loading="lazy" /><figcaption>S2 supports external measurement for monitors and personal workstations.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s2-source-2-2.png' ) . '" alt="SmartSensor S2 distance measurement body" loading="lazy" /><figcaption>Distance measurement body for setup-sensitive workflows.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s2-source-2-4.jpeg' ) . '" alt="SmartSensor S2 contact measurement body" loading="lazy" /><figcaption>Contact measurement body for direct display calibration.</figcaption></figure>
+		<figure><img src="' . esc_url( $asset_base . 'smartsensor-s2-brochure-page-2.jpg' ) . '" alt="Official SmartSensor S2 brochure details" loading="lazy" /><figcaption>Official brochure specification and accuracy details.</figcaption></figure>
+	</div>
+
+	<h2>What it helps measure</h2>
+	<ul>
+		<li>Accurate luminance and brightness response.</li>
+		<li>Reliable color values for calibration and verification.</li>
+		<li>Ambient light conditions around the viewing environment.</li>
+		<li>Repeatable contact or distance measurement setups.</li>
+	</ul>
+
+	<h2>Technical specification from the brochure</h2>
+	<div class="qubyx-product-spec-table alignwide">
+		<table>
+			<tbody>
+				<tr><th>Connection</th><td>USB, I2C, UART</td></tr>
+				<tr><th>Filter technology</th><td>CIE tristimulus glass filter</td></tr>
+				<tr><th>Resolution</th><td>20 bit</td></tr>
+				<tr><th>Calibration and verification</th><td>Background verification and automatic recalibration when out of range</td></tr>
+				<tr><th>Supported backlights</th><td>CCFL, LED, RGB LED, OLED</td></tr>
+				<tr><th>Dynamic range</th><td>0.001 to 5000 cd/m2</td></tr>
+				<tr><th>Wavelength range</th><td>400 - 690 nm</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h2>Accuracy and measurement ranges</h2>
+	<div class="qubyx-product-spec-table alignwide">
+		<table>
+			<thead>
+				<tr><th>Metric</th><th>Standard range<br />(1 cd/m2 &lt; Y &lt; 5000 cd/m2)</th><th>Low-light range<br />(0.05 cd/m2 &lt; Y &lt; 1.0 cd/m2)</th></tr>
+			</thead>
+			<tbody>
+				<tr><th>White accuracy</th><td>+/- 0.002</td><td>+/- 0.0035</td></tr>
+				<tr><th>Color accuracy</th><td>+/- 0.0035</td><td>+/- 0.006</td></tr>
+				<tr><th>Luminance accuracy</th><td>+/- 2%</td><td>+/- 4%</td></tr>
+				<tr><th>Repeatability</th><td>+/- 0.001, 0.5%</td><td>+/- 0.002, 2%</td></tr>
+				<tr><th>Measurement speed</th><td>0.5 sec / measurement</td><td>0.5 sec / measurement</td></tr>
+			</tbody>
+		</table>
 	</div>';
 }
 
